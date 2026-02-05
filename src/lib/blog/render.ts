@@ -10,7 +10,9 @@ const BLOCK_TAGS: Record<string, string> = {
   embed: "div",
 };
 
-function escapeHtml(text: string): string {
+function escapeHtml(text: unknown): string {
+  if (text == null) return "";
+  const s = typeof text === "string" ? text : String(text);
   const map: Record<string, string> = {
     "&": "&amp;",
     "<": "&lt;",
@@ -18,7 +20,7 @@ function escapeHtml(text: string): string {
     '"': "&quot;",
     "'": "&#039;",
   };
-  return text.replace(/[&<>"']/g, (m) => map[m] ?? m);
+  return s.replace(/[&<>"']/g, (m) => map[m] ?? m);
 }
 
 export function renderEditorJsToHtml(data: OutputData | null | undefined): string {
