@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Brownstone Premium Services | Refined Experience</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#EF641C",
+                        "corporate-blue": "#00486B",
+                        "neutral-light": "#F9F8F6",
+                        "neutral-accent": "#E5E7EB",
+                    },
+                    fontFamily: {
+                        "sans": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply font-sans;
+            }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 40;
+        }
+        .hero-gradient {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.5)), url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdS6tgdpWWHFCYuDB7-2NbejHkPM5vT0OzciLEU94RTD5pNS6EP5h-jfvaQeEqM0CcEaND2tEphxZLidojZ8bpmqKRYPTvvhAM09SF3P9fBwVxucoKQKE3ENGyvvCVERf5JjGxfbFoZBxKl6dQuRd7FKzll-iL0tTLErbl_it8b7puTFKRSflut7JRjHFxlkXNpZlv-goO9ssqA231R6xh4l52DFSJ4RaV8iaEZ7HQtcTSUALC92BlmGMhZeOTQ836vzPfeZtrtcg');
+            background-size: cover;
+            background-position: center;
+        }
+        .service-card {
+            @apply bg-white p-16 border-l-[1px] border-neutral-accent shadow-sm transition-all duration-500 hover:shadow-2xl hover:border-primary/40 flex flex-col items-start;
+        }
+        .accent-line {
+            @apply w-0 group-hover:w-16 h-[2px] bg-primary transition-all duration-500 mt-6;
+        }
+    </style>
+</head>
+<body class="bg-neutral-light text-slate-900 overflow-x-hidden">
+<div class="flex min-h-screen flex-col">
+<nav class="absolute top-0 w-full z-50 flex justify-between items-center px-16 py-10 bg-transparent">
+<div class="flex items-center gap-4">
+<div class="size-12 bg-corporate-blue flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">architecture</span>
+</div>
+<h2 class="text-xl font-extrabold tracking-tighter text-white leading-none uppercase">
+                Brownstone<br/>
+<span class="font-light text-[10px] tracking-[0.4em] opacity-90">Construction</span>
+</h2>
+</div>
+<div class="hidden lg:flex gap-12 text-white font-medium text-xs tracking-[0.2em] uppercase">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<a class="hover:text-primary transition-colors" href="#">About</a>
+<a class="hover:text-primary transition-colors" href="#">Properties</a>
+<a class="text-primary border-b border-primary pb-1" href="#">Services</a>
+<a class="hover:text-primary transition-colors" href="#">Portfolio</a>
+<a class="hover:text-primary transition-colors" href="#">Contact</a>
+</div>
+</nav>
+<header class="relative h-[75vh] flex flex-col items-center justify-center text-center hero-gradient px-4">
+<span class="text-white/70 uppercase tracking-[0.5em] text-xs mb-6 font-semibold">Excellence in Development</span>
+<h1 class="text-7xl md:text-9xl font-serif text-white mb-8 tracking-tight">Our Services</h1>
+<div class="w-16 h-[1px] bg-white/50 mb-10"></div>
+<p class="text-white text-lg md:text-xl font-light tracking-[0.1em] max-w-2xl opacity-90 leading-relaxed italic">
+            Brownstone Construction Firm — Building Africa’s Future, Brick by Brick.
+        </p>
+</header>
+<main class="bg-neutral-light py-40 px-6 md:px-12 lg:px-24">
+<div class="max-w-7xl mx-auto">
+<div class="mb-24 text-center">
+<h2 class="text-corporate-blue font-serif text-4xl md:text-5xl mb-6">Bespoke Solutions</h2>
+<p class="text-slate-500 max-w-2xl mx-auto font-light leading-relaxed">Crafting sustainable landmarks through precision engineering and visionary architecture. Our approach balances luxury aesthetics with functional excellence.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-24 gap-y-32">
+<div class="service-card group">
+<div class="mb-10 text-corporate-blue/30 group-hover:text-primary transition-colors duration-500">
+<span class="material-symbols-outlined text-6xl">home</span>
+</div>
+<h3 class="text-3xl font-serif text-corporate-blue mb-8 tracking-wide">Residential Construction</h3>
+<p class="text-slate-500 leading-[1.8] font-light mb-10 text-lg">
+                        Design and build high-quality homes and developments tailored for luxury and longevity. We specialize in creating private sanctuaries that reflect the unique lifestyle of our clients.
+                    </p>
+<a class="inline-flex items-center text-corporate-blue font-bold text-[11px] tracking-[0.3em] uppercase group/link" href="#">
+                        Discover More 
+                        <span class="material-symbols-outlined ml-3 text-lg group-hover/link:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+<div class="accent-line"></div>
+</div>
+<div class="service-card group">
+<div class="mb-10 text-corporate-blue/30 group-hover:text-primary transition-colors duration-500">
+<span class="material-symbols-outlined text-6xl">location_city</span>
+</div>
+<h3 class="text-3xl font-serif text-corporate-blue mb-8 tracking-wide">Master-Planned Communities</h3>
+<p class="text-slate-500 leading-[1.8] font-light mb-10 text-lg">
+                        Holistic neighbourhoods with schools, clinics, retail and parks, designed for social connectivity and resilience. We don't just build structures; we cultivate thriving ecosystems.
+                    </p>
+<a class="inline-flex items-center text-corporate-blue font-bold text-[11px] tracking-[0.3em] uppercase group/link" href="#">
+                        Explore Projects
+                        <span class="material-symbols-outlined ml-3 text-lg group-hover/link:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+<div class="accent-line"></div>
+</div>
+<div class="service-card group">
+<div class="mb-10 text-corporate-blue/30 group-hover:text-primary transition-colors duration-500">
+<span class="material-symbols-outlined text-6xl">eco</span>
+</div>
+<h3 class="text-3xl font-serif text-corporate-blue mb-8 tracking-wide">Sustainable Infrastructure</h3>
+<p class="text-slate-500 leading-[1.8] font-light mb-10 text-lg">
+                        Solar, EV charging, and water management. Engineering the backbone of modern society with a focus on smart technologies and eco-conscious zones for a greener tomorrow.
+                    </p>
+<a class="inline-flex items-center text-corporate-blue font-bold text-[11px] tracking-[0.3em] uppercase group/link" href="#">
+                        View Sustainability
+                        <span class="material-symbols-outlined ml-3 text-lg group-hover/link:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+<div class="accent-line"></div>
+</div>
+<div class="service-card group">
+<div class="mb-10 text-corporate-blue/30 group-hover:text-primary transition-colors duration-500">
+<span class="material-symbols-outlined text-6xl">payments</span>
+</div>
+<h3 class="text-3xl font-serif text-corporate-blue mb-8 tracking-wide">Real Estate Development</h3>
+<p class="text-slate-500 leading-[1.8] font-light mb-10 text-lg">
+                        Build-to-sell or build-to-rent projects with investor support. We transform visionary blueprints into profitable assets through meticulous market analysis and development.
+                    </p>
+<a class="inline-flex items-center text-corporate-blue font-bold text-[11px] tracking-[0.3em] uppercase group/link" href="#">
+                        Investor Relations
+                        <span class="material-symbols-outlined ml-3 text-lg group-hover/link:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+<div class="accent-line"></div>
+</div>
+<div class="service-card group">
+<div class="mb-10 text-corporate-blue/30 group-hover:text-primary transition-colors duration-500">
+<span class="material-symbols-outlined text-6xl">architecture</span>
+</div>
+<h3 class="text-3xl font-serif text-corporate-blue mb-8 tracking-wide">Project Management</h3>
+<p class="text-slate-500 leading-[1.8] font-light mb-10 text-lg">
+                        End-to-end planning, budgeting and delivery services. Precision oversight from inception to completion, ensuring every detail meets our uncompromising standards.
+                    </p>
+<a class="inline-flex items-center text-corporate-blue font-bold text-[11px] tracking-[0.3em] uppercase group/link" href="#">
+                        Our Methodology
+                        <span class="material-symbols-outlined ml-3 text-lg group-hover/link:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+<div class="accent-line"></div>
+</div>
+<div class="service-card group">
+<div class="mb-10 text-corporate-blue/30 group-hover:text-primary transition-colors duration-500">
+<span class="material-symbols-outlined text-6xl">domain</span>
+</div>
+<h3 class="text-3xl font-serif text-corporate-blue mb-8 tracking-wide">Mixed-Use Spaces</h3>
+<p class="text-slate-500 leading-[1.8] font-light mb-10 text-lg">
+                        Dynamic environments where residential living, commerce, and tourism thrive in harmony. We create urban centers that define the character of growing cities.
+                    </p>
+<a class="inline-flex items-center text-corporate-blue font-bold text-[11px] tracking-[0.3em] uppercase group/link" href="#">
+                        Portfolio Highlights
+                        <span class="material-symbols-outlined ml-3 text-lg group-hover/link:translate-x-2 transition-transform">arrow_right_alt</span>
+</a>
+<div class="accent-line"></div>
+</div>
+</div>
+</div>
+</main>
+<section class="bg-white py-32 px-12 border-y border-neutral-accent">
+<div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-16">
+<div class="text-center">
+<p class="text-5xl font-serif text-corporate-blue mb-3">500+</p>
+<p class="text-[9px] uppercase tracking-[0.4em] font-semibold text-slate-400">Projects Completed</p>
+</div>
+<div class="text-center">
+<p class="text-5xl font-serif text-corporate-blue mb-3">$12B</p>
+<p class="text-[9px] uppercase tracking-[0.4em] font-semibold text-slate-400">Asset Value Managed</p>
+</div>
+<div class="text-center">
+<p class="text-5xl font-serif text-corporate-blue mb-3">24</p>
+<p class="text-[9px] uppercase tracking-[0.4em] font-semibold text-slate-400">Design Awards</p>
+</div>
+<div class="text-center">
+<p class="text-5xl font-serif text-corporate-blue mb-3">100%</p>
+<p class="text-[9px] uppercase tracking-[0.4em] font-semibold text-slate-400">Sustainability Rating</p>
+</div>
+</div>
+</section>
+<footer class="bg-corporate-blue text-white py-24 px-12 lg:px-24">
+<div class="max-w-7xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-start gap-16">
+<div class="max-w-2xl">
+<h2 class="text-5xl font-serif mb-8 leading-tight">Ready to start your next landmark?</h2>
+<p class="text-white/60 text-lg font-light leading-relaxed mb-12">
+                        Schedule a discovery session with our lead developers and architects to bring your vision to life. Let's build the future together.
+                    </p>
+<button class="border border-white/20 hover:bg-white hover:text-corporate-blue text-white px-10 py-5 font-bold text-xs tracking-[0.3em] transition-all uppercase">
+                        Request a Proposal
+                    </button>
+</div>
+<div class="flex flex-col gap-8 text-right self-end md:self-start">
+<div class="flex items-center gap-3 justify-end mb-4">
+<div class="size-10 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-2xl">architecture</span>
+</div>
+<h2 class="text-lg font-extrabold tracking-tighter text-white leading-none uppercase text-left">
+                            Brownstone<br/><span class="font-light text-[8px] tracking-[0.3em] opacity-70">Construction</span>
+</h2>
+</div>
+<div class="space-y-3">
+<p class="text-white/40 text-xs tracking-widest uppercase">Lagos, Nigeria</p>
+<p class="text-white/40 text-xs tracking-widest uppercase">Johannesburg, SA</p>
+<p class="text-white/40 text-xs tracking-widest uppercase">+234 (0) 800 BROWNSTONE</p>
+</div>
+</div>
+</div>
+<div class="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-white/20 text-[10px] tracking-widest uppercase">© 2024 Brownstone Construction Limited. All Rights Reserved.</p>
+<div class="flex gap-12">
+<a class="text-white/30 hover:text-primary text-[10px] uppercase tracking-widest transition-colors" href="#">Privacy Policy</a>
+<a class="text-white/30 hover:text-primary text-[10px] uppercase tracking-widest transition-colors" href="#">Legal Terms</a>
+<a class="text-white/30 hover:text-primary text-[10px] uppercase tracking-widest transition-colors" href="#">Cookie Policy</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+
+</body></html>

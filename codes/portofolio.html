@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Brownstone Luxury Project Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef611a",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .project-card:hover .overlay {
+            opacity: 1;
+        }
+        .masonry-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-[#181311] dark:text-white transition-colors duration-300">
+<div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+<div class="layout-container flex h-full grow flex-col">
+<header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-[#838385]/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50 px-10 py-4 lg:px-40">
+<div class="flex items-center gap-4 text-[#181311] dark:text-white">
+<div class="size-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.263 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M10.4485 13.8519C10.4749 13.9271 10.6203 14.246 11.379 14.7361C12.298 15.3298 13.7492 15.9145 15.6717 16.3735C18.0007 16.9296 20.8712 17.2655 24 17.2655C27.1288 17.2655 29.9993 16.9296 32.3283 16.3735C34.2508 15.9145 35.702 15.3298 36.621 14.7361C37.3796 14.246 37.5251 13.9271 37.5515 13.8519C37.5287 13.7876 37.4333 13.5973 37.0635 13.2931C36.5266 12.8516 35.6288 12.3647 34.343 11.9175C31.79 11.0295 28.1333 10.4437 24 10.4437C19.8667 10.4437 16.2099 11.0295 13.657 11.9175C12.3712 12.3647 11.4734 12.8516 10.9365 13.2931C10.5667 13.5973 10.4713 13.7876 10.4485 13.8519ZM37.5563 18.7877C36.3176 19.3925 34.8502 19.8839 33.2571 20.2642C30.5836 20.9025 27.3973 21.2655 24 21.2655C20.6027 21.2655 17.4164 20.9025 14.7429 20.2642C13.1498 19.8839 11.6824 19.3925 10.4436 18.7877V34.1275C10.4515 34.1545 10.5427 34.4867 11.379 35.027C12.298 35.6207 13.7492 36.2054 15.6717 36.6644C18.0007 37.2205 20.8712 37.5564 24 37.5564C27.1288 37.5564 29.9993 37.2205 32.3283 36.6644C34.2508 36.2054 35.702 35.6207 36.621 35.027C37.4573 34.4867 37.5485 34.1546 37.5563 34.1275V18.7877ZM41.5563 13.8546V34.1455C41.5563 36.1078 40.158 37.5042 38.7915 38.3869C37.3498 39.3182 35.4192 40.0389 33.2571 40.5551C30.5836 41.1934 27.3973 41.5564 24 41.5564C20.6027 41.5564 17.4164 41.1934 14.7429 40.5551C12.5808 40.0389 10.6502 39.3182 9.20848 38.3869C7.84205 37.5042 6.44365 36.1078 6.44365 34.1455L6.44365 13.8546C6.44365 12.2684 7.37223 11.0454 8.39581 10.2036C9.43325 9.3505 10.8137 8.67141 12.343 8.13948C15.4203 7.06909 19.5418 6.44366 24 6.44366C28.4582 6.44366 32.5797 7.06909 35.657 8.13948C37.1863 8.67141 38.5667 9.3505 39.6042 10.2036C40.6278 11.0454 41.5563 12.2684 41.5563 13.8546Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-lg font-extrabold leading-tight tracking-tight uppercase">Brownstone</h2>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Home</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">About</a>
+<a class="text-sm font-bold text-primary border-b-2 border-primary" href="#">Portfolio</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Sustainability</a>
+<a class="text-sm font-semibold hover:text-primary transition-colors" href="#">Contact</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center rounded-full bg-primary text-white h-11 px-6 text-sm font-bold tracking-wide uppercase transition-transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
+                    Inquiry
+                </button>
+</div>
+</header>
+<main class="flex-1">
+<section class="relative h-[60vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden">
+<img alt="Luxury Development Rendering" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0uTlttNLk_6QD0QD3cVLcidUN_xRH5q2ZO-DzJNCQP1f118xm32mMwFsm48ZpQD3KFpmfDcgPXx3oT7Ae1dIORLlddTEVAE-dbBWocJ-g0vFzVWo7ozOQYVdZHwMMOfu_-OPEOOoc4gTgB_nRbVgPVJ4MyXlRwOSWMKvVELwn8gSdg1OGQhBcMnCAWnb28pWzPsILWyZ3VK-hJ76oMb9IbJec03TBnXLWp0ARtpa3dYwrCLkJ8xzFOtgVcc4C8unTt9mGcuHtGX4"/>
+<div class="absolute inset-0 bg-black/50 backdrop-brightness-75 transition-all"></div>
+<div class="relative z-10 text-center px-10">
+<span class="text-primary text-xs font-bold uppercase tracking-[0.4em] mb-4 block">Excellence in Craftsmanship</span>
+<h1 class="text-white text-5xl md:text-7xl lg:text-8xl font-serif italic mb-6">Our Portfolio</h1>
+<div class="w-24 h-1 bg-primary mx-auto"></div>
+</div>
+</section>
+<section class="px-10 py-16 lg:px-40 max-w-[1440px] mx-auto">
+<div class="flex flex-col md:flex-row items-end justify-between gap-8 mb-16">
+<div class="max-w-2xl">
+<h2 class="text-[#181311] dark:text-white text-3xl font-bold leading-tight mb-6 uppercase tracking-tight">
+                            Defining the future of <span class="text-primary">sustainable living.</span>
+</h2>
+<p class="text-[#838385] dark:text-gray-400 text-lg font-light leading-relaxed max-w-xl">
+                            A curated selection of high-end residential estates, award-winning community centers, and carbon-neutral infrastructure.
+                        </p>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center gap-2 rounded-lg bg-background-light dark:bg-background-dark border border-[#838385]/30 h-12 px-6 text-[#181311] dark:text-white text-sm font-bold tracking-tight hover:bg-white dark:hover:bg-zinc-800 transition-all">
+<span class="material-symbols-outlined text-[20px]">file_download</span>
+<span>Project Catalog</span>
+</button>
+</div>
+</div>
+<div class="flex gap-4 p-4 overflow-x-auto no-scrollbar border-b border-[#838385]/10 mb-12 items-center">
+<span class="text-xs font-black uppercase tracking-widest text-[#838385] mr-4 hidden md:block">Filter By:</span>
+<button class="flex h-10 shrink-0 items-center justify-center rounded-full bg-primary px-6 text-white text-xs font-black uppercase tracking-widest transition-all">
+                        All Projects
+                    </button>
+<button class="flex h-10 shrink-0 items-center justify-center rounded-full bg-background-light dark:bg-background-dark border border-[#838385]/20 px-6 text-[#181311] dark:text-white text-xs font-bold uppercase tracking-widest hover:border-primary transition-all">
+                        Residential
+                    </button>
+<button class="flex h-10 shrink-0 items-center justify-center rounded-full bg-background-light dark:bg-background-dark border border-[#838385]/20 px-6 text-[#181311] dark:text-white text-xs font-bold uppercase tracking-widest hover:border-primary transition-all">
+                        Community
+                    </button>
+<button class="flex h-10 shrink-0 items-center justify-center rounded-full bg-background-light dark:bg-background-dark border border-[#838385]/20 px-6 text-[#181311] dark:text-white text-xs font-bold uppercase tracking-widest hover:border-primary transition-all">
+                        Infrastructure
+                    </button>
+<button class="flex h-10 shrink-0 items-center justify-center rounded-full bg-background-light dark:bg-background-dark border border-[#838385]/20 px-6 text-[#181311] dark:text-white text-xs font-bold uppercase tracking-widest hover:border-primary transition-all">
+                        Investments
+                    </button>
+</div>
+<div class="columns-1 md:columns-2 lg:columns-3 gap-8">
+<div class="masonry-item relative group overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-800 shadow-xl transition-all hover:shadow-2xl">
+<img alt="The Emerald Heights" class="w-full object-cover transition-transform duration-700 group-hover:scale-110 min-h-[400px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANiUveOHN_sqw4sRsEERhOHCERzMB93SBZqrYsQKSG1x4zpozlxTrtMuY1-lo_iKPwIDz3hSsosSAiwraDLz_las8Rgal61JJWsVa5djz8ijOPTiwE58jgqRzlmKOPBYCJw5POrWuFS5CsgvPw2NR2xyaf1uK9tOXAHfLCZ2zvWuTqSB7xgi5iaTOVI4Ji_eNA-G8L1cnvOF5EJ2_byHKJ93Z1VkR4cTgtCFnK-AKHP5YZJ3WE6X0kNnttazyA_njC9uUibArxLoI"/>
+<div class="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Residential</span>
+<h3 class="text-white text-3xl font-bold mb-1">The Emerald Heights</h3>
+<p class="text-white/70 text-sm mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span> Lagos, Nigeria
+                            </p>
+<button class="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all">
+                                View Details
+                            </button>
+</div>
+</div>
+<div class="masonry-item relative group overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-800 shadow-xl transition-all">
+<img alt="Crystal Corporate Tower" class="w-full object-cover transition-transform duration-700 group-hover:scale-110 min-h-[500px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0uTlttNLk_6QD0QD3cVLcidUN_xRH5q2ZO-DzJNCQP1f118xm32mMwFsm48ZpQD3KFpmfDcgPXx3oT7Ae1dIORLlddTEVAE-dbBWocJ-g0vFzVWo7ozOQYVdZHwMMOfu_-OPEOOoc4gTgB_nRbVgPVJ4MyXlRwOSWMKvVELwn8gSdg1OGQhBcMnCAWnb28pWzPsILWyZ3VK-hJ76oMb9IbJec03TBnXLWp0ARtpa3dYwrCLkJ8xzFOtgVcc4C8unTt9mGcuHtGX4"/>
+<div class="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Investment</span>
+<h3 class="text-white text-3xl font-bold mb-1">Crystal Corporate Tower</h3>
+<p class="text-white/70 text-sm mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span> London, UK
+                            </p>
+<button class="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all">
+                                View Details
+                            </button>
+</div>
+</div>
+<div class="masonry-item relative group overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-800 shadow-xl transition-all">
+<img alt="Eco-Tech Park" class="w-full object-cover transition-transform duration-700 group-hover:scale-110 min-h-[350px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy5w7r5Xq5If0IU2S57YtXD_04fe7JhqifJjJ72q62OBjcbg5wU4rQq7KPdZ6wYgV7CxHpJGuhGkHvWzaW4uN1pBHxW9-qO_rmSZBRyz-q4xIDaa347MhXXPKqPhOhr4X-FlFZf5PoHiWIuc8CXYUoOSfmx4YSMjyrkpABJKYmzhsri-wHk5aOkQ-rK-O9mvlnF59-s0f-1jY9pAYiO3N9yO0bMfg-VlQBG3hhEvjzFHKR_2F6Ob2H6Px2OCNdJ2FvRmnvvu6ilgI"/>
+<div class="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Sustainable Infrastructure</span>
+<h3 class="text-white text-3xl font-bold mb-1">Eco-Tech Park</h3>
+<p class="text-white/70 text-sm mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span> Berlin, Germany
+                            </p>
+<button class="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all">
+                                View Details
+                            </button>
+</div>
+</div>
+<div class="masonry-item relative group overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-800 shadow-xl transition-all">
+<img alt="Azure Coastal Villas" class="w-full object-cover transition-transform duration-700 group-hover:scale-110 min-h-[450px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5cPv3jCzylgQX-4aoyAgLaGL39GiIIDc41cUnN6r-p7Jd158EKVrjSiCsuUbm2kE2OkaOS1Omv9bUUhbS8d9JdxFrpIlB1TIX-fedEm7TjjfxSlT26J8lhqvLlT-KDLueyMSxMZGlcnp2rBEKFafIxChkbxEzLkDjtdqKEx3_Cw8KqUsjfFaKzl1fwOrbIt1k1tWlHdHM8qDOyuGH_aQUXpFyhAEilYrs3DvSoWs8f5zyFKfLFsJHSke82C3Xrze4VC-FWjneWmk"/>
+<div class="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Residential</span>
+<h3 class="text-white text-3xl font-bold mb-1">Azure Coastal Villas</h3>
+<p class="text-white/70 text-sm mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span> Malibu, CA
+                            </p>
+<button class="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all">
+                                View Details
+                            </button>
+</div>
+</div>
+<div class="masonry-item relative group overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-800 shadow-xl transition-all">
+<img alt="Urban Art Collective" class="w-full object-cover transition-transform duration-700 group-hover:scale-110 min-h-[380px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzD0jMOY6WyWtmLS01vK0bySiPdiGk2bQjWss8da8yOFWSfpNeLOmC9M6CGP8k3IkzG2Pe9-dI8mpB-DeZYn96EeZ2JJlu8GNWTCHBU3CrkNYipeqWNsEcv735TbkngAbiva2it9-bIc85NVPIkbiZl1rWgQ-PFYGv87d7kLQsXukfTGHshbiETSzD8a46P-A4ow9-TicXEWBjwV0NG6sd92rsHAO4KOiE0rytYp32UlP-nlPes4AauabDZf4ONZsD3SpBOQyFJGo"/>
+<div class="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Community</span>
+<h3 class="text-white text-3xl font-bold mb-1">Urban Art Collective</h3>
+<p class="text-white/70 text-sm mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span> Paris, France
+                            </p>
+<button class="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all">
+                                View Details
+                            </button>
+</div>
+</div>
+<div class="masonry-item relative group overflow-hidden rounded-xl bg-gray-100 dark:bg-zinc-800 shadow-xl transition-all">
+<img alt="Silicon Valley Hub" class="w-full object-cover transition-transform duration-700 group-hover:scale-110 min-h-[420px]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCgDMkRwbbfJxfCW5MwzoSvvHQDoywr21paUKqQFfQtgzqJ6bgvy2MANuDDBBDltF1hPB0E7b74nBJKqtBAYYbiAHmSOndREpjn0ha3EatZuQr3Br-ES7B-J5dBCMr97m2dv2yaz6MrMUdVw28E3cEu-JUfeySNESQr8T9iXsGWkgFAPfMO3yftCy_jJcpUMM1iECN4Cgt5I1a9QwuHS6ii05B16PuL7I4DsIXMDyTtg02J1R9lGg6kcs1dFYPkeL54nQY6TfyLAQ"/>
+<div class="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8">
+<span class="text-primary text-xs font-black uppercase tracking-widest mb-2">Infrastructure</span>
+<h3 class="text-white text-3xl font-bold mb-1">Silicon Valley Hub</h3>
+<p class="text-white/70 text-sm mb-6 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">location_on</span> San Jose, CA
+                            </p>
+<button class="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all">
+                                View Details
+                            </button>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-center py-20 gap-2">
+<a class="flex size-12 items-center justify-center rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-all border border-transparent hover:border-[#838385]/20" href="#">
+<span class="material-symbols-outlined">chevron_left</span>
+</a>
+<a class="text-sm font-black flex size-12 items-center justify-center text-white rounded-lg bg-primary shadow-lg shadow-primary/20" href="#">1</a>
+<a class="text-sm font-semibold flex size-12 items-center justify-center text-[#181311] dark:text-white rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-all border border-transparent hover:border-[#838385]/20" href="#">2</a>
+<a class="text-sm font-semibold flex size-12 items-center justify-center text-[#181311] dark:text-white rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-all border border-transparent hover:border-[#838385]/20" href="#">3</a>
+<div class="text-[#838385] flex size-12 items-center justify-center">...</div>
+<a class="text-sm font-semibold flex size-12 items-center justify-center text-[#181311] dark:text-white rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-all border border-transparent hover:border-[#838385]/20" href="#">12</a>
+<a class="flex size-12 items-center justify-center rounded-lg hover:bg-white dark:hover:bg-zinc-800 transition-all border border-transparent hover:border-[#838385]/20" href="#">
+<span class="material-symbols-outlined">chevron_right</span>
+</a>
+</div>
+</section>
+</main>
+<footer class="bg-[#181311] text-white py-16 px-10 lg:px-40">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-1">
+<h4 class="text-2xl font-black uppercase mb-6 tracking-tight">Brownstone</h4>
+<p class="text-gray-400 text-sm leading-relaxed mb-6">
+                        Redefining the landscape of luxury construction with a commitment to sustainability and architectural excellence.
+                    </p>
+<div class="flex gap-4">
+<a class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</a>
+<a class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</a>
+<a class="size-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary transition-all" href="#">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</a>
+</div>
+</div>
+<div>
+<h5 class="text-xs font-black uppercase tracking-[0.2em] mb-6 text-primary">Quick Links</h5>
+<ul class="space-y-4 text-gray-400 text-sm font-medium">
+<li><a class="hover:text-white transition-colors" href="#">Home</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Our Story</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Portfolio</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Impact</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-black uppercase tracking-[0.2em] mb-6 text-primary">Capabilities</h5>
+<ul class="space-y-4 text-gray-400 text-sm font-medium">
+<li><a class="hover:text-white transition-colors" href="#">Project Management</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Green Engineering</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Civil Infrastructure</a></li>
+<li><a class="hover:text-white transition-colors" href="#">Strategic Consulting</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-black uppercase tracking-[0.2em] mb-6 text-primary">Contact Us</h5>
+<ul class="space-y-4 text-gray-400 text-sm font-medium">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">pin_drop</span>
+<span>12 Luxury Plaza, Victoria Island,<br/>Lagos, Nigeria</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">phone_iphone</span>
+<span>+234 800 BROWNSTONE</span>
+</li>
+</ul>
+</div>
+</div>
+<div class="border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-gray-500 uppercase tracking-widest gap-4">
+<p>© 2024 Brownstone Construction Limited. All Rights Reserved.</p>
+<div class="flex gap-8">
+<a class="hover:text-white transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-white transition-colors" href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</div>
+</div>
+
+</body></html>
