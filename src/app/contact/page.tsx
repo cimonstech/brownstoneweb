@@ -1,10 +1,49 @@
 "use client";
 
+import { useState } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
 
 export default function Contact() {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const name = (data.get("name") as string)?.trim();
+    const email = (data.get("email") as string)?.trim();
+    const projectType = (data.get("projectType") as string)?.trim();
+    const message = (data.get("message") as string)?.trim();
+    if (!name || !email || !message) {
+      setStatus("error");
+      setErrorMessage("Please fill in name, email, and message.");
+      return;
+    }
+    setStatus("sending");
+    setErrorMessage("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, projectType, message }),
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setStatus("error");
+        setErrorMessage(json.error || "Something went wrong. Please try again.");
+        return;
+      }
+      setStatus("success");
+      form.reset();
+    } catch {
+      setStatus("error");
+      setErrorMessage("Network error. Please try again.");
+    }
+  }
+
   return (
     <div className="bg-background-light text-brown-deep min-h-screen">
       <Nav activePath="/contact" />
@@ -45,16 +84,28 @@ export default function Contact() {
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-xl border border-neutral-grey/10 shadow-sm backdrop-blur-sm">
-                <form action="#" className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  {status === "success" && (
+                    <p className="rounded-lg bg-green-100 text-green-800 px-4 py-3 text-sm font-medium">
+                      Message sent. We&apos;ll get back to you soon.
+                    </p>
+                  )}
+                  {status === "error" && errorMessage && (
+                    <p className="rounded-lg bg-red-100 text-red-800 px-4 py-3 text-sm font-medium">
+                      {errorMessage}
+                    </p>
+                  )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="flex flex-col gap-2">
                       <span className="text-brown-deep text-sm font-bold uppercase tracking-wider">
                         Full Name
                       </span>
                       <input
+                        name="name"
                         className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-brown-deep placeholder:text-neutral-grey/50"
                         placeholder="Enter your name"
                         type="text"
+                        required
                       />
                     </label>
                     <label className="flex flex-col gap-2">
@@ -62,9 +113,11 @@ export default function Contact() {
                         Email Address
                       </span>
                       <input
+                        name="email"
                         className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-brown-deep placeholder:text-neutral-grey/50"
                         placeholder="email@example.com"
                         type="email"
+                        required
                       />
                     </label>
                   </div>
@@ -72,13 +125,13 @@ export default function Contact() {
                     <span className="text-brown-deep text-sm font-bold uppercase tracking-wider">
                       Project Type
                     </span>
-                    <select className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-brown-deep">
+                    <select name="projectType" className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-brown-deep">
                       <option value="">Select a category</option>
-                      <option>Residential Luxury Development</option>
-                      <option>Commercial Construction</option>
-                      <option>Sustainable Renovation</option>
-                      <option>Interior Architecture</option>
-                      <option>Consulting Services</option>
+                      <option value="Residential Luxury Development">Residential Luxury Development</option>
+                      <option value="Commercial Construction">Commercial Construction</option>
+                      <option value="Sustainable Renovation">Sustainable Renovation</option>
+                      <option value="Interior Architecture">Interior Architecture</option>
+                      <option value="Consulting Services">Consulting Services</option>
                     </select>
                   </label>
                   <label className="flex flex-col gap-2">
@@ -86,16 +139,19 @@ export default function Contact() {
                       Message
                     </span>
                     <textarea
+                      name="message"
                       className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary p-4 text-brown-deep placeholder:text-neutral-grey/50 resize-none"
                       placeholder="Tell us about your project vision..."
                       rows={5}
+                      required
                     />
                   </label>
                   <button
-                    className="w-full md:w-auto px-10 py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/30 uppercase tracking-widest text-sm"
+                    className="w-full md:w-auto px-10 py-4 bg-primary text-white font-bold rounded-lg hover:bg-primary/90 transition-all shadow-lg shadow-primary/30 uppercase tracking-widest text-sm disabled:opacity-60 disabled:pointer-events-none"
                     type="submit"
+                    disabled={status === "sending"}
                   >
-                    Send Inquiry
+                    {status === "sending" ? "Sending…" : "Send Inquiry"}
                   </button>
                 </form>
               </div>

@@ -14,10 +14,16 @@ export default async function AdminNewPostPage() {
   const canCreate = roles.includes("author") || roles.includes("moderator") || roles.includes("admin");
   if (!canCreate) redirect("/admin/dashboard");
 
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("id, name, slug")
+    .order("name");
+
   return (
     <div>
       <h1 className="text-2xl font-bold text-earthy mb-6">New post</h1>
       <PostForm
+        categories={(categories ?? []).map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
         userRoles={roles}
         authorId={user.id}
       />

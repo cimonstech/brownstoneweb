@@ -12,12 +12,10 @@ export default function Home() {
         <section className="relative h-screen min-h-[700px] w-full flex flex-col justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10" />
-            <div
-              className="w-full h-full bg-cover bg-center scale-105"
-              style={{
-                backgroundImage:
-                  "url('https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=1920&q=80')",
-              }}
+            <img
+              src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/lakehouseimage_0350.webp"
+              alt="Brownstone Construction luxury development and modern architecture"
+              className="absolute inset-0 w-full h-full object-cover object-center scale-105"
             />
           </div>
           <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
@@ -59,12 +57,10 @@ export default function Home() {
         <section className="py-24 px-6 bg-background-light">
           <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
             <div className="relative">
-              <div
-                className="aspect-[4/5] bg-cover bg-center rounded-xl shadow-2xl overflow-hidden"
-                style={{
-                  backgroundImage:
-                    "url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80')",
-                }}
+              <img
+                src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/TOWNHOMEUNIT-portrait.webp"
+                alt="Brownstone Construction townhome unit portrait – luxury residential development"
+                className="aspect-[4/5] w-full object-cover object-center rounded-xl shadow-2xl"
               />
               <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-corporate-blue rounded-xl p-8 flex flex-col justify-center text-white hidden md:flex">
                 <FaIcon name="recycle" className="text-4xl mb-4 text-primary" />
@@ -158,16 +154,17 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
               {[
-                { location: "Akosombo", title: "Celestia", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" },
-                { location: "East Legon", title: "East Legon Trio", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80" },
-              ].map(({ location, title, img }) => (
+                { location: "Akosombo", title: "Celestia", href: "/celestia", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CHALETS_.webp", alt: "Celestia chalets at Akosombo – luxury residential development" },
+                { location: "East Legon", title: "East Legon Trio", href: "/portfolio", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/east-legon-townhouses2.webp", alt: "East Legon Trio townhouses – East Legon development" },
+              ].map(({ location, title, href, img, alt }) => (
                 <div
                   key={title}
                   className="group relative overflow-hidden rounded-xl aspect-[4/5] bg-earthy"
                 >
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-110"
-                    style={{ backgroundImage: `url('${img}')` }}
+                  <img
+                    src={img}
+                    alt={alt}
+                    className="absolute inset-0 w-full h-full object-cover object-center transition-transform duration-700 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-earthy via-transparent to-transparent opacity-90" />
                   <div className="absolute bottom-0 left-0 p-8 w-full translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -176,7 +173,7 @@ export default function Home() {
                     </span>
                     <h3 className="text-2xl font-bold text-white mb-4">{title}</h3>
                     <Link
-                      href="/portfolio"
+                      href={href}
                       className="bg-white/10 backdrop-blur-md text-white px-6 py-3 rounded-lg text-xs font-bold uppercase tracking-widest border border-white/20 hover:bg-primary hover:border-primary transition-all inline-block"
                     >
                       Explore

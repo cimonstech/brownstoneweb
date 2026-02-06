@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Brownstone Executive Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#EF641C",
+                        "sidebar": "#411600",
+                        "background-light": "#F8F9FA",
+                        "background-dark": "#111111",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1C1C1C",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "12px",
+                    },
+                },
+            },
+        };
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .sidebar-item-active {
+            background-color: rgba(239, 100, 28, 0.15);
+            border-left: 4px solid #EF641C;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #374151;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-200 transition-colors duration-200">
+<div class="flex min-h-screen">
+<aside class="w-64 bg-sidebar fixed inset-y-0 left-0 z-50 flex flex-col shadow-2xl">
+<div class="p-8">
+<h1 class="text-white text-xl font-bold tracking-tight uppercase">
+                    Brownstone <span class="text-primary">Admin</span>
+</h1>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center px-4 py-3 text-white sidebar-item-active group" href="#">
+<span class="material-icons-round text-primary mr-3">dashboard</span>
+<span class="font-medium">Dashboard</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-icons-round mr-3 group-hover:text-primary">architecture</span>
+<span class="font-medium">Projects</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-icons-round mr-3 group-hover:text-primary">article</span>
+<span class="font-medium">Posts</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-icons-round mr-3 group-hover:text-primary">collections</span>
+<span class="font-medium">Media</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-icons-round mr-3 group-hover:text-primary">leaderboard</span>
+<span class="font-medium">Leads</span>
+</a>
+<a class="flex items-center px-4 py-3 text-white/70 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-icons-round mr-3 group-hover:text-primary">people_outline</span>
+<span class="font-medium">Users</span>
+</a>
+</nav>
+<div class="p-6 border-t border-white/10">
+<div class="flex items-center space-x-3 text-white/50 hover:text-white cursor-pointer transition-colors" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-icons-round text-sm">settings_brightness</span>
+<span class="text-xs font-semibold uppercase tracking-wider">Toggle Theme</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 ml-64 p-8">
+<header class="flex items-center justify-between mb-10">
+<div class="relative w-96">
+<span class="material-icons-round absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full pl-12 pr-4 py-3 bg-surface-light dark:bg-surface-dark border-none rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 text-sm transition-all outline-none dark:text-white" placeholder="Search projects, leads, or media..." type="text"/>
+</div>
+<div class="flex items-center space-x-6">
+<button class="relative p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-icons-round">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full border-2 border-background-light dark:border-background-dark"></span>
+</button>
+<div class="flex items-center space-x-3 border-l pl-6 dark:border-white/10">
+<div class="text-right">
+<p class="text-sm font-semibold dark:text-white">Robert Sterling</p>
+<p class="text-xs text-slate-400">Executive Manager</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold ring-4 ring-primary/10">
+                            RS
+                        </div>
+</div>
+</div>
+</header>
+<div class="mb-10">
+<h2 class="text-3xl font-bold dark:text-white">Executive Overview</h2>
+<p class="text-slate-500 dark:text-slate-400 mt-1">Welcome back. Here's what's happening at Brownstone today.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-white/5 group hover:border-primary/50 transition-all cursor-default">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-orange-100 dark:bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+<span class="material-icons-round">architecture</span>
+</div>
+<span class="text-xs font-bold text-green-500 bg-green-50 dark:bg-green-500/10 px-2 py-1 rounded-md">+4.2%</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Active Projects</p>
+<h3 class="text-3xl font-bold mt-1 dark:text-white">24</h3>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-white/5 group hover:border-primary/50 transition-all cursor-default">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-blue-100 dark:bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-600">
+<span class="material-icons-round">contact_support</span>
+</div>
+<span class="text-xs font-bold text-orange-500 bg-orange-50 dark:bg-orange-500/10 px-2 py-1 rounded-md">12 new</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Pending Inquiries</p>
+<h3 class="text-3xl font-bold mt-1 dark:text-white">186</h3>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-white/5 group hover:border-primary/50 transition-all cursor-default">
+<div class="flex items-center justify-between mb-4">
+<div class="w-12 h-12 bg-purple-100 dark:bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-600">
+<span class="material-icons-round">auto_graph</span>
+</div>
+<span class="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total</span>
+</div>
+<p class="text-slate-500 dark:text-slate-400 text-sm font-medium">Published Insights</p>
+<h3 class="text-3xl font-bold mt-1 dark:text-white">1,402</h3>
+</div>
+</div>
+<div class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-slate-100 dark:border-white/5 overflow-hidden">
+<div class="p-6 border-b border-slate-100 dark:border-white/5 flex items-center justify-between">
+<h3 class="text-lg font-bold dark:text-white">Recent Activities</h3>
+<button class="bg-primary hover:bg-orange-600 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all flex items-center space-x-2">
+<span class="material-icons-round text-sm">add</span>
+<span>New post</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-slate-400 uppercase text-[10px] tracking-widest font-bold">
+<th class="px-6 py-4">Project / Post Title</th>
+<th class="px-6 py-4">Author</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Date</th>
+<th class="px-6 py-4 text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-white/5">
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+<td class="px-6 py-5">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center mr-3 text-slate-500">
+<span class="material-icons-round">edit_note</span>
+</div>
+<div>
+<p class="font-semibold text-slate-800 dark:text-white">Eco-Friendly Construction Practices and LEED Standards</p>
+<p class="text-xs text-slate-400">Blog Article</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center space-x-2">
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center text-[10px] font-bold">JD</div>
+<span class="text-sm dark:text-slate-300">James D.</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-wider rounded-full">Published</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm text-slate-500 dark:text-slate-400">Oct 24, 2023</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors px-2">
+<span class="material-icons-round">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors px-2">
+<span class="material-icons-round">delete_outline</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+<td class="px-6 py-5">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center mr-3 text-slate-500">
+<span class="material-icons-round">business</span>
+</div>
+<div>
+<p class="font-semibold text-slate-800 dark:text-white">The Oakridge Luxury Suites</p>
+<p class="text-xs text-slate-400">Residential Project</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center space-x-2">
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center text-[10px] font-bold">MK</div>
+<span class="text-sm dark:text-slate-300">Maria K.</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-blue-100 dark:bg-blue-500/10 text-blue-600 text-[10px] font-bold uppercase tracking-wider rounded-full text-nowrap">In Progress</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm text-slate-500 dark:text-slate-400">Oct 22, 2023</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors px-2">
+<span class="material-icons-round">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors px-2">
+<span class="material-icons-round">delete_outline</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-slate-50 dark:hover:bg-white/5 transition-all">
+<td class="px-6 py-5">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-white/5 flex items-center justify-center mr-3 text-slate-500">
+<span class="material-icons-round">feed</span>
+</div>
+<div>
+<p class="font-semibold text-slate-800 dark:text-white">Future of High-Rise Architecture in Urban Centers</p>
+<p class="text-xs text-slate-400">Whitepaper</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center space-x-2">
+<div class="w-6 h-6 rounded-full bg-slate-200 dark:bg-white/10 flex items-center justify-center text-[10px] font-bold">RS</div>
+<span class="text-sm dark:text-slate-300">Robert S.</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-amber-100 dark:bg-amber-500/10 text-amber-600 text-[10px] font-bold uppercase tracking-wider rounded-full">Draft</span>
+</td>
+<td class="px-6 py-5">
+<span class="text-sm text-slate-500 dark:text-slate-400">Oct 19, 2023</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-slate-400 hover:text-primary transition-colors px-2">
+<span class="material-icons-round">edit</span>
+</button>
+<button class="text-slate-400 hover:text-red-500 transition-colors px-2">
+<span class="material-icons-round">delete_outline</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-100 dark:border-white/5 flex justify-center">
+<button class="text-sm font-semibold text-slate-500 hover:text-primary transition-colors flex items-center">
+                        View All Activities <span class="material-icons-round text-sm ml-1">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+</div>
+<div class="md:hidden fixed inset-0 bg-black/50 z-[60] hidden" id="mobile-overlay"></div>
+<script>
+        // Simple theme toggle functionality if needed, currently using a basic helper on the icon
+        const toggleDarkMode = () => {
+            document.documentElement.classList.toggle('dark');
+        }
+    </script>
+
+</body></html>

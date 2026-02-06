@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
   }
 
   const ext = file.name.includes(".") ? file.name.split(".").pop()! : "png";
-  const key = `blog/${new Date().getFullYear()}/${randomUUID()}.${ext}`;
+  const key = `media/${new Date().getFullYear()}/${randomUUID()}.${ext}`;
 
   await client.send(
     new PutObjectCommand({

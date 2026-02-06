@@ -11,13 +11,15 @@ export default function About() {
       <main className="pt-20">
         {/* Hero */}
         <section className="relative h-[80vh] w-full overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
-            }}
-          />
-          <div className="relative h-full flex flex-col items-center justify-center text-center px-4">
+          <div className="absolute inset-0 z-0">
+            <img
+              src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/MAIN-ENTRANCE-townhouse3.webp"
+              alt="Brownstone Construction main entrance and townhouse development"
+              className="absolute inset-0 w-full h-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-black/50 z-10" />
+          </div>
+          <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4">
             <h1 className="text-white text-5xl md:text-7xl font-black leading-tight tracking-tight font-serif mb-6">
               Crafting Legacies in <br />
               <span className="text-primary italic">Modern Stone</span>
@@ -65,7 +67,7 @@ export default function About() {
             {[
               { icon: "recycle" as const, value: "100%", label: "Sustainable Sourcing" },
               { icon: "scroll" as const, value: "2+", label: "Years of Excellence" },
-              { icon: "city" as const, value: "2", label: "Iconic Projects" },
+              { icon: "city" as const, value: "50+", label: "Iconic Projects" },
             ].map(({ icon, value, label }) => (
               <div
                 key={label}

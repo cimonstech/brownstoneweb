@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Brownstone Editorial | Post Detail</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef611a",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Newsreader', serif;
+        }
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            z-index: 100;
+        }
+        .editorial-content p {
+            margin-bottom: 2rem;
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #1a1a1a;
+        }
+        .dark .editorial-content p {
+            color: #e5e5e5;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#181311] dark:text-white transition-colors duration-300">
+<!-- Reading Progress Bar -->
+<div class="progress-bar-container bg-white/20 dark:bg-black/20">
+<div class="h-full bg-primary" style="width: 35%;"></div>
+</div>
+<!-- Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-[#181311]/10 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-20 py-4">
+<div class="max-w-7xl mx-auto flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="text-primary size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="text-xl font-bold tracking-tight">BROWNSTONE</span>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Projects</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Services</a>
+<a class="text-sm font-medium hover:text-primary transition-colors border-b-2 border-primary" href="#">Insights</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
+</nav>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined cursor-pointer text-2xl hover:text-primary">search</span>
+<button class="bg-primary text-white px-6 py-2 rounded-lg text-sm font-bold tracking-wide hover:bg-opacity-90 transition-all">
+                    CONTACT
+                </button>
+</div>
+</div>
+</header>
+<main class="w-full">
+<!-- Hero Section -->
+<section class="relative w-full h-[85vh] flex items-end">
+<div class="absolute inset-0 z-0">
+<img alt="Sustainable Luxury Architecture" class="w-full h-full object-cover" data-alt="Luxury modern architectural building with vertical gardens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx0gwgHfEjH9kuWukZ6Am6pi10aFMqa9t-03ia7hA9RCVxhnYz77GenZlDcmxkmQJwmxdy44Ks6TZT8AGa90S6vnCGgH48IEsiNm_T874MZtszJZy_RYfYFI_4RoY3iVH-O3tKVejgJeBW2pLFNIHRYMfU7_A1jayHIlAiEnyllv2BpY7oW5qnAA8ddfMCVnsORebvN0p5WCsV0R99ECBmQ5VXfxoJFLektyX7TBgX6reufOYjFC1q_Jas95ZjDe7a7pwn1F-CmG0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#181311] via-[#181311]/40 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-7xl mx-auto px-6 md:px-20 pb-20 w-full">
+<div class="flex flex-col gap-6 max-w-4xl">
+<div class="flex gap-4 items-center">
+<span class="px-3 py-1 bg-primary text-white text-xs font-bold tracking-widest uppercase rounded">Sustainability</span>
+<span class="text-white/80 text-sm tracking-wide">March 15, 2024 • 8 Min Read</span>
+</div>
+<h1 class="text-white text-5xl md:text-7xl font-bold leading-tight tracking-tight italic">
+                        The Future of Sustainable Luxury in Accra
+                    </h1>
+<p class="text-white/90 text-xl md:text-2xl font-light max-w-2xl border-l-2 border-primary pl-6 leading-relaxed">
+                        Redefining architectural excellence through environmental responsibility and West African heritage.
+                    </p>
+</div>
+</div>
+</section>
+<!-- Article Content -->
+<section class="max-w-7xl mx-auto px-6 md:px-20 py-20 flex flex-col lg:flex-row gap-20">
+<!-- Main Editorial Column -->
+<article class="flex-1 editorial-content">
+<p class="text-2xl font-light italic text-[#181311]/70 dark:text-white/70 mb-12">
+                    In the heart of Ghana's rapidly evolving capital, a new philosophy of building is emerging—one that balances the opulence of high-end living with the urgent necessity of ecological preservation.
+                </p>
+<p>
+                    For decades, luxury in West African architecture was synonymous with imported materials and energy-intensive cooling systems. However, Brownstone Construction Limited is challenging this paradigm by integrating vernacular design principles with cutting-edge green technology. The goal isn't just to build beautiful structures, but to create ecosystems that thrive alongside their residents.
+                </p>
+<h2 class="text-3xl font-bold mb-8 pt-8">Blending Heritage with Innovation</h2>
+<p>
+                    Sustainable luxury is no longer an oxymoron. It is a commitment to longevity. By utilizing locally sourced materials such as compressed earth blocks and timber from managed forests, we reduce the carbon footprint of transport while honoring the natural textures of the Ghanaian landscape.
+                </p>
+<!-- Featured Image in Text -->
+<figure class="my-16">
+<img alt="Architectural Textures" class="w-full rounded-xl shadow-2xl" data-alt="Close up of sustainable building materials and textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSxgDRmx-6i-HeZoqWX7roRxraW42CbLWJ98M9NCTYhCHsnxQkAagqEJdhAx49sI23r_pR3ET74N95B7PTsy9iOKMqFsdz_5arqWGa-jErEMwPfwQIRWSfRlHvkfIBG9dJQQ_Gyxk3av2m9ckN5SwndlFm5ULoVnZhRnIs_Wu_tkINgUG9PUNrLanpVTZUcLHoKlfqxHCOul-k88twLsCwF6a2IeA4vavV5kFlajyXY81xsE0gu92NgF2qRCO_faA231T6bIBu4aI"/>
+<figcaption class="mt-4 text-sm text-[#896f61] font-medium italic text-center">
+                        Natural textures and passive cooling ventilation systems at the upcoming Riviera Heights project.
+                    </figcaption>
+</figure>
+<p>
+                    Our latest developments feature passive ventilation techniques inspired by traditional coastal structures, significantly reducing the need for artificial climate control. When combined with advanced solar harvesting and greywater recycling systems, these residences achieve a level of efficiency previously unheard of in the luxury sector.
+                </p>
+<!-- Pull Quote -->
+<blockquote class="my-16 border-y-2 border-primary/20 py-12 px-8 text-center relative">
+<span class="material-symbols-outlined text-primary text-5xl absolute -top-6 left-1/2 -translate-x-1/2 bg-background-light dark:bg-background-dark px-4">format_quote</span>
+<p class="text-4xl md:text-5xl font-bold text-primary italic leading-tight">
+                        "Luxury is the freedom to live in harmony with the environment without compromising on elegance."
+                    </p>
+<cite class="block mt-4 text-sm font-bold tracking-widest uppercase text-[#181311] dark:text-white">— Kojo Mensah, Lead Architect</cite>
+</blockquote>
+<p>
+                    The economic case for sustainable luxury is equally compelling. Investors are increasingly looking for assets that are resilient to climate change and rising energy costs. A Brownstone property represents a future-proof investment that appreciates not just in monetary value, but in its contribution to a greener Accra.
+                </p>
+<h2 class="text-3xl font-bold mb-8 pt-8">The Human Element</h2>
+<p>
+                    Beyond the steel and stone, sustainability is about the human experience. Biophilic design—incorporating vertical gardens and indoor water features—has been proven to improve mental well-being and air quality. We don't just build apartments; we curate sanctuary spaces.
+                </p>
+</article>
+<!-- Sidebar -->
+<aside class="w-full lg:w-80 flex flex-col gap-12">
+<!-- Author Info -->
+<div class="p-8 bg-white dark:bg-white/5 rounded-xl border border-[#181311]/5">
+<h4 class="text-xs font-bold tracking-widest uppercase text-primary mb-6">About the Author</h4>
+<div class="flex items-center gap-4 mb-4">
+<div class="size-14 rounded-full bg-cover bg-center" data-alt="Portrait of an African male architect" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCtqzNzdWKA1nm3J6dzOXPv-OS4VU1GAGLhug34tTQAj2XEgg4HG6je291MM2bLs16VqcqYHhuqPGA8EW_jzUYXG5IbmV3okCqchCUCQ_U7fUv1gMzQlh_yPFYhSOjEWmPb__hC0a9lVm_VmAJvqxXyqzby103BbqOSJSx_v_Vhh2j90FWX3s5AveXd0X05znmCdhbGiPXRPsmDFY1irpHGDxQ3Y7EdhJs_zywn0GeFflGVBxswYW6QXXRl6yiKWOno2OmvxUJD4H4');"></div>
+<div>
+<p class="font-bold text-lg leading-tight">Abeiku Thompson</p>
+<p class="text-sm text-[#896f61]">Director of Design</p>
+</div>
+</div>
+<p class="text-sm text-[#181311]/70 dark:text-white/70 leading-relaxed mb-6">
+                        Abeiku has led Brownstone’s sustainable initiatives for over a decade, focusing on urban resilience.
+                    </p>
+<div class="flex gap-4">
+<a class="text-primary hover:text-black transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a class="text-primary hover:text-black transition-colors" href="#"><span class="material-symbols-outlined">alternate_email</span></a>
+</div>
+</div>
+<!-- Share This -->
+<div class="p-8 border-b border-[#181311]/10">
+<h4 class="text-xs font-bold tracking-widest uppercase text-[#181311]/50 dark:text-white/50 mb-6">Share this post</h4>
+<div class="grid grid-cols-3 gap-4">
+<button class="flex items-center justify-center p-3 rounded-lg bg-[#181311]/5 hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-xl">share</span>
+</button>
+<button class="flex items-center justify-center p-3 rounded-lg bg-[#181311]/5 hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-xl">link</span>
+</button>
+<button class="flex items-center justify-center p-3 rounded-lg bg-[#181311]/5 hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined text-xl">bookmark</span>
+</button>
+</div>
+</div>
+<!-- Related Insights -->
+<div class="flex flex-col gap-8">
+<h4 class="text-xs font-bold tracking-widest uppercase text-[#181311]/50 dark:text-white/50">Related Insights</h4>
+<a class="group" href="#">
+<div class="aspect-video w-full rounded-lg overflow-hidden mb-3">
+<img alt="Related Article" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Modern office building skyscraper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3TObEfHTF7ew_g0oVNy9FDpaSI4ZYfMHVKNfFIUH7PaojvnWq7iqwfMoRlMDJwMFdjt1W5p-YYCpqW_8D_esg0mDsdfO1_3OZ71pVqBiBVXP34KoFmlPQLbe1gYdkH2_MRxF502j_XPYfYGA8o_cPxZ_JFE4Tfp8WVg-Pucz43Alv-dZI5ogyCLBmGFiIfJ-0w3YJqWqbDZr9ixQEDAJxiylbo7IjgAPgTvxCz1HJm6Df1uPHvtMuz0TK2W2wg0KOqSpLfq1QhBU"/>
+</div>
+<h5 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors">Investing in the Gold Coast: 2024 Market Report</h5>
+<p class="text-sm text-[#896f61] mt-1">Market Trends • 5 Min</p>
+</a>
+<a class="group" href="#">
+<div class="aspect-video w-full rounded-lg overflow-hidden mb-3">
+<img alt="Related Article" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Concrete architecture detail" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6gI2j-UciQImtQ8kr3LbffB90YkrrlfaJsm6GflE2JnL0IF0w3sgf9pAeLRN2B5IST4IlO0YdXs2hX5nBruAJwRHzurTRzqPCckr1hy9m3UV-njv2lcBenimTtAKuLhpNX8s9yLg3HAf8TWG3VyivtzlPj8g94sp6k7QeWJPljGJ1xud_bqqQwM5MroAjn3Zeah3GqWS0nfjgZeUpfK3Z7i-2Fh0GhUr8bHtZ8m47mxzXdxE-czjoSxI57woNFyFQV3XPrC9MJMM"/>
+</div>
+<h5 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors">The Raw Beauty of Exposed Concrete</h5>
+<p class="text-sm text-[#896f61] mt-1">Design Philosophy • 4 Min</p>
+</a>
+<a class="group" href="#">
+<div class="aspect-video w-full rounded-lg overflow-hidden mb-3">
+<img alt="Related Article" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="Luxury apartment interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFWj6qld5PcFxpKGmr80CEh2GhcDG8J2IDKY0yZEg6x8jTqI2nWAE7xrbl9qIpsxcbD8fjGvrccJmh7aP0Fh2aNaox1kg6sJVoUefPRdyjvl52i5MX1lfqWcACRe26UvWzzv7M2SHINfhbmirxMvJAGrUFtF2JJGTSgCgDYDKKhBdxPrLAHjEOV-O12D74j8KsNp28b-uzc1aOIkjLDBsPSLLK7qvihWdGjhWM0-bLKoOSYFD69oMETUT0zRJRY2s7-qgj0JpTwPE"/>
+</div>
+<h5 class="font-bold text-lg leading-snug group-hover:text-primary transition-colors">Smart Living: IoT in Premium Residences</h5>
+<p class="text-sm text-[#896f61] mt-1">Technology • 7 Min</p>
+</a>
+</div>
+</aside>
+</section>
+<!-- Newsletter / CTA -->
+<section class="bg-[#181311] py-24 px-6">
+<div class="max-w-3xl mx-auto text-center">
+<h3 class="text-white text-4xl font-bold mb-6 italic">Stay informed on the future of construction.</h3>
+<p class="text-white/60 mb-10 text-lg">Join 5,000+ industry leaders receiving our monthly editorial on sustainable development and luxury trends.</p>
+<form class="flex flex-col md:flex-row gap-4">
+<input class="flex-1 bg-white/10 border-white/20 text-white rounded-lg focus:ring-primary focus:border-primary px-6 py-4 outline-none" placeholder="Your professional email" type="email"/>
+<button class="bg-primary text-white font-bold px-10 py-4 rounded-lg hover:bg-opacity-90 transition-all uppercase tracking-widest text-sm">
+                        Subscribe
+                    </button>
+</form>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-background-light dark:bg-background-dark py-12 px-6 md:px-20 border-t border-[#181311]/5">
+<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex items-center gap-3">
+<div class="text-primary size-6">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path clip-rule="evenodd" d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<span class="font-bold tracking-tight">BROWNSTONE</span>
+</div>
+<div class="flex gap-8 text-sm text-[#896f61]">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Career</a>
+</div>
+<p class="text-sm text-[#896f61]">© 2024 Brownstone Ltd. All rights reserved.</p>
+</div>
+</footer>
+</body></html>

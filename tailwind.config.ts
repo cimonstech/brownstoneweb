@@ -20,10 +20,18 @@ const config: Config = {
         "background-dark": "#221610",
         "brown-deep": "#411600",
         "neutral-grey": "#838385",
+        sidebar: "#411600",
+        surface: "#FFFFFF",
+        "surface-dark": "#1C1C1C",
+      },
+      borderRadius: {
+        "xl": "0.75rem",
+        "2xl": "1rem",
       },
       fontFamily: {
         sans: ["var(--font-manrope)", "sans-serif"],
         serif: ["var(--font-playfair)", "serif"],
+        display: ["var(--font-newsreader)", "serif"],
       },
     },
   },

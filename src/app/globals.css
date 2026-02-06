@@ -7,3 +7,10 @@
     @apply font-sans antialiased;
   }
 }
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

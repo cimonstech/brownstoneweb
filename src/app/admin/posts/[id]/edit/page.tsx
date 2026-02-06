@@ -16,7 +16,11 @@ export default async function AdminEditPostPage({
   if (!user) redirect("/admin/login");
 
   const roles = await getUserRoles();
-  const { data: post } = await supabase.from("posts").select("*").eq("id", id).single();
+  const { data: post } = await supabase
+    .from("posts")
+    .select("*")
+    .eq("id", id)
+    .single();
   if (!post) notFound();
 
   const canEdit =
@@ -25,6 +29,17 @@ export default async function AdminEditPostPage({
     roles.includes("admin");
 
   if (!canEdit) redirect("/admin/dashboard");
+
+  const { data: categoryLinks } = await supabase
+    .from("post_categories")
+    .select("category_id")
+    .eq("post_id", id);
+  const initialCategoryIds = (categoryLinks ?? []).map((r) => r.category_id);
+
+  const { data: categories } = await supabase
+    .from("categories")
+    .select("id, name, slug")
+    .order("name");
 
   return (
     <div>
@@ -37,6 +52,10 @@ export default async function AdminEditPostPage({
         initialCoverImage={post.cover_image}
         initialContent={post.content as import("@/components/admin/Editor").OutputData | null}
         initialStatus={post.status}
+        initialCategoryIds={initialCategoryIds}
+        initialReadTimeMinutes={(post as { read_time_minutes?: number | null }).read_time_minutes ?? null}
+        initialFeatured={(post as { featured?: boolean }).featured ?? false}
+        categories={(categories ?? []).map((c) => ({ id: c.id, name: c.name, slug: c.slug }))}
         userRoles={roles}
         authorId={post.author_id}
       />

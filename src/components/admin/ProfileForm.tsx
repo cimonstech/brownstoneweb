@@ -28,15 +28,26 @@ export function ProfileForm({
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
+  const BIO_MAX = 300;
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setMessage(null);
+    const trimmedBio = bio.trim();
+    if (!trimmedBio) {
+      setMessage({ type: "err", text: "Bio is required." });
+      return;
+    }
+    if (trimmedBio.length > BIO_MAX) {
+      setMessage({ type: "err", text: `Bio must be ${BIO_MAX} characters or fewer.` });
+      return;
+    }
     setSaving(true);
     const supabase = createClient();
     const { error: profileError } = await supabase
       .from("profiles")
       .upsert(
-        { id: userId, full_name: fullName, bio: bio || null, avatar_url: avatarUrl || null },
+        { id: userId, full_name: fullName, bio: trimmedBio, avatar_url: avatarUrl || null },
         { onConflict: "id" }
       );
     if (profileError) {
@@ -73,13 +84,16 @@ export function ProfileForm({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-earthy mb-1">Bio</label>
+        <label className="block text-sm font-medium text-earthy mb-1">Bio (required, max 300 characters)</label>
         <textarea
           value={bio}
-          onChange={(e) => setBio(e.target.value)}
-          rows={3}
+          onChange={(e) => setBio(e.target.value.slice(0, BIO_MAX))}
+          maxLength={BIO_MAX}
+          rows={4}
           className="w-full border border-grey/20 rounded-lg px-3 py-2"
+          placeholder="Short bio shown on your articles."
         />
+        <p className="text-xs text-grey mt-1">{bio.length}/{BIO_MAX}</p>
       </div>
       <div>
         <label className="block text-sm font-medium text-earthy mb-1">Avatar URL</label>

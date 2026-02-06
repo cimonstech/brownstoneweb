@@ -5,69 +5,89 @@ export default async function AdminPostsPage() {
   const supabase = await createClient();
   const { data: posts } = await supabase
     .from("posts")
-    .select("id, title, slug, status, created_at")
+    .select("id, title, slug, status, created_at, author_id")
     .order("created_at", { ascending: false });
+
+  const authorIds = [...new Set((posts ?? []).map((p) => p.author_id))];
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, full_name")
+    .in("id", authorIds);
+  const authorNames: Record<string, string> = {};
+  (profiles ?? []).forEach((p) => {
+    authorNames[p.id] = (p.full_name as string) || "—";
+  });
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-earthy">Posts</h1>
+      <div className="mb-8">
+        <h2 className="text-3xl font-bold text-slate-800">Posts</h2>
+        <p className="text-slate-500 mt-1">Create and manage blog articles and insights.</p>
+      </div>
+      <div className="flex justify-end mb-4">
         <Link
           href="/admin/posts/new"
-          className="bg-primary text-white font-medium px-4 py-2 rounded-lg hover:opacity-90"
+          className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all inline-flex items-center gap-2"
         >
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
           New post
         </Link>
       </div>
-      <div className="bg-white rounded-xl border border-grey/10 overflow-hidden">
-        <table className="w-full">
-          <thead className="bg-neutral-50 border-b border-grey/10">
-            <tr>
-              <th className="text-left p-4 font-medium text-earthy">Title</th>
-              <th className="text-left p-4 font-medium text-earthy">Slug</th>
-              <th className="text-left p-4 font-medium text-earthy">Status</th>
-              <th className="text-left p-4 font-medium text-earthy">Created</th>
-              <th className="w-20" />
-            </tr>
-          </thead>
-          <tbody>
-            {(posts ?? []).length === 0 ? (
-              <tr>
-                <td colSpan={5} className="p-4 text-grey text-sm">
-                  No posts yet. Create one from Dashboard or New post.
-                </td>
+      <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full text-left">
+            <thead>
+              <tr className="text-slate-400 uppercase text-[10px] tracking-widest font-bold border-b border-slate-100">
+                <th className="px-6 py-4">Title</th>
+                <th className="px-6 py-4">Author</th>
+                <th className="px-6 py-4">Status</th>
+                <th className="px-6 py-4">Date</th>
+                <th className="px-6 py-4 text-right">Action</th>
               </tr>
-            ) : (
-              (posts ?? []).map((post) => (
-                <tr key={post.id} className="border-t border-grey/5 hover:bg-neutral-50/50">
-                  <td className="p-4">
-                    <Link
-                      href={`/admin/posts/${post.id}/edit`}
-                      className="font-medium text-earthy hover:underline"
-                    >
-                      {post.title}
-                    </Link>
-                  </td>
-                  <td className="p-4 text-grey text-sm">{post.slug}</td>
-                  <td className="p-4">
-                    <span className="capitalize text-sm">{post.status}</span>
-                  </td>
-                  <td className="p-4 text-grey text-sm">
-                    {new Date(post.created_at).toLocaleDateString()}
-                  </td>
-                  <td className="p-4">
-                    <Link
-                      href={`/admin/posts/${post.id}/edit`}
-                      className="text-sm text-primary hover:underline"
-                    >
-                      Edit
-                    </Link>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {(posts ?? []).length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-8 text-slate-500 text-center text-sm">
+                    No posts yet.
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                (posts ?? []).map((post) => (
+                  <tr key={post.id} className="group hover:bg-slate-50/80 transition-all">
+                    <td className="px-6 py-5">
+                      <Link href={`/admin/posts/${post.id}/edit`} className="font-semibold text-slate-800 hover:text-primary transition-colors">
+                        {post.title}
+                      </Link>
+                      <p className="text-xs text-slate-400 mt-0.5">{post.slug}</p>
+                    </td>
+                    <td className="px-6 py-5 text-sm text-slate-600">{authorNames[post.author_id] ?? "—"}</td>
+                    <td className="px-6 py-5">
+                      <span
+                        className={`px-3 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full ${
+                          post.status === "published" ? "bg-primary/10 text-primary" : "bg-amber-100 text-amber-600"
+                        }`}
+                      >
+                        {post.status}
+                      </span>
+                    </td>
+                    <td className="px-6 py-5 text-sm text-slate-500">
+                      {new Date(post.created_at).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-5 text-right">
+                      <Link
+                        href={`/admin/posts/${post.id}/edit`}
+                        className="text-sm font-semibold text-primary hover:underline"
+                      >
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

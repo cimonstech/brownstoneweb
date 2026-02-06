@@ -1,25 +1,50 @@
-import Link from "next/link";
+"use client";
+
+import { useState, useCallback } from "react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
 
-const projects = [
-  { category: "Residential", title: "The Emerald Heights", location: "Lagos, Nigeria", img: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80", minH: "min-h-[400px]" },
-  { category: "Investment", title: "Crystal Corporate Tower", location: "London, UK", img: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80", minH: "min-h-[500px]" },
-  { category: "Sustainable Infrastructure", title: "Eco-Tech Park", location: "Berlin, Germany", img: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80", minH: "min-h-[350px]" },
-  { category: "Residential", title: "Azure Coastal Villas", location: "Malibu, CA", img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80", minH: "min-h-[450px]" },
-  { category: "Community", title: "Urban Art Collective", location: "Paris, France", img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80", minH: "min-h-[380px]" },
-  { category: "Infrastructure", title: "Silicon Valley Hub", location: "San Jose, CA", img: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=600&q=80", minH: "min-h-[420px]" },
+const R2 = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
+
+const celestiaImages = [
+  { src: `${R2}/CHALETS_.webp`, alt: "Celestia chalets and residential development exterior view" },
+  { src: `${R2}/CHALETS_.webp`, alt: "Celestia development landscape and architecture" },
+  { src: `${R2}/CHALETS_.webp`, alt: "Celestia project chalet detail" },
+];
+
+const eastLegonImages = [
+  { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio townhouses development" },
+  { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio townhouse exterior" },
+  { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio project view" },
+];
+
+const tabs = [
+  { id: "celestia" as const, label: "Celestia" },
+  { id: "east-legon" as const, label: "East Legon Trio" },
 ];
 
 export default function Portfolio() {
+  const [activeTab, setActiveTab] = useState<"celestia" | "east-legon">("celestia");
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+
+  const images = activeTab === "celestia" ? celestiaImages : eastLegonImages;
+
+  const openLightbox = useCallback((src: string, alt: string) => {
+    setLightbox({ src, alt });
+  }, []);
+
+  const closeLightbox = useCallback(() => {
+    setLightbox(null);
+  }, []);
+
   return (
     <div className="bg-background-light text-earthy min-h-screen">
       <Nav activePath="/portfolio" />
       <main className="pt-20">
         <section className="relative h-[60vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden">
           <img
-            alt="Luxury Development"
+            alt="Brownstone Construction portfolio of luxury developments"
             className="absolute inset-0 w-full h-full object-cover"
             src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80"
           />
@@ -57,101 +82,70 @@ export default function Portfolio() {
             </button>
           </div>
 
-          <div className="flex gap-4 p-4 overflow-x-auto border-b border-grey/10 mb-12 items-center [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <span className="text-xs font-black uppercase tracking-widest text-grey mr-4 hidden md:block">
+          <div className="flex gap-4 p-4 border-b border-grey/10 mb-12 items-center">
+            <span className="text-xs font-black uppercase tracking-widest text-grey mr-4">
               Filter By:
             </span>
-            {["All Projects", "Residential", "Community", "Infrastructure", "Investments"].map(
-              (label, i) => (
-                <button
-                  key={label}
-                  type="button"
-                  className={`flex h-10 shrink-0 items-center justify-center rounded-full px-6 text-xs font-bold uppercase tracking-widest transition-all ${
-                    i === 0
-                      ? "bg-primary text-white"
-                      : "bg-background-light border border-grey/20 text-earthy hover:border-primary"
-                  }`}
-                >
-                  {label}
-                </button>
-              )
-            )}
-          </div>
-
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 [break-inside:avoid]">
-            {projects.map(({ category, title, location, img, minH }) => (
-              <div
-                key={title}
-                className="relative group overflow-hidden rounded-xl bg-gray-100 shadow-xl transition-all hover:shadow-2xl mb-6"
+            {tabs.map(({ id, label }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setActiveTab(id)}
+                className={`flex h-10 shrink-0 items-center justify-center rounded-full px-6 text-xs font-bold uppercase tracking-widest transition-all ${
+                  activeTab === id
+                    ? "bg-primary text-white"
+                    : "bg-background-light border border-grey/20 text-earthy hover:border-primary"
+                }`}
               >
-                <img
-                  alt={title}
-                  src={img}
-                  className={`w-full object-cover transition-transform duration-700 group-hover:scale-110 ${minH}`}
-                />
-                <div className="overlay absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-500 flex flex-col justify-end p-8 group-hover:opacity-100">
-                  <span className="text-primary text-xs font-black uppercase tracking-widest mb-2">
-                    {category}
-                  </span>
-                  <h3 className="text-white text-3xl font-bold mb-1 font-serif">{title}</h3>
-                  <p className="text-white/70 text-sm mb-6 flex items-center gap-1">
-                    <FaIcon name="location" className="mr-1 text-sm" /> {location}
-                  </p>
-                  <button
-                    type="button"
-                    className="w-max bg-primary text-white py-3 px-8 rounded font-bold uppercase tracking-tighter text-sm hover:bg-white hover:text-primary transition-all"
-                  >
-                    View Details
-                  </button>
-                </div>
-              </div>
+                {label}
+              </button>
             ))}
           </div>
 
-          <div className="flex items-center justify-center py-20 gap-2">
-            <button
-              type="button"
-              className="flex size-12 items-center justify-center rounded-lg hover:bg-white transition-all border border-transparent hover:border-grey/20"
-              aria-label="Previous"
-            >
-              <FaIcon name="chevronLeft" />
-            </button>
-            <a
-              href="#"
-              className="text-sm font-black flex size-12 items-center justify-center text-white rounded-lg bg-primary shadow-lg shadow-primary/20"
-            >
-              1
-            </a>
-            <a
-              href="#"
-              className="text-sm font-semibold flex size-12 items-center justify-center text-earthy rounded-lg hover:bg-white transition-all border border-transparent hover:border-grey/20"
-            >
-              2
-            </a>
-            <a
-              href="#"
-              className="text-sm font-semibold flex size-12 items-center justify-center text-earthy rounded-lg hover:bg-white transition-all border border-transparent hover:border-grey/20"
-            >
-              3
-            </a>
-            <span className="text-grey flex size-12 items-center justify-center">...</span>
-            <a
-              href="#"
-              className="text-sm font-semibold flex size-12 items-center justify-center text-earthy rounded-lg hover:bg-white transition-all border border-transparent hover:border-grey/20"
-            >
-              12
-            </a>
-            <button
-              type="button"
-              className="flex size-12 items-center justify-center rounded-lg hover:bg-white transition-all border border-transparent hover:border-grey/20"
-              aria-label="Next"
-            >
-              <FaIcon name="chevronRight" />
-            </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {images.map(({ src, alt }, i) => (
+              <button
+                key={`${activeTab}-${i}`}
+                type="button"
+                className="relative block w-full overflow-hidden rounded-xl bg-gray-100 shadow-xl transition-all hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                onClick={() => openLightbox(src, alt)}
+              >
+                <img
+                  alt={alt}
+                  src={src}
+                  className="w-full min-h-[280px] object-cover transition-transform duration-300 hover:scale-105"
+                />
+              </button>
+            ))}
           </div>
         </section>
       </main>
       <Footer />
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label="View image full size"
+          onClick={closeLightbox}
+        >
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-10 flex size-12 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+            aria-label="Close"
+          >
+            <span className="text-2xl leading-none" aria-hidden>×</span>
+          </button>
+          <img
+            src={lightbox.src}
+            alt={lightbox.alt}
+            className="max-h-[90vh] max-w-full w-auto object-contain rounded-lg"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Brownstone Insights &amp; News Blog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ef611a",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Newsreader", "serif"],
+                        "sans": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .serif-text {
+            font-family: 'Newsreader', serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#181311] dark:text-[#f4f2f0] transition-colors duration-300">
+<div class="relative flex min-h-screen flex-col overflow-x-hidden font-display">
+<!-- Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-solid border-[#e6dfdb] dark:border-[#3d2b21] bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md px-6 md:px-20 py-4">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between whitespace-nowrap">
+<div class="flex items-center gap-12">
+<div class="flex items-center gap-3">
+<div class="text-primary size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.1288 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z" fill="currentColor"></path>
+<path clip-rule="evenodd" d="M10.4485 13.8519C10.4749 13.9271 10.6203 14.246 11.379 14.7361C12.298 15.3298 13.7492 15.9145 15.6717 16.3735C18.0007 16.9296 20.8712 17.2655 24 17.2655C27.1288 17.2655 29.9993 16.9296 32.3283 16.3735C34.2508 15.9145 35.702 15.3298 36.621 14.7361C37.3796 14.246 37.5251 13.9271 37.5515 13.8519C37.5287 13.7876 37.4333 13.5973 37.0635 13.2931C36.5266 12.8516 35.6288 12.3647 34.343 11.9175C31.79 11.0295 28.1333 10.4437 24 10.4437C19.8667 10.4437 16.2099 11.0295 13.657 11.9175C12.3712 12.3647 11.4734 12.8516 10.9365 13.2931C10.5667 13.5973 10.4713 13.7876 10.4485 13.8519ZM37.5563 18.7877C36.3176 19.3925 34.8502 19.8839 33.2571 20.2642C30.5836 20.9025 27.3973 21.2655 24 21.2655C20.6027 21.2655 17.4164 20.9025 14.7429 20.2642C13.1498 19.8839 11.6824 19.3925 10.4436 18.7877V34.1275C10.4515 34.1545 10.5427 34.4867 11.379 35.027C12.298 35.6207 13.7492 36.2054 15.6717 36.6644C18.0007 37.2205 20.8712 37.5564 24 37.5564C27.1288 37.5564 29.9993 37.2205 32.3283 36.6644C34.2508 36.2054 35.702 35.6207 36.621 35.027C37.4573 34.4867 37.5485 34.1546 37.5563 34.1275V18.7877ZM41.5563 13.8546V34.1455C41.5563 36.1078 40.158 37.5042 38.7915 38.3869C37.3498 39.3182 35.4192 40.0389 33.2571 40.5551C30.5836 41.1934 27.3973 41.5564 24 41.5564C20.6027 41.5564 17.4164 41.1934 14.7429 40.5551C12.5808 40.0389 10.6502 39.3182 9.20848 38.3869C7.84205 37.5042 6.44365 36.1078 6.44365 34.1455L6.44365 13.8546C6.44365 12.2684 7.37223 11.0454 8.39581 10.2036C9.43325 9.3505 10.8137 8.67141 12.343 8.13948C15.4203 7.06909 19.5418 6.44366 24 6.44366C28.4582 6.44366 32.5797 7.06909 35.657 8.13948C37.1863 8.67141 38.5667 9.3505 39.6042 10.2036C40.6278 11.0454 41.5563 12.2684 41.5563 13.8546Z" fill="currentColor" fill-rule="evenodd"></path>
+</svg>
+</div>
+<h2 class="text-[#181311] dark:text-white text-xl font-bold tracking-tight uppercase">Brownstone</h2>
+</div>
+<nav class="hidden lg:flex items-center gap-8">
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Portfolio</a>
+<a class="text-sm font-medium text-primary underline underline-offset-8" href="#">Insights</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Sustainability</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">About</a>
+<a class="text-sm font-medium hover:text-primary transition-colors" href="#">Contact</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-2xl hover:text-primary transition-colors">search</button>
+<button class="bg-primary text-white px-6 py-2 rounded-lg font-bold text-sm tracking-wide hover:opacity-90 transition-opacity">
+                        GET A QUOTE
+                    </button>
+</div>
+</div>
+</header>
+<main class="flex-1 w-full max-w-[1440px] mx-auto px-6 md:px-20 py-12">
+<!-- Featured Story Section -->
+<section class="relative mb-24 group">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-0 items-center bg-white dark:bg-[#2d1e16] rounded-xl overflow-hidden shadow-2xl shadow-primary/5">
+<div class="lg:col-span-7 h-[500px] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105" data-alt="Modern sustainable brownstone architectural project exterior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBRsxjfM_XAJ4phNLP_WO9WNAJgxAMSuSr95ZFUyHkmjuhffo9vw8TOhuuVCHGyCsLEgw-alQfUNsKc45fJzJ2mgDMLnJFoHC-CbaVgjZU0IdjSdf-6b-GY5qAcgymDMfD5reP_ZIrQYGPGq54oMA7KWl5dYd4yW-y1ZcUazBfAInoERJbCs3aHCTEoNxBmXgQtmi_Z27MMP5TGfNARdrQSw8OJNJ-A73krItHNazMUqNrMGTG9ec_pL9luSsBnqDIXEWXvmcQ-ryY");'>
+</div>
+</div>
+<div class="lg:col-span-5 p-12 lg:p-16 flex flex-col justify-center">
+<span class="text-primary font-bold text-xs tracking-widest uppercase mb-4 block">Featured Post | Sustainable Development</span>
+<h1 class="text-[#181311] dark:text-white text-4xl md:text-5xl font-bold leading-tight mb-6 serif-text italic">
+                            The Future of Carbon-Neutral Brownstones in 2024
+                        </h1>
+<p class="text-[#896f61] dark:text-[#a5948a] text-lg leading-relaxed mb-8 serif-text">
+                            Exploring how sustainable materials and innovative engineering are redefining the classic brownstone aesthetic for a greener tomorrow. Luxury meets ecological responsibility.
+                        </p>
+<div class="flex items-center gap-4">
+<button class="bg-primary text-white px-8 py-3 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-opacity-90 transition-all flex items-center gap-2">
+                                Read Story <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Navigation Categories & Grid Layout -->
+<div class="flex flex-col lg:flex-row gap-16">
+<!-- Main Content Area -->
+<div class="flex-1">
+<div class="flex items-center justify-between mb-12 border-b border-[#e6dfdb] dark:border-[#3d2b21] pb-6">
+<div class="flex gap-10 overflow-x-auto no-scrollbar">
+<a class="text-sm font-bold tracking-widest uppercase border-b-2 border-primary pb-6 -mb-[26px]" href="#">All Articles</a>
+<a class="text-sm font-bold tracking-widest uppercase text-[#896f61] hover:text-primary transition-colors pb-6" href="#">Luxury Living</a>
+<a class="text-sm font-bold tracking-widest uppercase text-[#896f61] hover:text-primary transition-colors pb-6" href="#">Technical Insights</a>
+<a class="text-sm font-bold tracking-widest uppercase text-[#896f61] hover:text-primary transition-colors pb-6" href="#">Green Build</a>
+</div>
+<div class="hidden md:flex items-center gap-2 text-[#896f61]">
+<span class="text-xs font-bold uppercase tracking-widest">Filter By</span>
+<span class="material-symbols-outlined text-xl">tune</span>
+</div>
+</div>
+<!-- Article Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+<!-- Article 1 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-[#eee]">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Luxury sustainable marble textures in interior design" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBbW_MdsIqtxyRKjAkhdn2SUIerO-27U7o90tyxuQwKhgGL3hA72Dv7cBI9Rur3p6OupEFzyot5P1xqDypbZAsMKIrc8aUSKPTeuF2UEGBfK1dR9FRPkVhJnk0yRoNgvltLKsiy4rYsV1Olk4oxmihLQKi9dXyGWHBVOQb1mVNL0iK6IXh7fi0GqSglkWZ4ZNCxmkUAuoAltYSjzuPnETT2YtJrMnhf4PqcLXyOA2ayDSGUHwm0LjOpvUqoBgtC7l_KcfPWYYAjTtM");'></div>
+</div>
+<span class="text-primary font-bold text-[10px] tracking-[0.2em] uppercase mb-3 block">Luxury Living</span>
+<h3 class="text-2xl font-bold serif-text leading-tight mb-3 group-hover:text-primary transition-colors">Sourcing Sustainable Marble: An Ethical Journey</h3>
+<p class="text-[#896f61] dark:text-[#a5948a] text-sm leading-relaxed mb-4 line-clamp-2 italic">
+                                Exploring the supply chains behind the world's most sought-after stones and the movement toward transparent quarrying.
+                            </p>
+<div class="flex items-center text-[10px] font-bold text-[#896f61] uppercase tracking-widest gap-4">
+<span>Jan 12, 2024</span>
+<span class="w-1 h-1 bg-[#896f61] rounded-full"></span>
+<span>6 min read</span>
+</div>
+</article>
+<!-- Article 2 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-[#eee]">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Minimalist urban architecture building facade" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuD4ROtHYjhUEtK29EmQuS9ttxD9y-h5WKhiBFPkEInWXWW4BoLcXOG96_GCGzJB1L-8WMCXt0aS6xUmogr5MGYXvmzT-9rIDrko1knSonXBTA56wNOItoITNW0FhsTXPPXrfWKcuBNAbBGs2Qn06msHU0il-wtyzgNKMa7lKQi6adU7iet-dvU8JtgceuSpJI1MR8LL3IdMyHfm9TwMLdnZ_1gqB0RJIudMFvaz9HKuQxFmDOECwbh2ryhGqQ4TYIdAnhmbLkPXpIs");'></div>
+</div>
+<span class="text-primary font-bold text-[10px] tracking-[0.2em] uppercase mb-3 block">Architecture</span>
+<h3 class="text-2xl font-bold serif-text leading-tight mb-3 group-hover:text-primary transition-colors">Minimalist vs. Functional Design</h3>
+<p class="text-[#896f61] dark:text-[#a5948a] text-sm leading-relaxed mb-4 line-clamp-2 italic">
+                                Where does beauty end and utility begin? A debate on the evolving philosophy of modern residential spaces.
+                            </p>
+<div class="flex items-center text-[10px] font-bold text-[#896f61] uppercase tracking-widest gap-4">
+<span>Jan 08, 2024</span>
+<span class="w-1 h-1 bg-[#896f61] rounded-full"></span>
+<span>4 min read</span>
+</div>
+</article>
+<!-- Article 3 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-[#eee]">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Modern award winning green building interior" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA9L7O4CfDzYBArA-b2gxBSAVAxodxu5AmI0Hf4t2Xu9EZDLSjTbHt90pFfXduWz3RuYUWq2tAB0EUTZy_0b5-489oacuvfbSH7PNzwb3vnjDvZl7oG9ZfdbH2YGA727X2O2XItkGe6s78AKaYzkET7QmwHPCa6szx5A2H4OiGZeTgokpjxYSSZJavhGMVedHl-dvAt9oLOLLmd8R0fxaqenTNym-yXOK9TQjL7ov3XYib8WxYI3aU88Bs_KfP8msdJlwxgmmn-LUI");'></div>
+</div>
+<span class="text-primary font-bold text-[10px] tracking-[0.2em] uppercase mb-3 block">Awards</span>
+<h3 class="text-2xl font-bold serif-text leading-tight mb-3 group-hover:text-primary transition-colors">Brownstone Wins 2023 Green Build Award</h3>
+<p class="text-[#896f61] dark:text-[#a5948a] text-sm leading-relaxed mb-4 line-clamp-2 italic">
+                                Recognizing our commitment to zero-waste construction processes and timber-framed structural innovations.
+                            </p>
+<div class="flex items-center text-[10px] font-bold text-[#896f61] uppercase tracking-widest gap-4">
+<span>Dec 20, 2023</span>
+<span class="w-1 h-1 bg-[#896f61] rounded-full"></span>
+<span>3 min read</span>
+</div>
+</article>
+<!-- Article 4 -->
+<article class="group cursor-pointer">
+<div class="aspect-[4/5] rounded-xl overflow-hidden mb-6 bg-[#eee]">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-500 group-hover:scale-105" data-alt="Restored historic brownstone interior details" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAKjfeyyN7wh-YWAII1jElZgrsoJX6mHlsG2joqYoPoWTXcZcXBHGQMlBioGSxMaBeuVl4_iyRupm2QL50dswrEevzeoxnFW5Z-ahvLFCXkjAEiy6yTTCyVdVWUMkrqao9y8o1naWTS0cfQL7uZh8u3pi0By0_P1DZtPlnH1ib6kcIS_sgLiW-YRZJf-xcKrwiP19nI8npWnDRfbGT-fdg4WyABZQhlGGlAVzzEgk9qcthjGOy5Ax6V0Mc0122DgarjJ6kmbfYPxgI");'></div>
+</div>
+<span class="text-primary font-bold text-[10px] tracking-[0.2em] uppercase mb-3 block">Restoration</span>
+<h3 class="text-2xl font-bold serif-text leading-tight mb-3 group-hover:text-primary transition-colors">The Art of Luxury Restoration</h3>
+<p class="text-[#896f61] dark:text-[#a5948a] text-sm leading-relaxed mb-4 line-clamp-2 italic">
+                                Balancing preservation with modern performance in heritage-listed urban properties.
+                            </p>
+<div class="flex items-center text-[10px] font-bold text-[#896f61] uppercase tracking-widest gap-4">
+<span>Dec 15, 2023</span>
+<span class="w-1 h-1 bg-[#896f61] rounded-full"></span>
+<span>8 min read</span>
+</div>
+</article>
+</div>
+<div class="mt-20 flex justify-center">
+<button class="border border-[#e6dfdb] dark:border-[#3d2b21] px-12 py-4 rounded-lg font-bold text-sm tracking-widest hover:bg-white dark:hover:bg-[#2d1e16] transition-all">LOAD MORE INSIGHTS</button>
+</div>
+</div>
+<!-- Sidebar -->
+<aside class="w-full lg:w-[320px] shrink-0">
+<div class="sticky top-32 space-y-16">
+<!-- Newsletter Signup -->
+<div class="bg-primary/5 dark:bg-primary/10 p-8 rounded-xl border border-primary/10">
+<h4 class="text-xl font-bold serif-text italic mb-3 leading-tight">Join the Inner Circle</h4>
+<p class="text-sm text-[#896f61] dark:text-[#a5948a] mb-6">Exclusive construction insights and luxury trends delivered monthly.</p>
+<div class="space-y-3">
+<input class="w-full bg-white dark:bg-[#181311] border-[#e6dfdb] dark:border-[#3d2b21] rounded-lg text-sm px-4 py-3 focus:ring-primary focus:border-primary outline-none transition-all" placeholder="Email Address" type="email"/>
+<button class="w-full bg-primary text-white font-bold py-3 rounded-lg text-xs tracking-[0.2em] uppercase hover:opacity-90 transition-opacity">SUBSCRIBE</button>
+</div>
+</div>
+<!-- Popular Topics -->
+<div>
+<h4 class="text-xs font-bold uppercase tracking-[0.2em] mb-8 pb-4 border-b border-[#e6dfdb] dark:border-[#3d2b21]">Popular Topics</h4>
+<div class="flex flex-col gap-5">
+<a class="group flex items-center justify-between" href="#">
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Sustainable Urbanism</span>
+<span class="text-xs text-[#896f61] font-mono">(12)</span>
+</a>
+<a class="group flex items-center justify-between" href="#">
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Carbon-Neutral Materials</span>
+<span class="text-xs text-[#896f61] font-mono">(08)</span>
+</a>
+<a class="group flex items-center justify-between" href="#">
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Interior Mastery</span>
+<span class="text-xs text-[#896f61] font-mono">(24)</span>
+</a>
+<a class="group flex items-center justify-between" href="#">
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Market Trends</span>
+<span class="text-xs text-[#896f61] font-mono">(15)</span>
+</a>
+<a class="group flex items-center justify-between" href="#">
+<span class="text-sm font-medium group-hover:text-primary transition-colors">Heritage Planning</span>
+<span class="text-xs text-[#896f61] font-mono">(06)</span>
+</a>
+</div>
+</div>
+<!-- Instagram/Social Link Visual -->
+<div class="grid grid-cols-2 gap-2">
+<div class="aspect-square bg-cover bg-center rounded-lg" data-alt="Social media architectural detail 1" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAcKwU0J3HjHX4nMPH8Dbs20sF1Gsqa1zrvIKxYcXxSgtIWE5H9Xhi9EUq252UiFH6RiXdmV0uyY8VNSLFVATZKoKhRwoR_eO6RYcS21SSx2EGqeCi7FtlHc0SUnwTOTnhVl-63dKYcoHiD5z_b_Pgdsg0TUnqhmIeFemFcAMvWHcV6PtxiT98FS4j37SU4SagSNO8HizJcp-foUXzzw_5_WtgJbso1evS1dYc7Wl-BgrlOC7bRNLPJRL7T9GI13Rsxq_6WnvXLGto");'></div>
+<div class="aspect-square bg-cover bg-center rounded-lg" data-alt="Social media architectural detail 2" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAaxfOdo2o0tPn_BJeUtSeF35O9TGiTnbnb52B83eMrJgCYWglwYug5liJ_S7pg9_a9WyuD0Sx2X0EdRLXvNx6TA-bJwnTcGSn1gbPtwq6AeW-FfNFUvmohEcekXbvpulra3WctoKFDzVWssUL7xsaKokMrGhAIqowo8SlBFg0RLosc3wAWzyNn7Xa4PiQFnUyg77mUGjJqppBOyh5TU7VQ_VD0fhjWI9EZx0kWI3YhwWu_iKsj3o5F_Dl8XlObHgp7Pj81hxxSFS8");'></div>
+<div class="aspect-square bg-cover bg-center rounded-lg" data-alt="Social media architectural detail 3" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDnq1woO6wmUtqRdD3rVMiCZDsRCX4Kzq0isbm8V3UgvNy0OSvyN77kPMmud9WX_p_Sw__Uc4LVX6YXKvEHNA6ozjx1T4lTX4pJ9CcU8y7MzeYCVnV9iPG6Ywy-E-u27BfNTOkeUu0bYPQo3wonlvR1hpKACTIvxXs_dBgH_PYjpuUN74RdPADJNzakDEo_GGCTseH7uU_piPIrM2mT6vuqHllinfUDr0QCdjivck928wPZYxNbQpuve6mSObaoY_E-GKfBmvmquDw");'></div>
+<div class="aspect-square bg-cover bg-center rounded-lg" data-alt="Social media architectural detail 4" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDgfYLmp_2ru7yZUi-_-dH-svG6uUsV5REd0BYq9O6ugE54Q0S8wIcoI1trMPZXNjnoeH6y5Teb1qCGE2tDn4NdrYsMe8KxdmLjqBRRZo3pVydO_NfOnROqvDdX7xaGNTPSQ3lm3jVnMf0H7cM-UBeTnaVAbGWs4TAnu1NPiLwAjYMoI2reh43RSu_qvQJ4CJphXqydCwZtWo9s246049jLV-pVlx0ZRBycDOn9DF5pHQoktMocQDRmHrDIDfNVtEuTFz9i0zRXTpo");'></div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-white dark:bg-[#181311] border-t border-[#e6dfdb] dark:border-[#3d2b21] py-20 px-6 md:px-20">
+<div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="col-span-1 md:col-span-2">
+<div class="flex items-center gap-3 mb-8">
+<div class="text-primary size-8">
+<svg fill="none" viewbox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<path d="M39.5563 34.1455V13.8546C39.5563 15.708 36.8773 17.3437 32.7927 18.3189C30.2914 18.916 27.263 19.2655 24 19.2655C20.737 19.2655 17.7086 18.916 15.2073 18.3189C11.1227 17.3437 8.44365 15.708 8.44365 13.8546V34.1455C8.44365 35.9988 11.1227 37.6346 15.2073 38.6098C17.7086 39.2069 20.737 39.5564 24 39.5564C27.1288 39.5564 30.2914 39.2069 32.7927 38.6098C36.8773 37.6346 39.5563 35.9988 39.5563 34.1455Z" fill="currentColor"></path>
+</svg>
+</div>
+<h2 class="text-xl font-bold tracking-tight uppercase">Brownstone</h2>
+</div>
+<p class="text-[#896f61] dark:text-[#a5948a] text-sm max-w-sm mb-12">
+                        Pioneering the future of luxury construction through sustainable innovation and meticulous heritage preservation.
+                    </p>
+<div class="flex gap-6">
+<a class="text-[#896f61] hover:text-primary transition-colors" href="#">LinkedIn</a>
+<a class="text-[#896f61] hover:text-primary transition-colors" href="#">Instagram</a>
+<a class="text-[#896f61] hover:text-primary transition-colors" href="#">Pinterest</a>
+</div>
+</div>
+<div>
+<h5 class="text-xs font-bold uppercase tracking-widest mb-6">Menu</h5>
+<ul class="space-y-4 text-sm font-medium">
+<li><a class="hover:text-primary" href="#">Portfolio</a></li>
+<li><a class="hover:text-primary" href="#">Insights</a></li>
+<li><a class="hover:text-primary" href="#">Sustainability</a></li>
+<li><a class="hover:text-primary" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h5 class="text-xs font-bold uppercase tracking-widest mb-6">Office</h5>
+<p class="text-sm text-[#896f61] leading-relaxed">
+                        124 Fifth Avenue<br/>
+                        Chelsea, New York<br/>
+                        NY 10011
+                    </p>
+</div>
+</div>
+<div class="max-w-[1440px] mx-auto mt-20 pt-8 border-t border-[#e6dfdb] dark:border-[#3d2b21] flex justify-between items-center text-[10px] font-bold uppercase tracking-widest text-[#896f61]">
+<p>© 2024 Brownstone Construction Ltd.</p>
+<div class="flex gap-8">
+<a href="#">Privacy Policy</a>
+<a href="#">Terms of Service</a>
+</div>
+</div>
+</footer>
+</div>
+<!-- Toggle Theme Button (Optional Utility) -->
+<button class="fixed bottom-8 right-8 bg-[#181311] dark:bg-white text-white dark:text-[#181311] w-12 h-12 rounded-full shadow-xl flex items-center justify-center transition-all z-[100]" onclick="document.documentElement.classList.toggle('dark')">
+<span class="material-symbols-outlined">contrast</span>
+</button>
+</body></html>
