@@ -139,6 +139,9 @@ export default function Footer() {
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/30">
           <p>© 2025 Brownstone Construction Limited. All Rights Reserved.</p>
           <div className="flex gap-8">
+            <Link href="/admin/login" className="hover:text-white transition-colors">
+              Admin login
+            </Link>
             <Link href="/privacy-policy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>

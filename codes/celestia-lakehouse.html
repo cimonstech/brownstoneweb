@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Lakehouse | Cinematic Journey</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&amp;family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --primary: #EF641C;
+            --earthy: #411600;
+            --bg-light: #FDFCFB;
+        }
+        @layer base {
+            body {
+                @apply bg-[var(--bg-light)] text-[var(--earthy)] font-['Manrope'];
+            }
+            h1, h2, h3, .serif {
+                @apply font-['Playfair_Display'] font-normal;
+            }
+        }
+        .scroll-section {
+            @apply min-h-screen w-full flex flex-col relative overflow-hidden;
+        }
+        .cinematic-overlay {
+            background: linear-gradient(to bottom, rgba(65, 22, 0, 0.2) 0%, rgba(65, 22, 0, 0.6) 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .blur-reveal {
+            @apply backdrop-blur-md bg-white/10 transition-all duration-1000 ease-in-out;
+        }
+        .blur-reveal:hover {
+            @apply backdrop-blur-none bg-transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#EF641C",
+                        "earthy": "#411600",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"],
+                        "serif": ["Playfair Display", "serif"],
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="selection:bg-primary/20">
+<div class="fixed top-8 left-8 z-[60] flex items-center gap-4 text-white mix-blend-difference">
+<div class="flex items-center gap-1.5 group cursor-pointer">
+<div class="w-0.5 h-4 bg-white/60 group-hover:bg-primary transition-all"></div>
+<div class="w-0.5 h-6 bg-white group-hover:bg-primary transition-all"></div>
+<div class="w-0.5 h-3 bg-white/40 group-hover:bg-primary transition-all"></div>
+<span class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-60 group-hover:opacity-100 transition-opacity ml-2">Ambient Sound: On</span>
+</div>
+</div>
+<header class="fixed top-0 w-full z-50 px-8 py-8 flex justify-between items-center mix-blend-difference text-white">
+<div class="flex items-center gap-2">
+<h2 class="text-xl font-bold tracking-[0.2em]">CELESTIA</h2>
+</div>
+<nav class="hidden md:flex gap-12 text-[10px] font-bold tracking-[0.2em] uppercase">
+<a class="hover:text-primary transition-colors" href="#">Experience</a>
+<a class="hover:text-primary transition-colors border-b border-primary pb-1" href="#">Amenities</a>
+<a class="hover:text-primary transition-colors" href="#">Residences</a>
+<a class="hover:text-primary transition-colors" href="#">Journal</a>
+</nav>
+<button class="text-[10px] font-bold tracking-[0.2em] uppercase border border-white/30 px-6 py-3 hover:bg-white hover:text-earthy transition-all">
+        Inquire
+    </button>
+</header>
+<section class="scroll-section justify-center items-center text-center">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-cover bg-center scale-105" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAXHHhpaanyn05JAZ4Bcw_40nCDtpMHTeH3wcHRlh_170JBodr9g-mKZH2S0zF_a9_8bvnPX-ddU3-keTb88Ks7GUU-uGxKtmrAx9_DIFKSIRzI4yEmXSV6EI3I5UnB-eXgjQW5I8qlAZR_JAzPNLHPtrAid77Shv2PkWGd31DhMC2YINSSJaeu7C_MOPyC9TcO1RxCRtlNjqbcz-KyeccCErzDwgoFe45SjD-k3TUw_MJKEj455ukCszMlSeRbaqciTt8LKOxALiw");'></div>
+<div class="absolute inset-0 cinematic-overlay"></div>
+</div>
+<div class="relative z-10 px-6">
+<span class="text-white/80 text-[12px] font-bold tracking-[0.4em] uppercase mb-6 block">A Brownstone Legacy</span>
+<h1 class="text-white text-7xl md:text-[9rem] leading-none mb-8">The Lakehouse</h1>
+<div class="flex items-center justify-center gap-6 text-white/60">
+<span class="w-12 h-[1px] bg-white/40"></span>
+<p class="text-[11px] font-bold tracking-[0.5em] uppercase">Volta Lake, Ghana</p>
+<span class="w-12 h-[1px] bg-white/40"></span>
+</div>
+</div>
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 text-white/40">
+<span class="text-[9px] font-bold tracking-[0.3em] uppercase">Scroll to Begin</span>
+<div class="w-[1px] h-16 bg-gradient-to-b from-white/40 to-transparent"></div>
+</div>
+</section>
+<section class="scroll-section bg-white">
+<div class="flex-1 grid grid-cols-1 lg:grid-cols-12">
+<div class="lg:col-span-5 flex flex-col justify-center px-12 lg:px-24 py-20">
+<span class="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-6">Pillar One</span>
+<h2 class="text-5xl md:text-7xl mb-8 leading-tight">Elevated Workspaces</h2>
+<p class="text-earthy/70 text-lg font-light leading-relaxed max-w-md mb-12">
+                Where cognitive flow meets the horizon. A sanctuary for deep thinking, strategic planning, and uncompromised productivity.
+            </p>
+<div class="flex items-center gap-4 group cursor-pointer">
+<div class="size-12 rounded-full border border-earthy/10 flex items-center justify-center group-hover:bg-earthy group-hover:text-white transition-all">
+<span class="material-symbols-outlined text-sm">arrow_downward</span>
+</div>
+<span class="text-[10px] font-bold tracking-[0.2em] uppercase">Explore the Mosaic</span>
+</div>
+</div>
+<div class="lg:col-span-7 grid grid-cols-2 gap-4 p-4 bg-earthy/[0.02]">
+<div class="relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAUlAO1sYazUl0UWlVOgaAT7xFplxYkp2Qlng1BUK4Cg8XocKLrk_NmC5tXwEHz3wPNoFFm-HOoo6uqM6ZjA2oMRSQ4d4r4kQYbahVOjqTxXqn2FxuvPupH1usyoNJXkSMop1Rz2ohTMN9LBw4TvnOWdGEvc1XorNM5AeHMpfjZmg5B2MV99_FtM7CPQePLLh8DApgCsgZK1f2Q5i9z3AuXHa1uSy5bQel_VVRJoza52BUIKCaVWxmZJHAzxLqy9B6dVdIuM3HSXvw");'></div>
+<div class="absolute inset-0 bg-earthy/10 group-hover:bg-transparent transition-all"></div>
+</div>
+<div class="grid grid-rows-2 gap-4">
+<div class="relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDayyZjcLXLSFgkLOt5Za2uEQbGSkVh45eXE-1zH4171Pb69qBL9-8yVhj2qL98bdbGxjEqsi1g9Z51mtpnm85t64AfQUZEJSDlBg5HmBeEboQq0SH2n_sW3fB3dZvWT4eQB-DzNVUIgdzpH8mgpZ05qKmrof_yvpiuTkj-1ar6YYNnTyh7W0n-IDjNtEfx1sAyRRh2xSVJhWGA5AYj1pWQywIdNm70n1KtYAqjr6nF9JZ_cK6FFjSz0TEXTPDG59PRJqBEoJgVT8Y");'></div>
+<div class="absolute inset-0 bg-earthy/10 group-hover:bg-transparent transition-all"></div>
+</div>
+<div class="relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center grayscale-[0.5] group-hover:grayscale-0 transition-all duration-1000" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAKlfHxx-Re8T6xy4XF6YyVOPmjvpSCEM204HUK9bJ2nVN59UZubBM8DLMcqUJQMWsf6gvJtqyy5qag0VtzG4DYV3wkxop9KzCk1pV9m6H1DNHAuetCneQnixjFqOuTcNc9ZO7VX-gENyd_LuzFYG-zWHjRcI6bp2WtBudB9TrrtM2UzdNQt5mbI0DGdadUM5Pu74hhANG28qgp-l0IPKbrn01buvJ1MDyQh2mjN6MEkZ7pOObrteNzWwNp2oakSt843agqgz6T32M");'></div>
+<div class="absolute inset-0 bg-earthy/10 group-hover:bg-transparent transition-all"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-section">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUBc8WdvX1hcXKaOsm5dRZKwz-YPWg7pyLSxJ6oA-TqUSu4iyXJYjihK0E_k1ttWh_yafjj5eu75vthJfLfXS-0Y-E0m6MNSh6GQXs8z60rXsSDZnAhBb9_5eOrwo2bdgtxQhyihCaomX4NKzPb9jSfJ-6wDO5mGTTbBybdP6QBdaWGBOvEV1daPk29SDnmg__bWIyZLYZTP1ekqq8whkR-iIdyPDpdgVSX4iet3pnsWZTl0mktZEXUY7IMvDPf4UfLB_jrGU86Xw");'></div>
+<div class="absolute inset-0 bg-earthy/40"></div>
+</div>
+<div class="relative z-10 flex-1 flex flex-col">
+<div class="pt-32 px-12 lg:px-24 text-center">
+<h2 class="text-white text-5xl md:text-8xl mb-4 italic">Wellness</h2>
+<p class="text-white/60 text-[10px] font-bold tracking-[0.5em] uppercase">The Akosombo Sequence</p>
+</div>
+<div class="flex-1 flex items-center justify-center gap-8 px-12 lg:px-24">
+<div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-12">
+<div class="group relative aspect-[3/4] rounded-sm overflow-hidden blur-reveal cursor-crosshair">
+<div class="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-opacity duration-1000" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBUBc8WdvX1hcXKaOsm5dRZKwz-YPWg7pyLSxJ6oA-TqUSu4iyXJYjihK0E_k1ttWh_yafjj5eu75vthJfLfXS-0Y-E0m6MNSh6GQXs8z60rXsSDZnAhBb9_5eOrwo2bdgtxQhyihCaomX4NKzPb9jSfJ-6wDO5mGTTbBybdP6QBdaWGBOvEV1daPk29SDnmg__bWIyZLYZTP1ekqq8whkR-iIdyPDpdgVSX4iet3pnsWZTl0mktZEXUY7IMvDPf4UfLB_jrGU86Xw");'></div>
+<div class="absolute inset-0 flex flex-col justify-end p-8 text-white">
+<span class="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-700">Gymnasium</span>
+<h3 class="text-3xl opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-1000 delay-100">Peak Performance</h3>
+</div>
+</div>
+<div class="group relative aspect-[3/4] rounded-sm overflow-hidden blur-reveal cursor-crosshair mt-20 md:mt-40">
+<div class="absolute inset-0 bg-cover bg-center opacity-0 group-hover:opacity-100 transition-opacity duration-1000" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDHCfVT5nUZHH8j796MSJeTMW43pDLfULZeJJRfor_SOv5BEeVtus0C6dkuaN3fwR7SMi3b9L6mmYAu67DTipJZBlgUkn2tYBBh7hpIhBU8AwLn4WWvQfi6LfR41QQhTYSMy0wrkrFxWCv2wZSwDa7ghWy5EkoW3N7x4YcalJZeSgVeJ_Oaqwv7XPiMDx4Ws2WN50dAHJM-TNmFxaWSk3AHEOGm7xCe8-6MOsT_wVD_dJYzM7e-oTpkHyJ3okp8f_qIa0AeXS-dn5o");'></div>
+<div class="absolute inset-0 flex flex-col justify-end p-8 text-white">
+<span class="text-[10px] font-bold tracking-[0.3em] uppercase mb-2 opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-700">Sanctuary</span>
+<h3 class="text-3xl opacity-0 group-hover:opacity-100 transition-opacity translate-y-4 group-hover:translate-y-0 duration-1000 delay-100">Massage &amp; Restoration</h3>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-section bg-earthy">
+<div class="grid grid-cols-1 lg:grid-cols-2 h-full">
+<div class="relative overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center scale-110 hover:scale-100 transition-transform duration-[10000ms] ease-linear" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDYIVHHi4y1DttvUYhw7TS07eKb8lj1A6q1WfFFnEE6vjw_vNjq5AYLJGuXeZfg8y_-aAsC5QSDqx0fj2DBdqJoicwoRa1UMXDUXCpvzVwGgEVjSccej23UcyFG25exc3xcCNnDybM5QcJgWXr7fSVCVW2DNB8eRm7HWxezGgIHoRRwQSiPmB7gjgsKy5S7T3s2KYAEnYi6BcQ-3BvUsBRDhXduQ5nFEMw1d0L7rSfi7bQhIWNmridE7_wIKCltUcoKoJZ_n0CJVHQ");'></div>
+<div class="absolute inset-0 bg-gradient-to-r from-earthy via-transparent to-transparent"></div>
+</div>
+<div class="flex flex-col justify-center px-12 lg:px-24 py-20 bg-earthy text-white">
+<span class="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-6">Golden Hour</span>
+<h2 class="text-5xl md:text-7xl mb-10 leading-tight">Leisure &amp; Socializing</h2>
+<div class="space-y-12">
+<div class="flex gap-8 group cursor-pointer">
+<span class="text-primary font-serif italic text-2xl">01</span>
+<div>
+<h4 class="text-xl mb-2 font-serif">Poolside Lounge &amp; Bar</h4>
+<p class="text-white/50 font-light text-sm max-w-sm">Curated spirits and artisanal cocktails as the sun sets over the Volta.</p>
+</div>
+</div>
+<div class="flex gap-8 group cursor-pointer">
+<span class="text-primary font-serif italic text-2xl">02</span>
+<div>
+<h4 class="text-xl mb-2 font-serif">Boutique Cinema</h4>
+<p class="text-white/50 font-light text-sm max-w-sm">An intimate screen for private screenings and cinematic escapes.</p>
+</div>
+</div>
+<div class="flex gap-8 group cursor-pointer">
+<span class="text-primary font-serif italic text-2xl">03</span>
+<div>
+<h4 class="text-xl mb-2 font-serif">Sunset Deck</h4>
+<p class="text-white/50 font-light text-sm max-w-sm">Architectural seating designed for the ultimate dusk experience.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="scroll-section bg-white flex flex-col justify-center items-center text-center p-12 lg:p-32">
+<div class="w-full h-full relative group overflow-hidden rounded-sm">
+<div class="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAj4hF3s1DOmjCTXPJLaOczR8k5pRlBMIAtIpokSLSZfCABD9kZLETdnbYA8oZSYCnEb6fYVN5hrnRSKHkl32V59FKZeGs8gWV3p0OvhYqetRWnOJT3cprvA0UhHUKSQmwEdVDa6CT9FL26DE7EtR8v_0f9TER00B0pond8smaDV-8Xwxc5uxQIBeJT8Cgoc7Ulrd_JhuEiV8TzJwXYur-OL-WwUVp_ixk9Yeixd1JhsBfdzXAyhW3p28eaF0fc7ItYvP-Qy6FT4BQ");'></div>
+<div class="absolute inset-0 bg-earthy/20 group-hover:bg-earthy/40 transition-all duration-1000"></div>
+<div class="relative h-full flex flex-col justify-center items-center text-white p-6">
+<span class="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-8">Exclusive Access</span>
+<h2 class="text-5xl md:text-8xl mb-8">The Private Jetty</h2>
+<p class="text-white/80 max-w-2xl text-lg md:text-xl font-light leading-relaxed mb-12">
+                Your direct portal to the Volta. From high-speed water sports to tranquil morning boat drifts, the water is an extension of your home.
+            </p>
+<div class="flex flex-wrap justify-center gap-12 text-[10px] font-bold tracking-[0.3em] uppercase">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">sailing</span>
+<span>Boat Charters</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">kayaking</span>
+<span>Jet Skiing</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-primary">waves</span>
+<span>Private Pier</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<footer class="bg-earthy text-white/40 py-24 px-12 lg:px-24">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-20">
+<div class="col-span-1 md:col-span-2">
+<h2 class="text-white text-2xl font-bold tracking-widest mb-8">CELESTIA</h2>
+<p class="max-w-md text-sm leading-loose">
+                A masterpiece of residential architecture by Brownstone Construction. Redefining luxury living through the lens of West Africa's natural majesty.
+            </p>
+</div>
+<div>
+<h4 class="text-white text-[10px] font-bold tracking-[0.3em] uppercase mb-8">Quick Links</h4>
+<ul class="space-y-4 text-xs font-bold tracking-[0.1em]">
+<li><a class="hover:text-primary transition-colors" href="#">THE LAKEHOUSE</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">AMENITIES</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">LOCATION</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">SCHEDULE TOUR</a></li>
+</ul>
+</div>
+<div>
+<h4 class="text-white text-[10px] font-bold tracking-[0.3em] uppercase mb-8">Inquiries</h4>
+<div class="text-xs space-y-2 font-light">
+<p>Akosombo Road, Volta Region</p>
+<p>sales@celestiavolta.com</p>
+<p>+233 00 000 0000</p>
+</div>
+</div>
+</div>
+<div class="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between gap-8 text-[9px] font-bold tracking-[0.4em] uppercase">
+<p>© 2024 CELESTIA. ALL RIGHTS RESERVED.</p>
+<div class="flex gap-12">
+<a class="hover:text-white transition-colors" href="#">Privacy</a>
+<a class="hover:text-white transition-colors" href="#">Terms</a>
+<a class="hover:text-white transition-colors" href="#">Instagram</a>
+</div>
+</div>
+</footer>
+
+</body></html>

@@ -1,3 +1,4 @@
+import sanitizeHtml from "sanitize-html";
 import type { OutputData } from "@/components/admin/Editor";
 
 const BLOCK_TAGS: Record<string, string> = {
@@ -8,6 +9,11 @@ const BLOCK_TAGS: Record<string, string> = {
   code: "pre",
   image: "figure",
   embed: "div",
+};
+
+const INLINE_OPTIONS = {
+  allowedTags: ["b", "strong", "i", "em", "u", "a", "code", "mark", "br"],
+  allowedAttributes: { a: ["href", "target", "rel", "class"], mark: ["class"] },
 };
 
 function escapeHtml(text: unknown): string {
@@ -23,6 +29,14 @@ function escapeHtml(text: unknown): string {
   return s.replace(/[&<>"']/g, (m) => map[m] ?? m);
 }
 
+/** Sanitizes rich text (EditorJS inline formatting) while preserving bold, italic, links, etc. */
+function sanitizeInlineHtml(text: unknown): string {
+  if (text == null) return "";
+  const s = typeof text === "string" ? text : String(text);
+  if (!s.includes("<")) return escapeHtml(s);
+  return sanitizeHtml(s, INLINE_OPTIONS);
+}
+
 export function renderEditorJsToHtml(data: OutputData | null | undefined): string {
   if (!data?.blocks?.length) return "";
 
@@ -31,26 +45,26 @@ export function renderEditorJsToHtml(data: OutputData | null | undefined): strin
     const tag = BLOCK_TAGS[block.type] ?? "p";
     switch (block.type) {
       case "paragraph":
-        parts.push(`<p>${escapeHtml(block.data.text || "")}</p>`);
+        parts.push(`<p>${sanitizeInlineHtml(block.data.text || "")}</p>`);
         break;
       case "header":
         const level = Math.min(6, Math.max(1, (block.data as { level?: number }).level ?? 2));
         const h = `h${level}`;
-        parts.push(`<${h}>${escapeHtml((block.data as { text?: string }).text || "")}</${h}>`);
+        parts.push(`<${h}>${sanitizeInlineHtml((block.data as { text?: string }).text || "")}</${h}>`);
         break;
       case "list":
         const style = (block.data as { style?: string }).style ?? "unordered";
         const listTag = style === "ordered" ? "ol" : "ul";
         const items = (block.data as { items?: string[] }).items ?? [];
         parts.push(
-          `<${listTag}>${items.map((i) => `<li>${escapeHtml(i)}</li>`).join("")}</${listTag}>`
+          `<${listTag}>${items.map((i) => `<li>${sanitizeInlineHtml(i)}</li>`).join("")}</${listTag}>`
         );
         break;
       case "quote":
         const quoteText = (block.data as { text?: string }).text ?? "";
         const quoteCaption = (block.data as { caption?: string }).caption ?? "";
         parts.push(
-          `<blockquote><p>${escapeHtml(quoteText)}</p>${quoteCaption ? `<cite>${escapeHtml(quoteCaption)}</cite>` : ""}</blockquote>`
+          `<blockquote><p>${sanitizeInlineHtml(quoteText)}</p>${quoteCaption ? `<cite>${escapeHtml(quoteCaption)}</cite>` : ""}</blockquote>`
         );
         break;
       case "code":

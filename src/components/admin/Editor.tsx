@@ -59,6 +59,7 @@ export function Editor({
         import("@editorjs/image"),
         import("@editorjs/quote"),
         import("@editorjs/code"),
+        // @ts-expect-error - @editorjs/embed exports typings that don't resolve
         import("@editorjs/embed"),
       ]);
 
@@ -74,7 +75,8 @@ export function Editor({
         },
         tools: {
           header: {
-            class: Header.default,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- EditorJS Header tool constructor types are incompatible
+            class: Header.default as any,
             config: { placeholder: "Header", levels: [2, 3, 4] },
           },
           list: {

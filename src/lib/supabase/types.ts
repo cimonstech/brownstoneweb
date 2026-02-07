@@ -254,6 +254,26 @@ export interface Database {
           updated_at?: string;
         };
       };
+      lakehouse_leads: {
+        Row: {
+          id: string;
+          email: string;
+          consent: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          consent?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          consent?: boolean;
+          created_at?: string;
+        };
+      };
     };
   };
 }

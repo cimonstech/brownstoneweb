@@ -1,5 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
+import Nav from "@/components/Nav";
+import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Celestia | Luxury Living in Akosombo",
@@ -7,71 +8,25 @@ export const metadata = {
     "Experience the pinnacle of luxury living in Akosombo by Brownstone Construction. Where luxury finds its true landscape.",
 };
 
-const heroImage =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuDt2Zh4DGtBYxfl1CvUzcqKsDKGh17LaWy_EfH_PDF0-BY5JxwAXLu2ou-mfAqch7vFYFvMqgtl8tQUGc6eh4YOB1VHZWAzoAIzHjpFZ6AmQeL2tFmOzKUYy3likM9VdeaorF54koY2_r4YzhiUL5sKdOIynl_bRk50wQz95IZJq4e2U-6XzyYshytMXNEF1diGWP63ditWSoJDeNSOuNTAoVFkAuB3ChZKtX_5NLOvAw1xMHWqZ3HAASvoD1IhW2Ola2UZRZAK6YI";
-const philosophyImages = [
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAVNkF17cG_HSDguMLBsPDJ7irftInlpMOXC3_zmkjStCc6uCe5rOxjfWS468jyzbrfeY9rZiUE4Eqilfm5x9onZm6sKvQB2aCh-BISTnHmjnOdSoRwT8ZkRigLnDkz9e8qTmbevScOK8FmEXmYwxVtUJs_zrZU4e8VIsX3-V8ByLjM7XYIPGRzvyL3UULAKe2slWl2IpYw2ORolJmJjxPLe0alXRyfowa2nJ6HSSzuQOI2J3erNn7pAO3GEY7ENnLb-1qWOo187IA",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCHNfUQHwNsxJ5wxmCfNuqvReSHrJ8_bKtDrcFGNsKRXjeshoP2VPnwwDarEuIM5ioGbfSyHqvvAfg6wroPr1LJWRroy4-m-hVsnqeQsfnM9VkW-q4KJ8GQxLolbKNi89Gy5gt7wFPUbSO80E-oZBC8pVcxshRrW1t6Flfru3kDIm34fhgoSu3NSY04EbpGz4e1_5NV61GX9FXjPTvzVUf1dUutg-PK5Kkv-K2YVkzumgO-cqo36bxmSttA-msn4-KlmiOxivKPXVc",
-];
-const townhomesImage =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuBPqPFcLSoXlsuAQfp2CHFrPT5NW4-6wsXW_mP8O-HSmstKK8vLMLFwW-oE0LLfuJ9nxEHRrPh0eHt2WdIIZpf8qdfGyxpbUZPCKR6a5i4aP00xDFZRgCen2JpK_QOOwEbsM9j5zU9ofWaTaXHPrx7a1K2MW9Gaq6GQS42BqqyfFvq_ckEetRpybCCKO9P6vaIk5uQlODLw4AmZO6hhA5uG1n8CO8iPuiruwwT0fG_UawYncIZjmIeH1OPt5mNEEWdwZ6VZhZShU0g";
-const chaletsImage =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCx1s_HAfBaGalT2mhJM-XQOJ8oXSsv75lbHlq_vhF8fBC8YpH7YcM3UkNsP34dOWzzFrpML5YUANKJo7FW2ZV3eMtN1tBaCTyUbO06YCD8BzcjzeOnoNPZ2op78uEWgVEBTNNaaaK936n835GKDU_L8z8VnfMXsIr9n5aB0ZbGkcsHRoo9vT4Ji0OaXHMPvXDtj-MO68Cp4FvBKCXSkO70h7lNntwThz_InGcxaebfktllNrNTQzGBIzedvXCtHU6Li70ZeHj3Jaw";
-const lakehouseImages = [
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuAQ076Wr46W0kiabHsOqSB8PfmUNhmLJZVxm98gtgAdBhgZVzLWt6DW6wKbcqx15aKbiaOYHSw8r4Bd_7ilBUkNTf_gM0UVAVNdHEnXH8Eii5dav2STOwIewocoWFWxadvNAPfTofQlYmvSHpmfQCY255mowgxxBE67TpKeBsXtUPj_10Iu_NpJHKY-ks5lxOXCF0Yx2U2ZA6uP0Oo7c5F_o3OxALexigfx1kwMkE2AWg5T4zy0FbxQILCg0KLdZgrT2ZFBAlTLOLM",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuBy_zaFjrHbi2BGdJ-CIv_bJVNSuSY4Ah5h5dLtRPr_MEhgMEuwEMcAnT8N-cN_YYBkZquIZqjc3-OhhusU4klBdz3QfuOxSCQrW24B4KwQq-FHXs-ZIMoknI4WDkvGnrHRUAjAfqnLpgpP1AIZUhCYWJLzlPoeZ85eA4JOb-aojbrrJuCuXa8d9qhG3rzaNvzCDiuF7wvxR2xKfBIfVKo4g4pq0GCynkuOq3YXdy9TnG4NLlwTdeVxKLM3WdfTRULIXaZCw9IFIyM",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuBX1zdQwCxcjTpvBD1w4KA2RbSCnzK0H0xsgrZ1p-M4tfLG7VE7-rlakEABLlKxcs5G17u-6PMKrzOiqmbR8xgFP71tK2siJdv0N80fO5vmaLbA-v3APdqWKa8RT7fHrzp3RMT3ovHomX2JhoTTMXg-eQHiMOPYJQm7zUW3Kf0bqo1LwBAfAPmkZ0L32NsnKg2dqtDCdRRZC_ZGXrg43pXSaBUCXk_cKWLHgBQ6MgALM25GWLPlOiTRsc9pR2x6Cfr-Z-hb752_flc",
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuDEfAWvqnvas_9FONMdMzVnR7oY-407plhRiehBwKUqD_EH63Lz7l_TAV0S384hQTfPKTbuNyKZAUnBipKuZ7Bhe_eTHNvzFzV9leQVwexTbzj-GxutyOWeubk0j7a3yNQzSCKcLoc_Ca11V0U1HxwrkscZfJPYMvyYapMoC41VM-jQmtihvqaOvzCyP1JN_tOM5zaeFIZbkMt6PQt8f7N0vpTSJulJHpMCTyYHGJZViOXurIX5tJopaB1B0WBW-T7TmaFCUciN5BI",
-];
-const mapImage =
-  "https://lh3.googleusercontent.com/aida-public/AB6AXuCDEJZ2n32fU4lVY3RqHTafBk8QhnCViWKOFKlptU_oSrGlOqgnviLONBxahGgeJwik8vjOC1ZKMa0BeawVt1Cpq2seuLw97_bSQPcodVTRVXoTOQY6AoP_Bxz7JWZZBX5hnuLrFtqpEqAk3D3g8HEPTsx1G_C02upRLGLQKwfjbKzs4eej9pgNYWDWYX49ybVfM133ck-jdzaqSUXfkRkX2TzowM-d2dYalaRUbIfj7Netx5lQZcNqOGOpRsLw-lb91KfFpj5nrLs";
+const R2_BASE = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
 
+const heroImage = `${R2_BASE}/MAIN-ENTRANCE-townhouse1-day.webp`;
+const philosophyImages = [
+  `${R2_BASE}/BrownStone%20Celestia-Riverside-House.jpeg`,
+  `${R2_BASE}/celestia-townhouse-LIVING-AREA1.webp`,
+];
+const townhomesImage = `${R2_BASE}/TOWNHOMEUNIT-portrait.webp`;
+const chaletsImage = `${R2_BASE}/CHALET-UNIT-PERSPECTIVE_DAY.webp`;
+const lakehouseImages = [
+  `${R2_BASE}/lakehouse/LAKEHOUSE_LIVING-AREA.webp`,
+  `${R2_BASE}/lakehouse/LAKEHOUSE-GYM.webp`,
+  `${R2_BASE}/lakehouse/LAKEHOUSE-BATHROOM.webp`,
+  `${R2_BASE}/lakehouse/LAKEHOUSE_LIVING-AREA3.webp`,
+];
 export default function CelestiaPage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden">
-      {/* Header */}
-      <header className="fixed top-0 z-50 w-full border-b border-earthy/10 bg-[#f8f6f6]/80 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-12">
-          <Link href="/" className="flex items-center gap-3">
-            <Image
-              src="/celestia.png"
-              alt="Celestia"
-              width={40}
-              height={40}
-              className="h-9 w-9 object-contain"
-            />
-            <h2 className="text-xl font-bold tracking-widest text-earthy">
-              CELESTIA
-            </h2>
-          </Link>
-          <nav className="hidden md:flex items-center gap-10">
-            <a
-              className="text-sm font-semibold hover:text-primary transition-colors uppercase tracking-widest"
-              href="#journey"
-            >
-              The Journey
-            </a>
-            <a
-              className="text-sm font-semibold hover:text-primary transition-colors uppercase tracking-widest"
-              href="#residences"
-            >
-              Residences
-            </a>
-            <a
-              className="text-sm font-semibold hover:text-primary transition-colors uppercase tracking-widest"
-              href="#lakehouse"
-            >
-              The Lakehouse
-            </a>
-          </nav>
-          <Link
-            href="/contact"
-            className="bg-primary hover:bg-primary/90 text-white px-6 py-2.5 rounded-lg text-sm font-bold transition-all shadow-lg active:scale-95"
-          >
-            Inquire Now
-          </Link>
-        </div>
-      </header>
+      <Nav activePath="/portfolio" />
 
       {/* Hero */}
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
@@ -85,7 +40,7 @@ export default function CelestiaPage() {
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Akosombo Landscape"
+            alt="Akosombo main entrance"
             className="h-full w-full object-cover scale-105"
             src={heroImage}
           />
@@ -178,16 +133,16 @@ export default function CelestiaPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-full w-full object-cover"
-                  alt="Luxury home architectural detail"
-                  src={philosophyImages[0]}
+                  alt="Celestia townhome unit"
+                  src={philosophyImages[1]}
                 />
               </div>
               <div className="rounded-xl overflow-hidden shadow-2xl mb-12">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-full w-full object-cover"
-                  alt="Interior view of modern living room"
-                  src={philosophyImages[1]}
+                  alt="Celestia riverside house"
+                  src={philosophyImages[0]}
                 />
               </div>
             </div>
@@ -387,10 +342,10 @@ export default function CelestiaPage() {
                 </div>
               </div>
               <Link
-                href="/contact"
+                href="/celestia/lakehouse"
                 className="inline-block bg-primary text-white px-10 py-4 rounded-lg font-bold hover:shadow-xl transition-all mt-6"
               >
-                View Amenities
+                Explore the Lakehouse Experience
               </Link>
             </div>
           </div>
@@ -418,12 +373,14 @@ export default function CelestiaPage() {
               value="Celestia Phase 1"
             />
             <input
+              suppressHydrationWarning
               className="flex-1 px-6 py-4 rounded-lg border-2 border-[#f8f6f6] focus:border-primary focus:ring-0 outline-none transition-all text-earthy"
               placeholder="Your Professional Email"
               type="email"
               name="email"
             />
             <button
+              suppressHydrationWarning
               type="submit"
               className="bg-primary text-white px-12 py-4 rounded-lg font-bold hover:bg-primary/90 transition-all"
             >
@@ -436,101 +393,7 @@ export default function CelestiaPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-[#f8f6f6] border-t border-earthy/10 py-16 px-6 lg:px-12">
-        <div className="mx-auto max-w-7xl grid md:grid-cols-4 gap-12">
-          <div className="col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-6">
-              <Image
-                src="/celestia.png"
-                alt="Celestia"
-                width={40}
-                height={40}
-                className="h-9 w-9 object-contain"
-              />
-              <h2 className="text-xl font-serif font-bold tracking-widest">CELESTIA</h2>
-            </Link>
-            <p className="text-earthy/60 max-w-sm mb-8">
-              Defining luxury through the lens of nature. An exclusive gated
-              community in the heart of Akosombo.
-            </p>
-            <div className="flex gap-4">
-              <a
-                className="h-10 w-10 flex items-center justify-center rounded-full bg-earthy/10 hover:bg-primary hover:text-white transition-all"
-                href="#"
-                aria-label="Share"
-              >
-                <span
-                  className="material-symbols-outlined text-xl"
-                  style={{ fontFamily: "Material Symbols Outlined" }}
-                >
-                  share
-                </span>
-              </a>
-              <a
-                className="h-10 w-10 flex items-center justify-center rounded-full bg-earthy/10 hover:bg-primary hover:text-white transition-all"
-                href="mailto:info@brownstoneconstruction.com"
-                aria-label="Email"
-              >
-                <span
-                  className="material-symbols-outlined text-xl"
-                  style={{ fontFamily: "Material Symbols Outlined" }}
-                >
-                  mail
-                </span>
-              </a>
-            </div>
-          </div>
-          <div>
-            <h5 className="font-bold mb-6">Explore</h5>
-            <ul className="space-y-4 text-earthy/60">
-              <li>
-                <a className="hover:text-primary" href="#residences">
-                  Master Plan
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-primary" href="/contact">
-                  Investment Benefits
-                </a>
-              </li>
-              <li>
-                <a className="hover:text-primary" href="/about">
-                  Sustainability
-                </a>
-              </li>
-              <li>
-                <Link className="hover:text-primary" href="/contact">
-                  Contact Sales
-                </Link>
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h5 className="font-serif font-bold mb-6">Location</h5>
-            <p className="text-earthy/60 mb-4">
-              Akosombo North, Volta Region,
-              <br />
-              Ghana
-            </p>
-            <div className="h-32 w-full rounded-lg bg-zinc-200 overflow-hidden mt-4">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                className="w-full h-full object-cover"
-                alt="Map location of Celestia, Akosombo, Ghana"
-                src={mapImage}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="mx-auto max-w-7xl mt-16 pt-8 border-t border-earthy/5 flex flex-col md:flex-row justify-between text-xs text-earthy/40 uppercase tracking-widest font-bold">
-          <p>© 2024 Celestia by Brownstone Construction. All Rights Reserved.</p>
-          <div className="flex gap-8 mt-4 md:mt-0">
-            <Link href="/privacy-policy">Privacy Policy</Link>
-            <Link href="/terms-of-use">Terms of Service</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

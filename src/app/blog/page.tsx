@@ -6,6 +6,7 @@ import { BlogListClient } from "./BlogListClient";
 
 export const revalidate = 60;
 
+type CategoryObj = { id: string; name: string; slug: string };
 type PostWithCategories = {
   id: string;
   title: string;
@@ -15,9 +16,7 @@ type PostWithCategories = {
   published_at: string | null;
   read_time_minutes: number | null;
   featured: boolean;
-  post_categories: Array<{
-    categories: { id: string; name: string; slug: string } | null;
-  }>;
+  post_categories: Array<{ categories: CategoryObj | null }>;
 };
 
 export default async function BlogListPage({
@@ -49,7 +48,18 @@ export default async function BlogListPage({
 
   const categories = categoriesResult.data ?? [];
   const featuredPost = featuredResult.data;
-  const allPosts = (postsResult.data ?? []) as PostWithCategories[];
+  const rawPosts = postsResult.data ?? [];
+  const allPosts: PostWithCategories[] = rawPosts.map((p: Record<string, unknown>) => {
+    const pc = (p.post_categories as Array<{ categories?: CategoryObj | CategoryObj[] | null }> | undefined) ?? [];
+    return {
+      ...p,
+      post_categories: pc.map((item) => {
+        const c = item.categories;
+        const cat = Array.isArray(c) ? c[0] ?? null : c ?? null;
+        return { categories: cat };
+      }),
+    };
+  }) as PostWithCategories[];
 
   let nowSelling: Array<{ position: number; image_url: string | null; property_name: string | null; project_link: string | null }> = [];
   try {
@@ -61,18 +71,17 @@ export default async function BlogListPage({
 
   const featuredId = featuredPost?.id;
   const postsForGrid = allPosts.filter((p) => p.id !== featuredId);
+  const getCatSlug = (pc: { categories: CategoryObj | null }) => pc.categories?.slug ?? "";
   const postsFiltered =
     categorySlug && categorySlug !== "all"
       ? postsForGrid.filter((p) =>
-          p.post_categories?.some(
-            (pc) => (pc.categories?.slug ?? "") === categorySlug
-          )
+          p.post_categories?.some((pc) => getCatSlug(pc) === categorySlug)
         )
       : postsForGrid;
 
   const categoryCounts = postsForGrid.reduce<Record<string, number>>((acc, p) => {
     p.post_categories?.forEach((pc) => {
-      const slug = pc.categories?.slug;
+      const slug = getCatSlug(pc);
       if (slug) acc[slug] = (acc[slug] ?? 0) + 1;
     });
     return acc;

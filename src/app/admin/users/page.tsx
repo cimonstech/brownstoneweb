@@ -79,11 +79,14 @@ export default async function AdminUsersPage() {
         <div className="mb-6 p-4 bg-primary/5 rounded-2xl border border-primary/20">
           <h3 className="text-sm font-bold text-slate-800 mb-2">Pending invites</h3>
           <ul className="text-sm text-slate-600 space-y-1">
-            {(pendingInvites as Array<{ email: string; created_at: string; roles: { name: string } | null }>).map((inv) => (
+            {(pendingInvites as Array<{ email: string; created_at: string; roles: { name: string } | { name: string }[] | null }>).map((inv) => {
+              const role = Array.isArray(inv.roles) ? inv.roles[0] : inv.roles;
+              return (
               <li key={inv.email}>
-                {inv.email} → {inv.roles?.name ?? "—"} ({new Date(inv.created_at).toLocaleDateString()})
+                {inv.email} → {role?.name ?? "—"} ({new Date(inv.created_at).toLocaleDateString()})
               </li>
-            ))}
+              );
+            })}
           </ul>
         </div>
       )}

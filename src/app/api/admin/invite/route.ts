@@ -24,7 +24,8 @@ export async function POST(request: NextRequest) {
 
   const admin = createAdminClient();
 
-  const { data: role } = await admin.from("roles").select("id").eq("name", roleName).single();
+  const { data: roleData } = await admin.from("roles").select("id").eq("name", roleName).single();
+  const role = roleData as { id: string } | null;
   if (!role) return NextResponse.json({ error: "Role not found" }, { status: 500 });
 
   const { data: { user: me } } = await supabase.auth.getUser();
@@ -40,11 +41,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: inviteError.message ?? "Invite failed" }, { status: 400 });
   }
 
-  const { error: insertError } = await admin.from("invites").insert({
-    email,
-    role_id: role.id,
-    invited_by_id: me.id,
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for invites insert
+  const { error: insertError } = await admin.from("invites").insert({ email, role_id: role.id, invited_by_id: me.id } as any);
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 500 });
   }

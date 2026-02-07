@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
@@ -8,15 +9,21 @@ import { FaIcon } from "@/components/Icons";
 const R2 = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
 
 const celestiaImages = [
-  { src: `${R2}/CHALETS_.webp`, alt: "Celestia chalets and residential development exterior view" },
-  { src: `${R2}/CHALETS_.webp`, alt: "Celestia development landscape and architecture" },
-  { src: `${R2}/CHALETS_.webp`, alt: "Celestia project chalet detail" },
+  { src: `${R2}/MAIN-ENTRANCE-townhouse1-day.webp`, alt: "Celestia main entrance" },
+  { src: `${R2}/TOWNHOMEUNIT-portrait.webp`, alt: "Celestia townhome unit" },
+  { src: `${R2}/CHALETS_.webp`, alt: "Celestia chalets" },
+  { src: `${R2}/celestia-townhouse-LIVING-AREA1.webp`, alt: "Celestia living area" },
+  { src: `${R2}/celestia-townhouse-LIVING-AREA3.webp`, alt: "Celestia living area interior" },
+  { src: `${R2}/MAIN-ENTRANCE-townhouse2.webp`, alt: "Celestia townhouse exterior" },
+  { src: `${R2}/celestia-townhouse-LIVING-AREA5.webp`, alt: "Celestia townhouse living space" },
 ];
 
 const eastLegonImages = [
   { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio townhouses development" },
-  { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio townhouse exterior" },
-  { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio project view" },
+  { src: `${R2}/east-legon-townhouses3.webp`, alt: "East Legon Trio townhouse exterior" },
+  { src: `${R2}/east-legon-townhouses4.webp`, alt: "East Legon Trio project view" },
+  { src: `${R2}/EastLegon-3D.webp`, alt: "East Legon Trio" },
+  { src: `${R2}/eastlegon-townhouses.webp`, alt: "East Legon Trio townhouses" },
 ];
 
 const tabs = [
@@ -26,17 +33,39 @@ const tabs = [
 
 export default function Portfolio() {
   const [activeTab, setActiveTab] = useState<"celestia" | "east-legon">("celestia");
-  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string; index: number } | null>(null);
 
   const images = activeTab === "celestia" ? celestiaImages : eastLegonImages;
 
-  const openLightbox = useCallback((src: string, alt: string) => {
-    setLightbox({ src, alt });
+  const openLightbox = useCallback((src: string, alt: string, index: number) => {
+    setLightbox({ src, alt, index });
   }, []);
 
   const closeLightbox = useCallback(() => {
     setLightbox(null);
   }, []);
+
+  const goPrev = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (!lightbox) return;
+      const prevIndex = lightbox.index > 0 ? lightbox.index - 1 : images.length - 1;
+      const item = images[prevIndex];
+      setLightbox({ src: item.src, alt: item.alt, index: prevIndex });
+    },
+    [lightbox, images]
+  );
+
+  const goNext = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (!lightbox) return;
+      const nextIndex = lightbox.index < images.length - 1 ? lightbox.index + 1 : 0;
+      const item = images[nextIndex];
+      setLightbox({ src: item.src, alt: item.alt, index: nextIndex });
+    },
+    [lightbox, images]
+  );
 
   return (
     <div className="bg-background-light text-earthy min-h-screen">
@@ -102,22 +131,37 @@ export default function Portfolio() {
             ))}
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            className="columns-1 sm:columns-2 lg:columns-3 gap-6"
+            style={{ columnGap: "1.5rem" }}
+          >
             {images.map(({ src, alt }, i) => (
               <button
                 key={`${activeTab}-${i}`}
                 type="button"
-                className="relative block w-full overflow-hidden rounded-xl bg-gray-100 shadow-xl transition-all hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-                onClick={() => openLightbox(src, alt)}
+                className="relative block w-full mb-6 break-inside-avoid overflow-hidden rounded-xl bg-gray-100 shadow-xl transition-all hover:shadow-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 [&>img]:hover:scale-[1.02]"
+                onClick={() => openLightbox(src, alt, i)}
               >
                 <img
                   alt={alt}
                   src={src}
-                  className="w-full min-h-[280px] object-cover transition-transform duration-300 hover:scale-105"
+                  className="w-full h-auto block transition-transform duration-300"
                 />
               </button>
             ))}
           </div>
+
+          {activeTab === "celestia" && (
+            <div className="mt-12 text-center">
+              <Link
+                href="/celestia"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary text-white px-8 py-3.5 font-bold text-sm uppercase tracking-wider hover:bg-primary/90 transition-all"
+              >
+                Learn more
+                <FaIcon name="arrowRight" className="text-base" />
+              </Link>
+            </div>
+          )}
         </section>
       </main>
       <Footer />
@@ -138,6 +182,28 @@ export default function Portfolio() {
           >
             <span className="text-2xl leading-none" aria-hidden>×</span>
           </button>
+
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={goPrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden lg:flex size-14 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                aria-label="Previous image"
+              >
+                <FaIcon name="chevronLeft" className="text-2xl" />
+              </button>
+              <button
+                type="button"
+                onClick={goNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-10 hidden lg:flex size-14 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors"
+                aria-label="Next image"
+              >
+                <FaIcon name="chevronRight" className="text-2xl" />
+              </button>
+            </>
+          )}
+
           <img
             src={lightbox.src}
             alt={lightbox.alt}

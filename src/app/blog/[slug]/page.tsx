@@ -49,8 +49,9 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post) notFound();
 
-  const categoryList = (post.post_categories as Array<{ categories: { id: string; name: string; slug: string } | null }> ?? [])
-    .map((pc) => pc.categories)
+  type Pc = { categories: { id: string; name: string; slug: string } | { id: string; name: string; slug: string }[] | null };
+  const categoryList = ((post.post_categories ?? []) as Pc[])
+    .flatMap((pc) => (Array.isArray(pc.categories) ? pc.categories : pc.categories ? [pc.categories] : []))
     .filter(Boolean) as { id: string; name: string; slug: string }[];
   const categoryIds = categoryList.map((c) => c.id);
   const firstCategory = categoryList[0];
@@ -69,10 +70,13 @@ export default async function BlogPostPage({ params }: Props) {
     .order("published_at", { ascending: false })
     .limit(10);
 
-  const related = (relatedRows ?? []).map((p) => ({
-    ...p,
-    firstCategory: (p.post_categories as Array<{ categories: { name: string; slug: string } | null }>)?.[0]?.categories ?? null,
-  })).slice(0, 3);
+  type RelPc = { categories: { name: string; slug: string } | { name: string; slug: string }[] | null };
+  const related = (relatedRows ?? []).map((p) => {
+    const pc = (p.post_categories as RelPc[] | undefined)?.[0];
+    const cat = pc?.categories;
+    const first = Array.isArray(cat) ? cat[0] : cat;
+    return { ...p, firstCategory: first ?? null };
+  }).slice(0, 3);
 
   let nowSelling: Array<{ position: number; image_url: string | null; property_name: string | null; project_link: string | null }> = [];
   try {
