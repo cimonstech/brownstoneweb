@@ -178,7 +178,7 @@ export default function CelestiaPage() {
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-3xl font-medium">Terraced Townhomes</h3>
                   <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    Starting at $450k
+                    Inquire for details
                   </span>
                 </div>
                 <p className="text-earthy/70 mb-6 leading-relaxed">

@@ -23,10 +23,10 @@ const wellnessImages = [
 export default function LakehousePage() {
   return (
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[#fdfcfb]">
-      <Nav activePath="/portfolio" />
+      <Nav activePath="/celestia/lakehouse" />
 
-      {/* Hero — fullscreen intro */}
-      <section className="relative min-h-[100svh] min-h-[600px] sm:min-h-[700px] w-full flex flex-col justify-center items-center text-center">
+      {/* Hero — same height as homepage hero */}
+      <section className="relative min-h-[100svh] min-h-[600px] sm:min-h-[700px] h-screen w-full flex flex-col justify-center items-center text-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[1.2s] ease-out"
@@ -155,7 +155,6 @@ export default function LakehousePage() {
             className="absolute inset-0 bg-cover bg-center scale-105 hover:scale-100 transition-transform duration-[8s] ease-out"
             style={{ backgroundImage: `url(${R2}/lakehouseIMG_0350.webp)` }}
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-earthy via-earthy/80 to-transparent" />
         </div>
         <div className="lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-20">
           <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-6">

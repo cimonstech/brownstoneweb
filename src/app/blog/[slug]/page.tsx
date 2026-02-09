@@ -86,7 +86,7 @@ export default async function BlogPostPage({ params }: Props) {
     nowSelling = [];
   }
 
-  const html = renderEditorJsToHtml(post.content as import("@/components/admin/Editor").OutputData);
+  const html = renderEditorJsToHtml(post.content);
 
   const dateStr =
     post.published_at &&
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
         <section className="max-w-7xl mx-auto px-6 md:px-20 py-20 flex flex-col lg:flex-row gap-20">
           <article className="flex-1">
             <div
-              className="prose prose-base sm:prose-lg prose-earthy max-w-none prose-headings:font-serif prose-img:rounded-xl prose-p:mb-6 sm:prose-p:mb-8 prose-p:text-base sm:prose-p:text-lg prose-p:leading-relaxed editorial-content"
+              className="prose prose-base sm:prose-lg prose-earthy max-w-none prose-headings:font-serif prose-img:rounded-xl prose-p:mb-6 sm:prose-p:mb-8 prose-p:text-base sm:prose-p:text-lg prose-p:leading-[1.75] prose-headings:mt-10 prose-headings:mb-4 first:prose-headings:mt-0 prose-ul:my-6 prose-ol:my-6 prose-li:my-1 prose-blockquote:my-8 prose-figure:my-8 editorial-content"
               dangerouslySetInnerHTML={{ __html: html }}
             />
           </article>

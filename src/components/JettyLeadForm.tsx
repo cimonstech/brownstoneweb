@@ -10,9 +10,14 @@ export default function JettyLeadForm() {
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!email.trim() || !consent) {
+    if (!email.trim()) {
       setStatus("error");
-      setMessage("Please enter your email and agree to receive updates.");
+      setMessage("Please enter your email address.");
+      return;
+    }
+    if (!consent) {
+      setStatus("error");
+      setMessage("Please accept the terms to receive your exclusive details.");
       return;
     }
 
@@ -68,17 +73,27 @@ export default function JettyLeadForm() {
           suppressHydrationWarning
         />
       </div>
-      <label className="flex items-start gap-3 cursor-pointer text-left">
+      <label className="flex items-start gap-3 cursor-pointer text-left group">
         <input
           type="checkbox"
           checked={consent}
           onChange={(e) => setConsent(e.target.checked)}
           disabled={status === "loading"}
-          className="mt-1 rounded border-white/30 bg-white/10 text-primary focus:ring-primary"
+          className="mt-1.5 h-4 w-4 shrink-0 rounded border-white/40 bg-white/10 text-primary focus:ring-2 focus:ring-white/50 focus:ring-offset-0 accent-primary"
           suppressHydrationWarning
         />
-        <span className="text-white/90 text-sm">
-          Receive updates about Lakehouse at Celestia.
+        <span className="text-white/90 text-sm leading-relaxed">
+          I agree to receive my exclusive Lakehouse details and occasional updates from Brownstone.
+          I understand I can unsubscribe at any time.{" "}
+          <a
+            href="/privacy-policy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white/70 underline hover:text-white transition-colors"
+            onClick={(e) => e.stopPropagation()}
+          >
+            Privacy policy
+          </a>
         </span>
       </label>
       <button

@@ -5,11 +5,21 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaIcon } from "@/components/Icons";
 
-const navLinks = [
+const propertyLinks = [
+  { href: "/celestia/townhouses", label: "Celestia Townhouses" },
+  { href: "/celestia/lakehouse", label: "Celestia Lakehouse" },
+  { href: "/celestia/chalets", label: "Celestia Chalets" },
+];
+
+const navLinks: Array<
+  | { href: string; label: string }
+  | { label: string; items: typeof propertyLinks }
+> = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   { href: "/services", label: "Services" },
   { href: "/portfolio", label: "Projects" },
+  { label: "Properties", items: propertyLinks },
   { href: "/blog", label: "Blog" },
   { href: "/contact", label: "Contact" },
 ];
@@ -39,13 +49,18 @@ export default function Nav({ activePath = "/", variant = "solid" }: NavProps) {
     return `${base} text-earthy hover:text-primary ${active}`;
   };
 
+  const isPropertiesActive = propertyLinks.some((item) => item.href === activePath);
+  const dropdownTriggerClass = `text-sm font-semibold uppercase tracking-wider transition-colors py-4 md:py-0 flex items-center gap-1 ${
+    isTransparent ? "text-white hover:text-primary" : "text-earthy hover:text-primary"
+  } ${isPropertiesActive ? "text-primary" : ""}`;
+
   return (
     <header
-      className={
+      className={`font-sans ${
         isTransparent
           ? "absolute top-0 left-0 right-0 z-50 px-4 sm:px-6 lg:px-16 py-6 md:py-8"
           : "fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-earthy/10"
-      }
+      }`}
     >
       <div className="max-w-7xl mx-auto h-14 sm:h-16 md:h-20 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3 shrink-0">
@@ -59,11 +74,38 @@ export default function Nav({ activePath = "/", variant = "solid" }: NavProps) {
           />
         </Link>
         <nav className="hidden md:flex items-center gap-8 lg:gap-10">
-          {navLinks.map(({ href, label }) => (
-            <Link key={href} href={href} className={linkClass(href)}>
-              {label}
-            </Link>
-          ))}
+          {navLinks.map((item) => {
+            if ("href" in item) {
+              return (
+                <Link key={item.href} href={item.href} className={linkClass(item.href)}>
+                  {item.label}
+                </Link>
+              );
+            }
+            return (
+              <div key={item.label} className="relative group">
+                <span className={dropdownTriggerClass} aria-haspopup="true" aria-expanded="false">
+                  {item.label}
+                  <FaIcon name="chevronDown" className="text-[0.65rem] opacity-80" />
+                </span>
+                <div className="absolute left-0 top-full pt-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
+                  <div className="bg-white border border-earthy/10 rounded-lg shadow-lg py-1 min-w-[200px]">
+                    {item.items.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        className={`block px-4 py-2.5 text-sm font-semibold uppercase tracking-wider ${
+                          sub.href === activePath ? "text-primary bg-primary/5" : "text-earthy hover:bg-earthy/5 hover:text-primary"
+                        }`}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </nav>
         <div className="flex items-center gap-2 sm:gap-4">
           <Link
@@ -102,16 +144,41 @@ export default function Nav({ activePath = "/", variant = "solid" }: NavProps) {
           }`}
         >
           <div className="px-4 py-6 space-y-1 max-h-[calc(100vh-5rem)] overflow-y-auto safe-area-pb">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMobileOpen(false)}
-                className={`block ${linkClass(href)} border-b border-earthy/5 last:border-0`}
-              >
-                {label}
-              </Link>
-            ))}
+            {navLinks.map((item) => {
+              if ("href" in item) {
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className={`block ${linkClass(item.href)} border-b border-earthy/5`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              }
+              return (
+                <div key={item.label} className="border-b border-earthy/5 pb-2">
+                  <span className={`block ${dropdownTriggerClass} py-4`}>
+                    {item.label}
+                  </span>
+                  <div className="pl-3 space-y-1">
+                    {item.items.map((sub) => (
+                      <Link
+                        key={sub.href}
+                        href={sub.href}
+                        onClick={() => setMobileOpen(false)}
+                        className={`block py-2.5 text-sm font-semibold uppercase tracking-wider ${
+                          sub.href === activePath ? "text-primary" : "text-earthy hover:text-primary"
+                        }`}
+                      >
+                        {sub.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
             <Link
               href="/contact"
               onClick={() => setMobileOpen(false)}

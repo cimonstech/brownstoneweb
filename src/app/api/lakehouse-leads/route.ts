@@ -32,7 +32,7 @@ export async function POST(request: Request) {
 
   if (!consent) {
     return NextResponse.json(
-      { error: "Please agree to receive updates about Lakehouse at Celestia." },
+      { error: "Please accept the terms to receive your exclusive details." },
       { status: 400 }
     );
   }
@@ -57,7 +57,7 @@ export async function POST(request: Request) {
 
   const from =
     process.env.CONTACT_FROM_EMAIL || "Brownstone <onboarding@resend.dev>";
-  const subject = "Your Lakehouse at Celestia details";
+  const subject = "Your exclusive Lakehouse at Celestia — as requested";
 
   const html = getLakehouseThankYouHtml(baseUrl);
   const text = getLakehouseThankYouText(baseUrl);

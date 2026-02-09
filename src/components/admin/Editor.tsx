@@ -46,14 +46,20 @@ export function Editor({
     (async () => {
       const [
         { default: EditorJS },
+        Paragraph,
         Header,
         List,
         ImageTool,
         Quote,
         CodeTool,
         Embed,
+        Delimiter,
+        Warning,
+        TableTool,
+        SimpleImage,
       ] = await Promise.all([
         import("@editorjs/editorjs"),
+        import("@editorjs/paragraph"),
         import("@editorjs/header"),
         import("@editorjs/list"),
         import("@editorjs/image"),
@@ -61,6 +67,10 @@ export function Editor({
         import("@editorjs/code"),
         // @ts-expect-error - @editorjs/embed exports typings that don't resolve
         import("@editorjs/embed"),
+        import("@editorjs/delimiter"),
+        import("@editorjs/warning"),
+        import("@editorjs/table"),
+        import("@editorjs/simple-image"),
       ]);
 
       if (!mounted || !holder.current) return;
@@ -69,11 +79,17 @@ export function Editor({
         holder: holder.current,
         placeholder,
         data: initialData ?? undefined,
+        defaultBlock: "paragraph",
         onChange: async () => {
           const data = await editor.save();
           onChangeRef.current?.(data);
         },
         tools: {
+          paragraph: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Paragraph constructor types incompatible with EditorJS ToolConstructable
+            class: Paragraph.default as any,
+            inlineToolbar: true,
+          },
           header: {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any -- EditorJS Header tool constructor types are incompatible
             class: Header.default as any,
@@ -99,6 +115,19 @@ export function Editor({
             config: {
               services: { youtube: true, twitter: true, instagram: true },
             },
+          },
+          delimiter: { class: Delimiter.default },
+          warning: {
+            class: Warning.default,
+            inlineToolbar: true,
+          },
+          table: {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Table tool constructor types are incompatible with EditorJS ToolConstructable
+            class: TableTool.default as any,
+            inlineToolbar: true,
+          },
+          simpleImage: {
+            class: SimpleImage.default,
           },
         },
       });

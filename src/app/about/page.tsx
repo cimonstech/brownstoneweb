@@ -10,7 +10,7 @@ export default function About() {
       <Nav activePath="/about" />
       <main className="pt-14 sm:pt-16 md:pt-20">
         {/* Hero */}
-        <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full overflow-hidden">
+        <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full overflow-hidden flex flex-col justify-center">
           <div className="absolute inset-0 z-0">
             <img
               src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/MAIN-ENTRANCE-townhouse3.webp"
@@ -19,7 +19,7 @@ export default function About() {
             />
             <div className="absolute inset-0 bg-black/50 z-10" />
           </div>
-          <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4">
+          <div className="relative z-20 flex flex-col items-center justify-center text-center px-4 py-16 min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh]">
             <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight font-serif mb-4 sm:mb-6">
               Crafting Legacies in <br />
               <span className="text-primary italic">Modern Stone</span>
@@ -129,73 +129,83 @@ export default function About() {
           </div>
         </section>
 
-        {/* Leadership */}
-        <section className="py-24 px-10 bg-white">
+        {/* Leadership & Team */}
+        <section className="py-24 px-6 sm:px-10 bg-white">
           <div className="max-w-[1200px] mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-4">
-              <div>
-                <span className="text-primary font-bold uppercase tracking-[0.2em] text-xs mb-2 block">
-                  Our Team
-                </span>
-                <h2 className="text-4xl font-bold font-serif text-earthy">
-                  The Visionaries
-                </h2>
-              </div>
-              <p className="max-w-md text-grey">
-                Led by world-class architects and sustainability experts
-                dedicated to the Brownstone philosophy.
-              </p>
+            <div className="mb-12">
+              <span className="text-primary font-bold uppercase tracking-[0.2em] text-xs mb-2 block">
+                Our Team
+              </span>
+              <h2 className="text-4xl font-bold font-serif text-earthy">
+                The Visionaries
+              </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-              <div className="md:col-span-4 group cursor-pointer">
-                <div className="overflow-hidden rounded-xl mb-4 aspect-[3/4]">
+
+            {/* Leadership: CEO + PA with vertical connector */}
+            <div className="flex flex-col items-center mb-16">
+              <div className="w-full max-w-sm rounded-xl border border-earthy/10 bg-white overflow-hidden shadow-sm text-center">
+                <div className="aspect-[3/4] bg-earthy/5 overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80"
-                    alt="Marcus Sterling"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
+                    src="https://placehold.co/400x533/e8e6e3/181311?text=FYA&font=serif"
+                    alt="Francis Yeboah Awuah"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                <h5 className="text-xl font-bold text-earthy">Marcus Sterling</h5>
-                <p className="text-primary text-sm font-semibold mb-2">Chief Executive Officer</p>
+                <div className="p-5">
+                  <h3 className="text-earthy text-xl font-bold font-serif">Francis Yeboah Awuah</h3>
+                  <p className="text-primary text-sm font-semibold mt-1">Managing Director / CEO</p>
+                </div>
               </div>
-              <div className="md:col-span-8 group cursor-pointer">
-                <div className="overflow-hidden rounded-xl mb-4 aspect-[16/9]">
+              <div className="w-px h-8 sm:h-10 bg-earthy/20 my-0" aria-hidden />
+              <div className="w-full max-w-sm rounded-xl border border-earthy/10 bg-white overflow-hidden shadow-sm text-center">
+                <div className="aspect-[3/4] bg-earthy/5 overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
-                    alt="Dr. Elena Ross"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
+                    src="https://placehold.co/400x533/e8e6e3/181311?text=CB&font=serif"
+                    alt="Dr. Candace Baker"
+                    className="w-full h-full object-cover"
                   />
                 </div>
-                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-2">
-                  <div>
-                    <h5 className="text-xl font-bold text-earthy">Dr. Elena Ross</h5>
-                    <p className="text-primary text-sm font-semibold">Head of Sustainability</p>
+                <div className="p-5">
+                  <h3 className="text-earthy text-xl font-bold font-serif">Dr. Candace Baker</h3>
+                  <p className="text-grey text-sm font-semibold mt-1">Personal Assistant to CEO</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Divider */}
+            <hr className="border-0 border-t border-earthy/15 mb-14" />
+
+            {/* Management & Operations Team */}
+            <h3 className="text-earthy text-2xl sm:text-3xl font-bold font-serif mb-3">
+              Management & Operations Team
+            </h3>
+            <p className="text-grey text-base max-w-2xl mb-10">
+              Our team engineers strategy, operations, creativity, and business growth across all
+              projects.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
+              {[
+                { name: "Mahlon Clottey", role: "Creative Developer", placeholder: "https://placehold.co/96x96/e8e6e3/181311?text=MC&font=serif" },
+                { name: "Batista Simons", role: "Creative Designer", placeholder: "https://placehold.co/96x96/e8e6e3/181311?text=BS&font=serif" },
+                { name: "Stacey Sodokeh", role: "Office Manager", placeholder: "https://placehold.co/96x96/e8e6e3/181311?text=SS&font=serif" },
+              ].map(({ name, role, placeholder }) => (
+                <div
+                  key={name}
+                  className="rounded-xl border border-earthy/10 bg-white overflow-hidden shadow-sm text-center max-w-[200px] mx-auto sm:mx-0"
+                >
+                  <div className="w-24 h-24 mx-auto mt-4 rounded-lg bg-earthy/5 overflow-hidden">
+                    <img
+                      src={placeholder}
+                      alt={name}
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                    />
                   </div>
-                  <p className="max-w-xs text-xs text-grey italic">&quot;Design is not just what it looks like; it&apos;s how it serves the planet.&quot;</p>
+                  <div className="p-3">
+                    <h4 className="text-earthy text-sm font-bold font-serif leading-tight">{name}</h4>
+                    <p className="text-grey text-xs font-semibold mt-0.5">{role}</p>
+                  </div>
                 </div>
-              </div>
-              <div className="md:col-span-5 group cursor-pointer">
-                <div className="overflow-hidden rounded-xl mb-4 aspect-square">
-                  <img
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80"
-                    alt="Julian Vane"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
-                  />
-                </div>
-                <h5 className="text-xl font-bold text-earthy">Julian Vane</h5>
-                <p className="text-primary text-sm font-semibold mb-2">Director of Operations</p>
-              </div>
-              <div className="md:col-span-7 group cursor-pointer">
-                <div className="overflow-hidden rounded-xl mb-4 aspect-[4/3]">
-                  <img
-                    src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=600&q=80"
-                    alt="Sophia Laurent"
-                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 hover:scale-105"
-                  />
-                </div>
-                <h5 className="text-xl font-bold text-earthy">Sophia Laurent</h5>
-                <p className="text-primary text-sm font-semibold mb-2">Chief Design Officer</p>
-              </div>
+              ))}
             </div>
           </div>
         </section>

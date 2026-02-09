@@ -1,9 +1,14 @@
 /**
- * Responsive HTML email template for Lakehouse lead auto-response.
- * Calm, understated luxury tone. No spam triggers.
+ * Premium HTML email template for Lakehouse lead auto-response.
+ * Refined, understated luxury tone. No spam triggers.
  */
 
 const LOGO_URL = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CelestiaLogo-bstone.png";
+const PRIMARY = "#411600";
+const PRIMARY_LIGHT = "#5c3d2e";
+const MUTED = "#7a5c4a";
+const BORDER = "#e6dfdb";
+const BG = "#fdfcfb";
 
 export function getLakehouseThankYouHtml(baseUrl: string): string {
   const lakehouseUrl = `${baseUrl}/celestia/lakehouse`;
@@ -16,71 +21,83 @@ export function getLakehouseThankYouHtml(baseUrl: string): string {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Thank you — Lakehouse at Celestia</title>
+  <title>Your exclusive details — Lakehouse at Celestia</title>
   <style type="text/css">
     @media only screen and (max-width: 600px) {
-      .wrapper { padding: 20px 12px !important; }
-      .content { padding: 0 4px !important; }
+      .wrapper { padding: 28px 16px !important; }
+      .card { padding: 28px 20px !important; }
       .logo { max-width: 140px !important; }
-      .btn { display: block !important; width: 100% !important; text-align: center !important; }
-      .text-size { font-size: 15px !important; }
+      .btn { display: block !important; width: 100% !important; text-align: center !important; box-sizing: border-box !important; }
+      .heading { font-size: 22px !important; }
     }
   </style>
 </head>
-<body style="margin:0;padding:0;font-family:Georgia,'Times New Roman',serif;background-color:#fdfcfb;color:#411600;-webkit-text-size-adjust:100%;">
-  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#fdfcfb;">
+<body style="margin:0;padding:0;font-family:Georgia,'Times New Roman',serif;background-color:#f8f6f6;color:${PRIMARY};-webkit-text-size-adjust:100%;">
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f8f6f6;">
     <tr>
-      <td align="center" class="wrapper" style="padding:32px 16px;">
-        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:560px;margin:0 auto;" class="content">
+      <td align="center" class="wrapper" style="padding:40px 20px;">
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="max-width:520px;margin:0 auto;">
           <tr>
-            <td style="padding-bottom:32px;text-align:center;">
-              <img src="${LOGO_URL}" alt="Celestia" width="180" height="auto" class="logo" style="max-width:180px;height:auto;display:block;margin:0 auto;" />
+            <td style="background-color:${BG};border:1px solid ${BORDER};border-radius:2px;box-shadow:0 2px 8px rgba(65,22,0,0.06);overflow:hidden;">
+              <table role="presentation" width="100%" cellspacing="0" cellpadding="0" class="card" style="padding:40px 32px;">
+                <tr>
+                  <td style="padding-bottom:24px;text-align:center;border-bottom:2px solid ${PRIMARY};">
+                    <img src="${LOGO_URL}" alt="Celestia by Brownstone" width="160" height="auto" class="logo" style="max-width:160px;height:auto;display:block;margin:0 auto;" />
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding-top:28px;padding-bottom:8px;">
+                    <p style="margin:0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:${MUTED};font-weight:600;">As requested</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 20px;font-size:24px;line-height:1.35;font-weight:600;color:${PRIMARY};" class="heading">
+                    Your exclusive Lakehouse details
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 24px;font-size:16px;line-height:1.7;color:${PRIMARY_LIGHT};">
+                    Thank you for your interest in the Lakehouse at Celestia. We have received your request and are pleased to share the following highlights with you.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px 0;border-top:1px solid ${BORDER};">
+                    <p style="margin:0 0 14px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:${MUTED};font-weight:600;">Property highlights</p>
+                    <ul style="margin:0;padding-left:20px;font-size:15px;line-height:1.9;color:${PRIMARY_LIGHT};">
+                      <li style="margin-bottom:6px;">Elevated workspaces with views over Volta Lake</li>
+                      <li style="margin-bottom:6px;">Wellness amenities — gym, massage rooms, and reconnection spaces</li>
+                      <li style="margin-bottom:6px;">Leisure and social areas — pool, bar, dining, and terrace</li>
+                      <li>Private jetty with direct access to the water</li>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:28px 0;">
+                    <a href="${lakehouseUrl}" class="btn" style="display:inline-block;padding:16px 32px;background-color:${PRIMARY};color:#fdfcfb;text-decoration:none;font-size:13px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;">Explore the Lakehouse</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:0 0 20px;font-size:14px;line-height:1.65;color:${PRIMARY_LIGHT};">
+                    To discover the broader Celestia project — including townhouses and chalets — visit our <a href="${celestiaUrl}" style="color:${PRIMARY};text-decoration:underline;">main Celestia page</a>.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px 0 0;border-top:1px solid ${BORDER};font-size:13px;line-height:1.6;color:${MUTED};">
+                    For priority delivery of future updates, add this address to your contacts. You may reply to this email at any time if you would like more details or a private viewing.
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:32px 0 0;font-size:13px;line-height:1.5;color:${PRIMARY_LIGHT};">
+                    With best regards,<br>
+                    <strong style="color:${PRIMARY};">The Brownstone Team</strong>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
           <tr>
-            <td style="padding:0 0 24px;font-size:18px;line-height:1.6;">
-              Thank you for your interest in the Lakehouse at Celestia.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:0 0 24px;font-size:16px;line-height:1.7;color:#5c3d2e;">
-              We have received your request. Below are some highlights to help you explore what makes this property unique.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:24px 0;border-top:1px solid #e6dfdb;">
-              <p style="margin:0 0 12px;font-size:15px;line-height:1.6;"><strong>Property highlights</strong></p>
-              <ul style="margin:0;padding-left:20px;font-size:15px;line-height:1.8;color:#5c3d2e;">
-                <li>Elevated workspaces with views over Volta Lake</li>
-                <li>Wellness amenities — gym, massage rooms, and reconnection spaces</li>
-                <li>Leisure and social areas — pool, bar, dining, and terrace</li>
-                <li>Private jetty with direct access to the water</li>
-              </ul>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:24px 0;">
-              <a href="${lakehouseUrl}" class="btn" style="display:inline-block;padding:14px 28px;background-color:#411600;color:#fdfcfb;text-decoration:none;font-size:14px;letter-spacing:0.05em;">Explore the Lakehouse Experience</a>
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:0 0 24px;font-size:14px;line-height:1.6;color:#5c3d2e;">
-              For more about the broader Celestia project, including townhomes and chalets, you can explore our <a href="${celestiaUrl}" style="color:#411600;text-decoration:underline;">main Celestia page</a>.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:24px 0;border-top:1px solid #e6dfdb;font-size:13px;line-height:1.6;color:#7a5c4a;">
-              For priority updates, consider adding us to your contacts.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:0 0 16px;font-size:14px;line-height:1.6;color:#5c3d2e;">
-              Feel free to reply directly if you would like more details.
-            </td>
-          </tr>
-          <tr>
-            <td style="padding:32px 0 0;font-size:12px;color:#9a8375;">
-              Brownstone Ltd.
+            <td style="padding:20px 0 0;text-align:center;font-size:11px;color:${MUTED};">
+              Brownstone Construction Limited
             </td>
           </tr>
         </table>
@@ -97,24 +114,25 @@ export function getLakehouseThankYouText(baseUrl: string): string {
   const celestiaUrl = `${baseUrl}/celestia`;
 
   return `
-Thank you for your interest in the Lakehouse at Celestia.
+AS REQUESTED — Your exclusive Lakehouse details
 
-We have received your request. Below are some highlights to help you explore what makes this property unique.
+Thank you for your interest in the Lakehouse at Celestia. We have received your request and are pleased to share the following highlights with you.
 
-Property highlights:
+PROPERTY HIGHLIGHTS
 • Elevated workspaces with views over Volta Lake
 • Wellness amenities — gym, massage rooms, and reconnection spaces
 • Leisure and social areas — pool, bar, dining, and terrace
 • Private jetty with direct access to the water
 
-Explore the Lakehouse Experience: ${lakehouseUrl}
+Explore the Lakehouse: ${lakehouseUrl}
 
-For more about the broader Celestia project: ${celestiaUrl}
+Discover the broader Celestia project (townhouses and chalets): ${celestiaUrl}
 
-For priority updates, consider adding us to your contacts.
+For priority delivery of future updates, add this address to your contacts. You may reply to this email at any time for more details or to arrange a private viewing.
 
-Feel free to reply directly if you would like more details.
+With best regards,
+The Brownstone Team
 
-Brownstone Ltd.
+Brownstone Construction Limited
 `.trim();
 }

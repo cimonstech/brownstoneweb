@@ -24,6 +24,9 @@ const eastLegonImages = [
   { src: `${R2}/east-legon-townhouses4.webp`, alt: "East Legon Trio project view" },
   { src: `${R2}/EastLegon-3D.webp`, alt: "East Legon Trio" },
   { src: `${R2}/eastlegon-townhouses.webp`, alt: "East Legon Trio townhouses" },
+  { src: `${R2}/eastlegon-trio/eastlegon-trio1.webp`, alt: "East Legon Trio development" },
+  { src: `${R2}/eastlegon-trio/eastlegon-trio2.webp`, alt: "East Legon Trio project" },
+  { src: `${R2}/eastlegon-trio/eastlegon-trio3.webp`, alt: "East Legon Trio view" },
 ];
 
 const tabs = [
@@ -90,7 +93,7 @@ export default function Portfolio() {
         </section>
 
         <section className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 lg:px-16 xl:px-24 max-w-[1440px] mx-auto">
-          <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-16">
+          <div className="mb-16">
             <div className="max-w-2xl">
               <h2 className="text-earthy text-2xl sm:text-3xl font-bold leading-tight mb-4 sm:mb-6 uppercase tracking-tight font-serif">
                 Defining the future of{" "}
@@ -102,13 +105,6 @@ export default function Portfolio() {
                 infrastructure.
               </p>
             </div>
-            <button
-              type="button"
-              className="flex items-center justify-center gap-2 rounded-lg bg-background-light border border-grey/30 h-12 px-6 text-earthy text-sm font-bold tracking-tight hover:bg-white transition-all"
-            >
-              <FaIcon name="download" className="text-lg" />
-              <span>Project Catalog</span>
-            </button>
           </div>
 
           <div className="flex gap-4 p-4 border-b border-grey/10 mb-12 items-center">
