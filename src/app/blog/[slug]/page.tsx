@@ -107,7 +107,7 @@ export default async function BlogPostPage({ params }: Props) {
       <Nav activePath="/blog" />
       <main className="w-full">
         {/* Hero */}
-        <section className="relative w-full min-h-[85vh] flex items-end">
+        <section className="relative w-full min-h-[70vh] sm:min-h-[80vh] md:min-h-[85vh] flex items-end">
           <div className="absolute inset-0 z-0">
             {post.cover_image ? (
               <img
@@ -120,7 +120,7 @@ export default async function BlogPostPage({ params }: Props) {
             )}
             <div className="absolute inset-0 bg-gradient-to-t from-earthy via-earthy/40 to-transparent" />
           </div>
-          <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-20 pb-20 w-full">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 pb-12 sm:pb-16 md:pb-20 w-full">
             <div className="flex flex-col gap-6 max-w-4xl">
               <div className="flex gap-4 items-center flex-wrap">
                 {firstCategory && (
@@ -134,7 +134,7 @@ export default async function BlogPostPage({ params }: Props) {
                   </span>
                 )}
               </div>
-              <h1 className="text-white text-5xl md:text-7xl font-bold leading-tight tracking-tight font-serif italic">
+              <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight tracking-tight font-serif italic">
                 {post.title}
               </h1>
               {post.excerpt && (
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: Props) {
         <section className="max-w-7xl mx-auto px-6 md:px-20 py-20 flex flex-col lg:flex-row gap-20">
           <article className="flex-1">
             <div
-              className="prose prose-lg prose-earthy max-w-none prose-headings:font-serif prose-img:rounded-xl prose-p:mb-8 prose-p:text-lg prose-p:leading-relaxed editorial-content"
+              className="prose prose-base sm:prose-lg prose-earthy max-w-none prose-headings:font-serif prose-img:rounded-xl prose-p:mb-6 sm:prose-p:mb-8 prose-p:text-base sm:prose-p:text-lg prose-p:leading-relaxed editorial-content"
               dangerouslySetInnerHTML={{ __html: html }}
             />
           </article>

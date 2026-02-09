@@ -8,9 +8,9 @@ export default function About() {
   return (
     <div className="bg-background-light text-earthy min-h-screen">
       <Nav activePath="/about" />
-      <main className="pt-20">
+      <main className="pt-14 sm:pt-16 md:pt-20">
         {/* Hero */}
-        <section className="relative h-[80vh] w-full overflow-hidden">
+        <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full overflow-hidden">
           <div className="absolute inset-0 z-0">
             <img
               src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/MAIN-ENTRANCE-townhouse3.webp"
@@ -20,15 +20,15 @@ export default function About() {
             <div className="absolute inset-0 bg-black/50 z-10" />
           </div>
           <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4">
-            <h1 className="text-white text-5xl md:text-7xl font-black leading-tight tracking-tight font-serif mb-6">
+            <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight font-serif mb-4 sm:mb-6">
               Crafting Legacies in <br />
               <span className="text-primary italic">Modern Stone</span>
             </h1>
-            <p className="text-white/90 text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-8">
+            <p className="text-white/90 text-base sm:text-lg md:text-xl max-w-2xl font-light leading-relaxed mb-6 sm:mb-8 px-2">
               Merging historic craftsmanship with visionary architecture to
               build the sustainable luxury of tomorrow.
             </p>
-            <div className="flex gap-4">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-4">
               <Link
                 href="/about#vision"
                 className="bg-primary text-white px-8 py-3 rounded-lg font-bold text-base hover:scale-105 transition-transform"
@@ -63,7 +63,7 @@ export default function About() {
 
         {/* Impact */}
         <section className="bg-[#181311] py-20 px-4">
-          <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="max-w-[1200px] mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
             {[
               { icon: "recycle" as const, value: "100%", label: "Sustainable Sourcing" },
               { icon: "scroll" as const, value: "2+", label: "Years of Excellence" },

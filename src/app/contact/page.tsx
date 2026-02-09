@@ -47,7 +47,7 @@ export default function Contact() {
   return (
     <div className="bg-background-light text-brown-deep min-h-screen">
       <Nav activePath="/contact" />
-      <main className="pt-20">
+      <main className="pt-14 sm:pt-16 md:pt-20">
         <section
           className="h-[400px] flex items-center justify-center text-center relative overflow-hidden"
           style={{
@@ -57,7 +57,7 @@ export default function Contact() {
           }}
         >
           <div className="z-10 px-6">
-            <h1 className="text-white text-5xl md:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-2xl font-serif">
+            <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight mb-4 drop-shadow-2xl font-serif px-4">
               Contact Us
             </h1>
             <div className="h-1 w-24 bg-primary mx-auto rounded-full" />
@@ -74,7 +74,7 @@ export default function Contact() {
         >
           <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16">
             <div className="text-center mb-16">
-              <h2 className="text-brown-deep text-3xl md:text-4xl font-extrabold tracking-tight mb-4 font-serif">
+              <h2 className="text-brown-deep text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight mb-4 font-serif">
                 Start Your Journey
               </h2>
               <p className="text-neutral-grey text-lg max-w-2xl mx-auto font-medium">
@@ -83,7 +83,7 @@ export default function Contact() {
               </p>
             </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-              <div className="lg:col-span-7 bg-white p-8 md:p-10 rounded-xl border border-neutral-grey/10 shadow-sm backdrop-blur-sm">
+              <div className="lg:col-span-7 bg-white p-6 sm:p-8 md:p-10 rounded-xl border border-neutral-grey/10 shadow-sm backdrop-blur-sm">
                 <form onSubmit={handleSubmit} className="space-y-6">
                   {status === "success" && (
                     <p className="rounded-lg bg-green-100 text-green-800 px-4 py-3 text-sm font-medium">

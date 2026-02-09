@@ -29,7 +29,7 @@ export default function CelestiaPage() {
       <Nav activePath="/portfolio" />
 
       {/* Hero */}
-      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[100svh] min-h-[600px] sm:min-h-[700px] w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 z-10"
@@ -52,7 +52,7 @@ export default function CelestiaPage() {
           >
             CELESTIA: Where Luxury Finds Its True Landscape
           </h1>
-          <p className="text-white/90 text-lg md:text-2xl font-light mb-10 max-w-2xl mx-auto italic">
+          <p className="text-white/90 text-base sm:text-lg md:text-xl lg:text-2xl font-light mb-8 sm:mb-10 max-w-2xl mx-auto italic px-2">
             Experience the pinnacle of luxury living in Akosombo by Brownstone
             Construction.
           </p>
@@ -92,7 +92,7 @@ export default function CelestiaPage() {
               <span className="text-primary font-bold tracking-[0.3em] uppercase text-sm">
                 Our Philosophy
               </span>
-              <h2 className="text-4xl md:text-6xl font-medium leading-tight text-earthy">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium leading-tight text-earthy">
                 The Journey from Pressure to Peace
               </h2>
               <p className="text-xl text-earthy/70 leading-relaxed font-light">

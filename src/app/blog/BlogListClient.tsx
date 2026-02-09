@@ -58,17 +58,17 @@ export function BlogListClient({
   return (
     <>
       {/* Blog header with image */}
-      <section className="relative mb-16 overflow-hidden rounded-xl">
+      <section className="relative mb-12 sm:mb-16 overflow-hidden rounded-xl">
         <div
-          className="h-[320px] md:h-[400px] w-full bg-cover bg-center"
+          className="h-[240px] sm:h-[320px] md:h-[400px] w-full bg-cover bg-center"
           style={{ backgroundImage: `url(${BLOG_HEADER_IMAGE})` }}
         />
         <div className="absolute inset-0 bg-earthy/40 flex items-center justify-center rounded-xl">
           <div className="text-center px-6">
-            <h1 className="text-white text-4xl md:text-5xl lg:text-6xl font-bold font-serif italic drop-shadow-lg">
+            <h1 className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold font-serif italic drop-shadow-lg">
               Insights & News
             </h1>
-            <p className="text-white/90 text-lg md:text-xl mt-3 font-serif max-w-xl mx-auto">
+            <p className="text-white/90 text-base sm:text-lg md:text-xl mt-3 font-serif max-w-xl mx-auto px-2">
               Stories on sustainable development and luxury construction.
             </p>
           </div>
@@ -77,10 +77,10 @@ export function BlogListClient({
 
       {/* Featured Story */}
       {featuredPost && (
-        <section className="relative mb-24 group">
+        <section className="relative mb-16 sm:mb-24 group">
           <Link href={`/blog/${featuredPost.slug}`}>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 items-center bg-white dark:bg-[#2d1e16] rounded-xl overflow-hidden shadow-2xl shadow-primary/5">
-              <div className="lg:col-span-7 h-[500px] overflow-hidden">
+              <div className="lg:col-span-7 h-[320px] sm:h-[400px] lg:h-[500px] overflow-hidden">
                 <div
                   className="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
                   style={{
@@ -90,11 +90,11 @@ export function BlogListClient({
                   }}
                 />
               </div>
-              <div className="lg:col-span-5 p-12 lg:p-16 flex flex-col justify-center">
+              <div className="lg:col-span-5 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
                 <span className="text-primary font-bold text-xs tracking-widest uppercase mb-4 block">
                   Featured Post
                 </span>
-                <h1 className="text-earthy dark:text-white text-4xl md:text-5xl font-bold leading-tight mb-6 font-serif italic">
+                <h1 className="text-earthy dark:text-white text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 sm:mb-6 font-serif italic">
                   {featuredPost.title}
                 </h1>
                 <p className="text-grey dark:text-[#a5948a] text-lg leading-relaxed mb-8 font-serif line-clamp-3">

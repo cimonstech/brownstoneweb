@@ -23,6 +23,12 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover" as const,
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${manrope.variable} ${playfair.variable}`}>
-      <body className="min-h-screen bg-white text-dark-brown">{children}</body>
+      <body className="min-h-screen bg-white text-dark-brown antialiased">{children}</body>
     </html>
   );
 }

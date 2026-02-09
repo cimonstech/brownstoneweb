@@ -21,6 +21,8 @@ import {
   faRecycle,
   faEnvelope,
   faGlobe,
+  faBars,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faInstagram, faXTwitter, faFacebook, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
@@ -45,6 +47,8 @@ export const icons = {
   recycle: faRecycle,
   envelope: faEnvelope,
   globe: faGlobe,
+  bars: faBars,
+  xmark: faXmark,
   linkedin: faLinkedin,
   instagram: faInstagram,
   xTwitter: faXTwitter,

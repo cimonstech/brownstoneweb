@@ -9,7 +9,7 @@ export default function Home() {
       <Nav activePath="/" />
       <main>
         {/* Hero */}
-        <section className="relative h-screen min-h-[700px] w-full flex flex-col justify-center overflow-hidden">
+        <section className="relative min-h-[100svh] min-h-[600px] sm:min-h-[700px] h-screen w-full flex flex-col justify-center overflow-hidden">
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10" />
             <img
@@ -18,33 +18,33 @@ export default function Home() {
               className="absolute inset-0 w-full h-full object-cover object-center scale-105"
             />
           </div>
-          <div className="relative z-20 max-w-7xl mx-auto px-6 w-full">
-            <div className="max-w-3xl flex flex-col gap-8">
+          <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 w-full">
+            <div className="max-w-3xl flex flex-col gap-6 sm:gap-8">
               <div className="flex items-center gap-4">
                 <div className="h-[1px] w-12 bg-primary" />
                 <span className="text-primary font-bold uppercase tracking-[0.3em] text-sm">
                   Premier Construction
                 </span>
               </div>
-              <h1 className="text-white text-5xl md:text-7xl font-extrabold leading-[1.1] tracking-tight drop-shadow-lg font-serif">
+              <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight drop-shadow-lg font-serif">
                 Redesigning Africa&apos;s <br />
                 Future – <span className="text-primary font-light">Brick by Brick</span>
               </h1>
-              <p className="text-white/80 text-lg md:text-xl max-w-xl font-light leading-relaxed">
+              <p className="text-white/80 text-base sm:text-lg md:text-xl max-w-xl font-light leading-relaxed">
                 Leading the transition to sustainable, luxury urban development
                 with precision engineering and timeless design.
               </p>
-              <div className="flex flex-wrap gap-4 pt-4">
+              <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
                 <Link
                   href="/portfolio"
-                  className="bg-primary text-white px-8 py-4 rounded-lg font-bold text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-white hover:text-earthy transition-all"
+                  className="bg-primary text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-white hover:text-earthy transition-all touch-manipulation"
                 >
                   Explore Projects
                   <FaIcon name="arrowRight" className="text-sm" />
                 </Link>
                 <Link
                   href="/about"
-                  className="border border-white/30 text-white backdrop-blur-sm px-8 py-4 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-white/10 transition-all"
+                  className="border border-white/30 text-white backdrop-blur-sm px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-widest hover:bg-white/10 transition-all touch-manipulation"
                 >
                   Our Philosophy
                 </Link>
@@ -77,7 +77,7 @@ export default function Home() {
                   Unmatched Heritage
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-extrabold text-earthy leading-tight font-serif">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-earthy leading-tight font-serif">
                 Who We Are
               </h2>
               <p className="text-lg text-earthy/70 leading-relaxed font-light">
@@ -139,7 +139,7 @@ export default function Home() {
                     The Collection
                   </span>
                 </div>
-                <h2 className="text-4xl font-extrabold text-earthy font-serif">Featured Projects</h2>
+                <h2 className="text-3xl sm:text-4xl font-extrabold text-earthy font-serif">Featured Projects</h2>
                 <p className="text-earthy/60 font-light">
                   Explore our award-winning portfolio of high-end residences and
                   commercial spaces across the continent.
@@ -152,7 +152,7 @@ export default function Home() {
                 View All Projects
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full">
               {[
                 { location: "Akosombo", title: "Celestia", href: "/celestia", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CHALETS_.webp", alt: "Celestia chalets at Akosombo – luxury residential development" },
                 { location: "East Legon", title: "East Legon Trio", href: "/portfolio", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/east-legon-townhouses2.webp", alt: "East Legon Trio townhouses – East Legon development" },
@@ -186,13 +186,13 @@ export default function Home() {
         </section>
 
         {/* Why Brownstone */}
-        <section className="py-24 bg-corporate-blue">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-16 sm:py-20 md:py-24 bg-corporate-blue">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-20 flex flex-col gap-6">
               <span className="text-primary font-bold uppercase tracking-[0.3em] text-xs">
                 Why Choose Us
               </span>
-              <h2 className="text-4xl font-extrabold text-white font-serif">
+              <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-serif">
                 Excellence in Every Detail
               </h2>
               <div className="h-1 w-20 bg-primary mx-auto" />
@@ -220,8 +220,8 @@ export default function Home() {
         </section>
 
         {/* Contact CTA */}
-        <section className="py-24 bg-white">
-          <div className="max-w-7xl mx-auto px-6">
+        <section className="py-16 sm:py-20 md:py-24 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="bg-earthy rounded-2xl overflow-hidden flex flex-col lg:flex-row relative">
               <div
                 className="absolute inset-0 z-0 opacity-20 pointer-events-none"
@@ -231,12 +231,12 @@ export default function Home() {
                   backgroundSize: "40px 40px",
                 }}
               />
-              <div className="p-12 lg:p-20 lg:w-3/5 relative z-10">
-                <h2 className="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-8 font-serif">
+              <div className="p-8 sm:p-12 lg:p-20 lg:w-3/5 relative z-10">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6 sm:mb-8 font-serif">
                   Ready to Build Your <br />
                   <span className="text-primary">Legacy</span>?
                 </h2>
-                <p className="text-white/70 text-lg mb-12 font-light max-w-xl">
+                <p className="text-white/70 text-base sm:text-lg mb-8 sm:mb-12 font-light max-w-xl">
                   Consult with our team of lead architects and project managers to
                   bring your vision to life. We specialize in turn-key luxury
                   developments across Africa.
@@ -262,7 +262,7 @@ export default function Home() {
                 </div>
               </div>
               <div
-                className="lg:w-2/5 min-h-[300px] bg-cover bg-center grayscale hover:grayscale-0 transition-all duration-1000"
+                className="lg:w-2/5 min-h-[250px] sm:min-h-[300px] bg-cover bg-center grayscale hover:grayscale-0 transition-all duration-1000"
                 style={{
                   backgroundImage:
                     "url('https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=800&q=80')",

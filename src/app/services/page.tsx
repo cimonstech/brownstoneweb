@@ -47,9 +47,9 @@ export default function Services() {
   return (
     <div className="bg-background-light text-earthy min-h-screen">
       <Nav activePath="/services" />
-      <main className="pt-20">
+      <main className="pt-14 sm:pt-16 md:pt-20">
         {/* Hero - same structure as About / Contact */}
-        <section className="relative h-[80vh] w-full overflow-hidden">
+        <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full overflow-hidden">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
@@ -60,7 +60,7 @@ export default function Services() {
             <span className="text-primary font-bold uppercase tracking-[0.2em] text-xs mb-4 block">
               Excellence in Development
             </span>
-            <h1 className="text-white text-5xl md:text-7xl font-black leading-tight tracking-tight font-serif mb-6">
+            <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black leading-tight tracking-tight font-serif mb-4 sm:mb-6">
               Our Services
             </h1>
             <div className="w-24 h-1 bg-primary mx-auto mb-8" />
@@ -71,7 +71,7 @@ export default function Services() {
         </section>
 
         {/* Intro - same pattern as other pages */}
-        <section className="py-24 px-6 bg-background-light">
+        <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-background-light">
           <div className="max-w-7xl mx-auto text-center mb-16">
             <h2 className="text-earthy font-serif text-3xl md:text-4xl font-bold mb-6">
               Bespoke Solutions

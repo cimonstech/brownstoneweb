@@ -4,9 +4,9 @@ import { FaIcon } from "@/components/Icons";
 
 export default function Footer() {
   return (
-    <footer className="bg-earthy text-white pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-20">
+    <footer className="bg-earthy text-white pt-16 sm:pt-20 md:pt-24 pb-12 safe-area-pb">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 sm:gap-16 mb-16 sm:mb-20">
           <div className="flex flex-col gap-6">
             <div className="flex items-center gap-3">
               <Image
@@ -17,14 +17,14 @@ export default function Footer() {
                 className="h-5 w-auto object-contain"
               />
             </div>
-            <p className="text-white/50 text-sm leading-relaxed">
+            <p className="text-white/50 text-sm sm:text-base leading-relaxed">
               Setting the gold standard in African construction. Specializing in
               high-end residential, commercial towers, and sustainable urban
               infrastructure.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-3 sm:gap-4 flex-wrap">
               <a
-                className="size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all"
+                className="size-11 sm:size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all touch-manipulation"
                 href="https://x.com/brownstneltdgh"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -33,7 +33,7 @@ export default function Footer() {
                 <FaIcon name="xTwitter" className="size-5" />
               </a>
               <a
-                className="size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all"
+                className="size-11 sm:size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all touch-manipulation"
                 href="https://facebook.com/brownstonelimited"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -42,7 +42,7 @@ export default function Footer() {
                 <FaIcon name="facebook" className="size-5" />
               </a>
               <a
-                className="size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all"
+                className="size-11 sm:size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all touch-manipulation"
                 href="https://instagram.com/brownstone.ltd"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -51,7 +51,7 @@ export default function Footer() {
                 <FaIcon name="instagram" className="size-5" />
               </a>
               <a
-                className="size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all"
+                className="size-11 sm:size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all touch-manipulation"
                 href="https://www.linkedin.com/company/brownstone-construction-firm/"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -60,7 +60,7 @@ export default function Footer() {
                 <FaIcon name="linkedin" className="size-5" />
               </a>
               <a
-                className="size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all"
+                className="size-11 sm:size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all touch-manipulation"
                 href="https://wa.me/233244028485"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -71,7 +71,7 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4 className="text-lg font-bold mb-8 text-primary font-serif">Services</h4>
+            <h4 className="text-base sm:text-lg font-bold mb-6 sm:mb-8 text-primary font-serif">Services</h4>
             <ul className="flex flex-col gap-4 text-sm text-white/50">
               <li>
                 <Link href="/services" className="hover:text-white transition-colors">
@@ -96,7 +96,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-bold mb-8 text-primary font-serif">Company</h4>
+            <h4 className="text-base sm:text-lg font-bold mb-6 sm:mb-8 text-primary font-serif">Company</h4>
             <ul className="flex flex-col gap-4 text-sm text-white/50">
               <li>
                 <Link href="/about" className="hover:text-white transition-colors">
@@ -121,7 +121,7 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h4 className="text-lg font-bold mb-8 text-primary font-serif">Headquarters</h4>
+            <h4 className="text-base sm:text-lg font-bold mb-6 sm:mb-8 text-primary font-serif">Headquarters</h4>
             <div className="flex flex-col gap-4 text-sm text-white/50">
               <p>1 Airport Square, Accra – Ghana</p>
               <a
@@ -136,9 +136,9 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] uppercase tracking-[0.2em] font-bold text-white/30">
+        <div className="pt-8 sm:pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 sm:gap-6 text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold text-white/30 text-center md:text-left">
           <p>© 2025 Brownstone Construction Limited. All Rights Reserved.</p>
-          <div className="flex gap-8">
+          <div className="flex flex-wrap justify-center md:justify-end gap-4 sm:gap-8">
             <Link href="/admin/login" className="hover:text-white transition-colors">
               Admin login
             </Link>

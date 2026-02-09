@@ -90,7 +90,7 @@ export default async function BlogListPage({
   return (
     <div className="bg-background-light text-earthy min-h-screen">
       <Nav activePath="/blog" />
-      <main className="pt-20 pb-24 w-full max-w-[1440px] mx-auto px-6 md:px-20">
+      <main className="pt-14 sm:pt-16 md:pt-20 pb-16 sm:pb-24 w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-12 lg:px-20">
         <BlogListClient
           categories={categories}
           categoryCounts={categoryCounts}

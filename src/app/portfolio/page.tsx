@@ -70,15 +70,15 @@ export default function Portfolio() {
   return (
     <div className="bg-background-light text-earthy min-h-screen">
       <Nav activePath="/portfolio" />
-      <main className="pt-20">
-        <section className="relative h-[60vh] min-h-[500px] w-full flex items-center justify-center overflow-hidden">
+      <main className="pt-14 sm:pt-16 md:pt-20">
+        <section className="relative min-h-[350px] sm:min-h-[450px] md:min-h-[500px] h-[50vh] sm:h-[55vh] md:h-[60vh] w-full flex items-center justify-center overflow-hidden">
           <img
             alt="Brownstone Construction portfolio of luxury developments"
             className="absolute inset-0 w-full h-full object-cover"
             src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80"
           />
           <div className="absolute inset-0 bg-black/50 backdrop-brightness-75" />
-          <div className="relative z-10 text-center px-10">
+          <div className="relative z-10 text-center px-4 sm:px-6 md:px-10">
             <span className="text-primary text-xs font-bold uppercase tracking-[0.4em] mb-4 block">
               Excellence in Craftsmanship
             </span>
@@ -89,10 +89,10 @@ export default function Portfolio() {
           </div>
         </section>
 
-        <section className="px-10 py-16 lg:px-40 max-w-[1440px] mx-auto">
+        <section className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 lg:px-16 xl:px-24 max-w-[1440px] mx-auto">
           <div className="flex flex-col md:flex-row items-end justify-between gap-8 mb-16">
             <div className="max-w-2xl">
-              <h2 className="text-earthy text-3xl font-bold leading-tight mb-6 uppercase tracking-tight font-serif">
+              <h2 className="text-earthy text-2xl sm:text-3xl font-bold leading-tight mb-4 sm:mb-6 uppercase tracking-tight font-serif">
                 Defining the future of{" "}
                 <span className="text-primary">sustainable living.</span>
               </h2>

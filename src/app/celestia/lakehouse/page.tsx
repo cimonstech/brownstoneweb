@@ -26,7 +26,7 @@ export default function LakehousePage() {
       <Nav activePath="/portfolio" />
 
       {/* Hero — fullscreen intro */}
-      <section className="relative min-h-screen w-full flex flex-col justify-center items-center text-center">
+      <section className="relative min-h-[100svh] min-h-[600px] sm:min-h-[700px] w-full flex flex-col justify-center items-center text-center">
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[1.2s] ease-out"
@@ -45,7 +45,7 @@ export default function LakehousePage() {
           <span className="text-white/80 text-xs font-bold tracking-[0.4em] uppercase mb-6 block">
             A Brownstone Legacy
           </span>
-          <h1 className="text-white text-6xl md:text-[8rem] leading-none font-serif mb-8">
+          <h1 className="text-white text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[8rem] leading-none font-serif mb-6 sm:mb-8">
             The Lakehouse
           </h1>
           <div className="flex items-center justify-center gap-6 text-white/60">
@@ -67,7 +67,7 @@ export default function LakehousePage() {
             <span className="text-primary text-[10px] font-bold tracking-[0.4em] uppercase mb-6">
               Work & Productivity
             </span>
-            <h2 className="text-earthy text-4xl md:text-6xl font-serif mb-8 leading-tight">
+            <h2 className="text-earthy text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif mb-6 sm:mb-8 leading-tight">
               Elevated Workspaces
             </h2>
             <p className="text-earthy/70 text-lg font-light leading-relaxed max-w-md mb-10">
@@ -84,7 +84,7 @@ export default function LakehousePage() {
               </li>
             </ul>
           </div>
-          <div className="lg:col-span-7 flex gap-2 p-4 lg:p-8 bg-earthy/[0.02] items-stretch min-h-[420px]">
+          <div className="lg:col-span-7 flex gap-2 p-4 sm:p-6 lg:p-8 bg-earthy/[0.02] items-stretch min-h-[300px] sm:min-h-[360px] md:min-h-[420px]">
             {workImages.map((src) => (
               <div
                 key={src}
