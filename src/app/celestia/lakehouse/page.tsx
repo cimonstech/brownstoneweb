@@ -1,6 +1,7 @@
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import JettyLeadForm from "@/components/JettyLeadForm";
+import { FaIcon } from "@/components/Icons";
 
 export const metadata = {
   title: "The Lakehouse Experience | Celestia",
@@ -165,17 +166,17 @@ export default function LakehousePage() {
           </h2>
           <ul className="space-y-8 mt-10">
             {[
-              "Pool & sunset deck lounge",
-              "Bar & social terrace",
-              "Dining and restaurant spaces",
-              "Luxury kitchens",
-              "Private jetty with Volta Lake access",
-            ].map((item, i) => (
-              <li key={item} className="flex gap-6 group">
-                <span className="text-primary font-serif italic text-xl tabular-nums">
-                  {String(i + 1).padStart(2, "0")}
+              { label: "Pool & sunset deck lounge", icon: "umbrellaBeach" as const },
+              { label: "Bar & social terrace", icon: "martiniGlass" as const },
+              { label: "Dining and restaurant spaces", icon: "utensils" as const },
+              { label: "Luxury kitchens", icon: "kitchenSet" as const },
+              { label: "Private jetty with Volta Lake access", icon: "sailboat" as const },
+            ].map(({ label, icon }) => (
+              <li key={label} className="flex gap-6 group items-center">
+                <span className="text-primary/90 shrink-0">
+                  <FaIcon name={icon} className="text-xl" />
                 </span>
-                <span className="text-white/90 font-light">{item}</span>
+                <span className="text-white/90 font-light">{label}</span>
               </li>
             ))}
           </ul>

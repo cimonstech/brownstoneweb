@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
+import BrochureForm from "@/components/BrochureForm";
 
 export const metadata = {
   title: "Celestia | Luxury Living in Akosombo",
@@ -9,7 +10,6 @@ export const metadata = {
 };
 
 const R2_BASE = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
-
 const heroImage = `${R2_BASE}/MAIN-ENTRANCE-townhouse1-day.webp`;
 const philosophyImages = [
   `${R2_BASE}/BrownStone%20Celestia-Riverside-House.jpeg`,
@@ -40,7 +40,7 @@ export default function CelestiaPage() {
           />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            alt="Akosombo main entrance"
+            alt="Celestia Akosombo luxury townhouse exterior with modern gabled roof"
             className="h-full w-full object-cover scale-105"
             src={heroImage}
           />
@@ -67,7 +67,7 @@ export default function CelestiaPage() {
               href="#lakehouse"
               className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-4 rounded-lg font-bold text-lg hover:bg-white/20 transition-all text-center"
             >
-              Virtual Tour
+              Discover the Lakehouse
             </a>
           </div>
         </div>
@@ -96,10 +96,10 @@ export default function CelestiaPage() {
                 The Journey from Pressure to Peace
               </h2>
               <p className="text-xl text-earthy/70 leading-relaxed font-light">
-                Leave the relentless noise of Accra behind. Celestia is an
+                Leave the relentless noise of Accra behind — just 104km (90 minutes) away. Celestia is an
                 architectural masterpiece designed to harmonise with the dramatic
                 topography of the Volta region. Here, space isn&apos;t just a
-                luxury—it&apos;s a fundamental state of mind.
+                luxury—it&apos;s a fundamental state of mind and, for the visionary investor, a strategic wealth asset.
               </p>
               <div className="grid grid-cols-2 gap-8 pt-6">
                 <div className="flex flex-col gap-2">
@@ -133,7 +133,7 @@ export default function CelestiaPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-full w-full object-cover"
-                  alt="Celestia townhome unit"
+                  alt="Open-plan 2-bedroom townhouse interior with mountain views in Akosombo"
                   src={philosophyImages[1]}
                 />
               </div>
@@ -141,7 +141,7 @@ export default function CelestiaPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-full w-full object-cover"
-                  alt="Celestia riverside house"
+                  alt="Celestia Riverside House exterior overlooking Volta region in Akosombo"
                   src={philosophyImages[0]}
                 />
               </div>
@@ -170,7 +170,7 @@ export default function CelestiaPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  alt="Terraced townhomes in mountain setting"
+                  alt="Celestia Akosombo luxury townhouse exterior with modern gabled roof and mountain setting"
                   src={townhomesImage}
                 />
               </div>
@@ -215,7 +215,7 @@ export default function CelestiaPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  alt="Private luxury chalets in nature"
+                  alt="Luxury chalets Akosombo — private enclave with natural stone and river access"
                   src={chaletsImage}
                 />
               </div>
@@ -249,10 +249,10 @@ export default function CelestiaPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/contact"
+                  href="/celestia/chalets"
                   className="block w-full py-4 border border-earthy/20 rounded-lg font-bold hover:bg-earthy hover:text-white transition-all text-center"
                 >
-                  Request Brochure
+                  Explore Details
                 </Link>
               </div>
             </div>
@@ -271,25 +271,25 @@ export default function CelestiaPage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="rounded-xl h-64 w-full object-cover"
-                alt="Luxury spa and wellness area"
+                alt="Lakehouse at Celestia featuring poolside lounge and sunset deck"
                 src={lakehouseImages[0]}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="rounded-xl h-64 w-full object-cover translate-y-8"
-                alt="Modern office co-working space"
+                alt="State-of-the-art gym at Celestia Lakehouse with Volta Lake views"
                 src={lakehouseImages[1]}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="rounded-xl h-64 w-full object-cover"
-                alt="Modern gym with lake view"
+                alt="Wellness spa bathroom at Celestia Lakehouse, Akosombo"
                 src={lakehouseImages[2]}
               />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 className="rounded-xl h-64 w-full object-cover translate-y-8"
-                alt="Swimming pool area"
+                alt="Open-plan living area at Celestia Lakehouse with Volta Lake access"
                 src={lakehouseImages[3]}
               />
             </div>
@@ -359,34 +359,10 @@ export default function CelestiaPage() {
             Secure Your Piece of Peace
           </h2>
           <p className="text-earthy/60 text-lg mb-12">
-            Reservations are now open for Phase 1. Connect with our advisors to
-            receive the full prospectus and availability map.
+            Reservations are now open for Phase 1. Enter your email to receive
+            the property brochure and full prospectus.
           </p>
-          <form
-            action="/contact"
-            method="get"
-            className="flex flex-col md:flex-row gap-4"
-          >
-            <input
-              name="inquiry"
-              type="hidden"
-              value="Celestia Phase 1"
-            />
-            <input
-              suppressHydrationWarning
-              className="flex-1 px-6 py-4 rounded-lg border-2 border-[#f8f6f6] focus:border-primary focus:ring-0 outline-none transition-all text-earthy"
-              placeholder="Your Professional Email"
-              type="email"
-              name="email"
-            />
-            <button
-              suppressHydrationWarning
-              type="submit"
-              className="bg-primary text-white px-12 py-4 rounded-lg font-bold hover:bg-primary/90 transition-all"
-            >
-              Inquire Now
-            </button>
-          </form>
+          <BrochureForm project="celestia" variant="compact" />
           <p className="mt-6 text-xs text-earthy/40 uppercase tracking-widest">
             A Brownstone Construction Development
           </p>

@@ -41,27 +41,40 @@ export async function GET() {
   const items: { key: string; url: string; size: number; lastModified: string }[] = [];
   let continuationToken: string | undefined;
 
-  do {
-    const command = new ListObjectsV2Command({
-      Bucket: R2_BUCKET_NAME,
-      Prefix: "media/",
-      MaxKeys: 500,
-      ContinuationToken: continuationToken,
-    });
-    const response = await client.send(command);
+  try {
+    do {
+      const command = new ListObjectsV2Command({
+        Bucket: R2_BUCKET_NAME,
+        Prefix: "media/",
+        MaxKeys: 500,
+        ContinuationToken: continuationToken,
+      });
+      const response = await client.send(command);
 
-    for (const obj of response.Contents ?? []) {
-      if (obj.Key) {
-        items.push({
-          key: obj.Key,
-          url: `${R2_PUBLIC_URL}/${obj.Key}`,
-          size: obj.Size ?? 0,
-          lastModified: obj.LastModified?.toISOString() ?? "",
-        });
+      for (const obj of response.Contents ?? []) {
+        if (obj.Key) {
+          items.push({
+            key: obj.Key,
+            url: `${R2_PUBLIC_URL}/${obj.Key}`,
+            size: obj.Size ?? 0,
+            lastModified: obj.LastModified?.toISOString() ?? "",
+          });
+        }
       }
+      continuationToken = response.NextContinuationToken;
+    } while (continuationToken);
+  } catch (err: unknown) {
+    const code = err && typeof err === "object" && "Code" in err ? (err as { Code?: string }).Code : undefined;
+    if (code === "Unauthorized" || code === "AccessDenied" || (err as Error)?.name === "Unauthorized") {
+      return NextResponse.json(
+        {
+          error: "R2 access denied. Check R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY, bucket name, and that the API token has Object Read & List permissions.",
+        },
+        { status: 502 }
+      );
     }
-    continuationToken = response.NextContinuationToken;
-  } while (continuationToken);
+    throw err;
+  }
 
   // Newest first
   items.sort((a, b) => (b.lastModified > a.lastModified ? 1 : -1));

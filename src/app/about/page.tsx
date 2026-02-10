@@ -13,8 +13,8 @@ export default function About() {
         <section className="relative min-h-[60vh] sm:min-h-[70vh] md:min-h-[80vh] w-full overflow-hidden flex flex-col justify-center">
           <div className="absolute inset-0 z-0">
             <img
-              src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/MAIN-ENTRANCE-townhouse3.webp"
-              alt="Brownstone Construction main entrance and townhouse development"
+              src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/celestia-phase2.webp"
+              alt="Brownstone Construction Celestia phase two development"
               className="absolute inset-0 w-full h-full object-cover object-center"
             />
             <div className="absolute inset-0 bg-black/50 z-10" />
@@ -33,7 +33,7 @@ export default function About() {
                 href="/about#vision"
                 className="bg-primary text-white px-8 py-3 rounded-lg font-bold text-base hover:scale-105 transition-transform"
               >
-                Our Vision
+                Our Purpose
               </Link>
               <Link
                 href="/about#heritage"

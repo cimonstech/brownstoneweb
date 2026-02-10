@@ -66,7 +66,7 @@ export default function JettyLeadForm() {
           name="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Your email address"
+          placeholder="Your email"
           required
           disabled={status === "loading"}
           className="w-full px-5 py-4 rounded-lg border-2 border-white/30 bg-white/10 text-white placeholder:text-white/50 focus:border-white/60 focus:ring-0 focus:outline-none transition-colors disabled:opacity-70"

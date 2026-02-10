@@ -1,14 +1,41 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-
-export const metadata = {
-  title: "Celestia Townhouses | The Pinnacle of Refined Living in Akosombo",
-  description:
-    "Two-bedroom ensuite terraced homes with private Jacuzzis, waterfront access, and turnkey investment. Celestia Townhouses — where ambition meets serenity.",
-};
+import BrochureForm from "@/components/BrochureForm";
 
 const R2 = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
+const defaultOgImage = `${R2}/MAIN-ENTRANCE-townhouse1-day.webp`;
+
+export const metadata: Metadata = {
+  title: "Luxury Townhomes for Sale in Akosombo | Celestia by Brown Stone",
+  description:
+    "2-bedroom luxury townhomes at Celestia Akosombo: private Jacuzzis, waterfront access, high-yield rental potential. Turnkey investment 90 minutes from Accra. Phase 1 now open.",
+  keywords: [
+    "luxury townhomes Akosombo",
+    "Celestia townhouses",
+    "2-bedroom for sale Ghana",
+    "investment property Akosombo",
+    "high-yield rental property Ghana",
+    "vacation homes Volta",
+    "Celestia by Brown Stone",
+    "luxury real estate Akosombo",
+    "turnkey property Ghana",
+  ],
+  openGraph: {
+    title: "Luxury Townhomes for Sale in Akosombo | Celestia by Brown Stone",
+    description:
+      "2-bedroom luxury townhomes at Celestia Akosombo: private Jacuzzis, waterfront access, high-yield rental potential. Turnkey investment 90 minutes from Accra.",
+    images: [{ url: defaultOgImage, alt: "Celestia Akosombo luxury townhouse exterior with modern gabled roof" }],
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Luxury Townhomes for Sale in Akosombo | Celestia by Brown Stone",
+    description:
+      "2-bedroom luxury townhomes at Celestia: waterfront, Jacuzzis, turnkey investment. 90 minutes from Accra.",
+  },
+};
 const HERO_IMAGE = `${R2}/MAIN-ENTRANCE-townhouse1-day.webp`;
 const RESIDENCE_IMAGE = `${R2}/celestia-townhouse-LIVING-AREA1.webp`;
 const WATERFRONT_IMAGE = `${R2}/TOWNHOMEUNIT-portrait.webp`;
@@ -57,7 +84,7 @@ export default function TownhousesPage() {
           </p>
           <p className="text-white/85 text-base sm:text-lg max-w-2xl mx-auto font-light leading-relaxed mb-10">
             We designed these homes for people who’ve arrived — and who know that real luxury is
-            waking up to the lake, not the noise. Modern architecture meets the tranquil beauty of
+            waking up to the lake, not the noise. Just 90 minutes from Accra, modern architecture meets the tranquil beauty of
             Ghana’s Volta; ambition meets serenity. You’ll feel it the moment you step in.
           </p>
           <Link
@@ -292,10 +319,16 @@ export default function TownhousesPage() {
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-semibold leading-tight mb-4">
             Secure Your Private Viewing
           </h2>
-          <p className="text-white/85 text-lg font-light leading-relaxed mb-10">
-            Come see the townhouses in person or we’ll bring the tour to you — virtual or in person.
-            Our team is here to walk you through every step, no pressure.
+          <p className="text-white/85 text-lg font-light leading-relaxed mb-6">
+            Receive the property brochure by email, then book a private viewing when you’re ready.
           </p>
+          <div className="w-full max-w-md mx-auto mb-10">
+            <BrochureForm
+              project="townhouse"
+              successMessage="Thank you for your interest. We've sent the Celestia townhouse brochure to your email."
+              className="[&_input]:bg-white/10 [&_input]:border-white/30 [&_input]:text-white [&_input]:placeholder:text-white/60 [&_label]:text-white/90 [&_a]:text-primary [&_button]:border [&_button]:border-white/40 [&_button]:bg-transparent [&_button]:text-white [&_button:hover]:bg-white [&_button:hover]:text-earthy"
+            />
+          </div>
           <Link
             href="/contact?interest=townhouses"
             className="inline-flex items-center justify-center bg-primary text-white px-10 py-4 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg"

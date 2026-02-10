@@ -21,7 +21,6 @@ const navLinks: Array<
   { href: "/portfolio", label: "Projects" },
   { label: "Properties", items: propertyLinks },
   { href: "/blog", label: "Blog" },
-  { href: "/contact", label: "Contact" },
 ];
 
 export type NavVariant = "solid" | "transparent";
@@ -63,7 +62,7 @@ export default function Nav({ activePath = "/", variant = "solid" }: NavProps) {
       }`}
     >
       <div className="max-w-7xl mx-auto h-14 sm:h-16 md:h-20 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-3 shrink-0">
+        <Link href="/" className="flex items-center gap-3 shrink-0 ml-4 md:ml-0">
           <Image
             src="/BrownStone.png"
             alt="Brownstone Construction Limited"
@@ -120,7 +119,9 @@ export default function Nav({ activePath = "/", variant = "solid" }: NavProps) {
             className="md:hidden size-12 flex items-center justify-center rounded-lg text-earthy hover:bg-earthy/5 transition-colors touch-manipulation"
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
-            <FaIcon name={mobileOpen ? "xmark" : "bars"} className="text-xl" />
+            <span className="inline-flex items-center justify-center size-6 shrink-0" aria-hidden>
+              <FaIcon name={mobileOpen ? "xmark" : "bars"} className="w-full h-full" />
+            </span>
           </button>
         </div>
       </div>

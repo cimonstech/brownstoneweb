@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
+import { getContactReceivedHtml, getContactReceivedText } from "@/lib/emails/contact-received";
 
 export async function POST(request: Request) {
   const to = process.env.CONTACTFORMMAIL;
@@ -26,7 +27,8 @@ export async function POST(request: Request) {
   }
 
   const { name, email, projectType, message } = body;
-  if (!name?.trim() || !email?.trim() || !message?.trim()) {
+  const emailTrimmed = email?.trim() ?? "";
+  if (!name?.trim() || !emailTrimmed || !message?.trim()) {
     return NextResponse.json(
       { error: "Name, email, and message are required." },
       { status: 400 }
@@ -34,16 +36,20 @@ export async function POST(request: Request) {
   }
 
   const from = process.env.CONTACT_FROM_EMAIL || "Brownstone Contact <onboarding@resend.dev>";
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+    "https://brownstoneltd.com";
 
   try {
-    const { error } = await resend.emails.send({
+    const { error: inquiryError } = await resend.emails.send({
       from,
       to: to.trim(),
-      replyTo: email.trim(),
+      replyTo: emailTrimmed,
       subject: `Website inquiry from ${name.trim()}${projectType ? ` — ${projectType}` : ""}`,
       text: [
         `Name: ${name.trim()}`,
-        `Email: ${email.trim()}`,
+        `Email: ${emailTrimmed}`,
         projectType ? `Project type: ${projectType}` : null,
         "",
         "Message:",
@@ -53,12 +59,30 @@ export async function POST(request: Request) {
         .join("\n"),
     });
 
-    if (error) {
-      console.error("Resend error:", error);
+    if (inquiryError) {
+      console.error("Resend error (inquiry):", inquiryError);
       return NextResponse.json(
         { error: "Failed to send message. Please try again." },
         { status: 502 }
       );
+    }
+
+    const brownstoneLogoUrl =
+      typeof process.env.BROWNSTONE_LOGO_URL === "string" && process.env.BROWNSTONE_LOGO_URL.trim()
+        ? process.env.BROWNSTONE_LOGO_URL.trim()
+        : undefined;
+
+    const { error: autoReplyError } = await resend.emails.send({
+      from,
+      to: emailTrimmed,
+      subject: "We've received your message — Brownstone Construction",
+      html: getContactReceivedHtml(baseUrl, brownstoneLogoUrl),
+      text: getContactReceivedText(baseUrl),
+    });
+
+    if (autoReplyError) {
+      console.error("Resend error (auto-reply):", autoReplyError);
+      // Inquiry was sent; don't fail the request, only log
     }
 
     return NextResponse.json({ success: true });

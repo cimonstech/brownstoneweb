@@ -2,10 +2,12 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const STORAGE_KEY = "brownstone_exit_intent_shown";
 
 export default function ExitIntent() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState("");
@@ -13,7 +15,10 @@ export default function ExitIntent() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
 
+  const isAdmin = pathname?.startsWith("/admin") ?? false;
+
   const close = useCallback(() => {
+    if (typeof window !== "undefined") sessionStorage.setItem(STORAGE_KEY, "true");
     setOpen(false);
   }, []);
 
@@ -22,7 +27,7 @@ export default function ExitIntent() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isAdmin) return;
     if (typeof window === "undefined") return;
 
     const alreadyShown = sessionStorage.getItem(STORAGE_KEY);
@@ -31,6 +36,8 @@ export default function ExitIntent() {
     function handleMouseLeave(e: MouseEvent) {
       // Exit intent: cursor leaving through the top of the viewport (e.g. to close tab, back button)
       if (e.clientY <= 0) {
+        const alreadyShownThisSession = sessionStorage.getItem(STORAGE_KEY);
+        if (alreadyShownThisSession === "true") return;
         sessionStorage.setItem(STORAGE_KEY, "true");
         setOpen(true);
       }
@@ -81,7 +88,7 @@ export default function ExitIntent() {
     }
   }
 
-  if (!open) return null;
+  if (isAdmin || !open) return null;
 
   return (
     <div
@@ -140,7 +147,7 @@ export default function ExitIntent() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Your email address"
+                placeholder="Your email"
                 required
                 disabled={status === "loading"}
                 className="w-full px-4 py-3.5 rounded-lg border border-earthy/20 bg-white text-earthy placeholder:text-earthy/40 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-colors disabled:opacity-70 text-sm"

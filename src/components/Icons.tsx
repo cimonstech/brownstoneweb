@@ -24,6 +24,11 @@ import {
   faGlobe,
   faBars,
   faXmark,
+  faUmbrellaBeach,
+  faMartiniGlass,
+  faUtensils,
+  faKitchenSet,
+  faSailboat,
 } from "@fortawesome/free-solid-svg-icons";
 import { faLinkedin, faInstagram, faXTwitter, faFacebook, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
 
@@ -51,6 +56,11 @@ export const icons = {
   globe: faGlobe,
   bars: faBars,
   xmark: faXmark,
+  umbrellaBeach: faUmbrellaBeach,
+  martiniGlass: faMartiniGlass,
+  utensils: faUtensils,
+  kitchenSet: faKitchenSet,
+  sailboat: faSailboat,
   linkedin: faLinkedin,
   instagram: faInstagram,
   xTwitter: faXTwitter,

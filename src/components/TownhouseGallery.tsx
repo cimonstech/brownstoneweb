@@ -7,6 +7,7 @@ import { FaIcon } from "@/components/Icons";
 type GalleryImage = { src: string; alt: string };
 
 const SCROLL_RANGE_VH = 50; // vertical scroll (vh) that drives full horizontal gallery scroll
+const SECTION_HEIGHT_VH = 50; // section height in vh (matches scroll range for scroll-linked gallery)
 
 export default function TownhouseGallery({ images }: { images: GalleryImage[] }) {
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -47,7 +48,7 @@ export default function TownhouseGallery({ images }: { images: GalleryImage[] })
       if (!section || maxScrollX <= 0) return;
       const rect = section.getBoundingClientRect();
       const sectionTop = rect.top + window.scrollY;
-      const scrollRangePx = (SECTION_HEIGHT_VH / 100) * window.innerHeight;
+      const scrollRangePx = (SCROLL_RANGE_VH / 100) * window.innerHeight;
       const scrollY = window.scrollY;
       const progress = Math.max(0, Math.min(1, (scrollY - sectionTop) / scrollRangePx));
       setScrollOffset(progress * maxScrollX);
@@ -79,7 +80,7 @@ export default function TownhouseGallery({ images }: { images: GalleryImage[] })
       >
         <div
           className="sticky top-0 left-0 w-full flex items-center"
-          style={{ height: `${SECTION_HEIGHT_VH}vh` }}
+          style={{ height: `${SCROLL_RANGE_VH}vh` }}
         >
           <div
             ref={viewportRef}

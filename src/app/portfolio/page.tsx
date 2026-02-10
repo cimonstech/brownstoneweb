@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
@@ -29,16 +30,44 @@ const eastLegonImages = [
   { src: `${R2}/eastlegon-trio/eastlegon-trio3.webp`, alt: "East Legon Trio view" },
 ];
 
+const wilmaCrescentImages = [
+  { src: `${R2}/WilmaCrescent/wilmacresent1.webp`, alt: "Wilma Crescent development" },
+  { src: `${R2}/WilmaCrescent/wilmacresent2.webp`, alt: "Wilma Crescent" },
+  { src: `${R2}/WilmaCrescent/wilmacresent3.webp`, alt: "Wilma Crescent project" },
+  { src: `${R2}/WilmaCrescent/wilmacresent4.webp`, alt: "Wilma Crescent view" },
+  { src: `${R2}/WilmaCrescent/wilmacresent5.webp`, alt: "Wilma Crescent" },
+];
+
 const tabs = [
   { id: "celestia" as const, label: "Celestia" },
   { id: "east-legon" as const, label: "East Legon Trio" },
+  { id: "wilma-crescent" as const, label: "Wilma Crescent" },
 ];
 
+const TAB_FROM_PARAM: Record<string, "celestia" | "east-legon" | "wilma-crescent"> = {
+  celestia: "celestia",
+  "east-legon": "east-legon",
+  "wilma-crescent": "wilma-crescent",
+};
+
 export default function Portfolio() {
-  const [activeTab, setActiveTab] = useState<"celestia" | "east-legon">("celestia");
+  const searchParams = useSearchParams();
+  const projectParam = searchParams.get("project");
+  const initialTab = (projectParam && TAB_FROM_PARAM[projectParam]) || "celestia";
+  const [activeTab, setActiveTab] = useState<"celestia" | "east-legon" | "wilma-crescent">(initialTab);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string; index: number } | null>(null);
 
-  const images = activeTab === "celestia" ? celestiaImages : eastLegonImages;
+  useEffect(() => {
+    const tab = projectParam && TAB_FROM_PARAM[projectParam];
+    if (tab) setActiveTab(tab);
+  }, [projectParam]);
+
+  const images =
+    activeTab === "celestia"
+      ? celestiaImages
+      : activeTab === "east-legon"
+        ? eastLegonImages
+        : wilmaCrescentImages;
 
   const openLightbox = useCallback((src: string, alt: string, index: number) => {
     setLightbox({ src, alt, index });
@@ -128,7 +157,7 @@ export default function Portfolio() {
           </div>
 
           <div
-            className="columns-1 sm:columns-2 lg:columns-3 gap-6"
+            className="columns-1 sm:columns-2 md:columns-3 gap-6"
             style={{ columnGap: "1.5rem" }}
           >
             {images.map(({ src, alt }, i) => (

@@ -18,8 +18,8 @@ export default function ChaletsPage() {
           </h1>
           <p className="text-earthy/80 text-lg">
             This page is coming soon. In the meantime, explore{" "}
-            <Link href="/celestia/lakehouse" className="text-primary font-semibold underline hover:no-underline">
-              Celestia Lakehouse
+            <Link href="/celestia/townhouses" className="text-primary font-semibold underline hover:no-underline">
+              Celestia Townhouses
             </Link>
             .
           </p>

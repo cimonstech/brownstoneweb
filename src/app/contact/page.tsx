@@ -115,7 +115,7 @@ export default function Contact() {
                       <input
                         name="email"
                         className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-brown-deep placeholder:text-neutral-grey/50"
-                        placeholder="email@example.com"
+                        placeholder="Your email"
                         type="email"
                         required
                       />

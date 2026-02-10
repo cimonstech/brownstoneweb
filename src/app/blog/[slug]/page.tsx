@@ -255,7 +255,7 @@ export default async function BlogPostPage({ params }: Props) {
             <form className="flex flex-col md:flex-row gap-4" action="#">
               <input
                 type="email"
-                placeholder="Your professional email"
+                placeholder="Your email"
                 className="flex-1 bg-white/10 border border-white/20 text-white rounded-lg focus:ring-primary focus:border-primary px-6 py-4 outline-none placeholder:text-white/60"
               />
               <button

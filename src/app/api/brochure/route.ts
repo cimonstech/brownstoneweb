@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { getCelestiaBrochureHtml, getCelestiaBrochureText } from "@/lib/emails/celestia-brochure";
+import {
+  getCelestiaBrochureHtml,
+  getCelestiaBrochureText,
+  type BrochureProject,
+} from "@/lib/emails/celestia-brochure";
 
 export async function POST(request: Request) {
   if (!process.env.RESEND_API_KEY) {
@@ -13,7 +16,7 @@ export async function POST(request: Request) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  let body: { email?: string; consent?: boolean };
+  let body: { email?: string; project?: string; consent?: boolean };
   try {
     body = await request.json();
   } catch {
@@ -21,6 +24,9 @@ export async function POST(request: Request) {
   }
 
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+  const project = (body.project === "townhouse" || body.project === "lakehouse" || body.project === "celestia"
+    ? body.project
+    : "celestia") as BrochureProject;
   const consent = body.consent === true;
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -32,7 +38,7 @@ export async function POST(request: Request) {
 
   if (!consent) {
     return NextResponse.json(
-      { error: "Please accept the terms to receive your exclusive details." },
+      { error: "Please accept the terms to receive the brochure." },
       { status: 400 }
     );
   }
@@ -42,30 +48,17 @@ export async function POST(request: Request) {
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
     "https://brownstoneltd.com";
 
-  try {
-    if (
-      process.env.SUPABASE_SERVICE_ROLE_KEY &&
-      process.env.NEXT_PUBLIC_SUPABASE_URL
-    ) {
-      const supabase = createAdminClient();
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for lakehouse_leads insert
-      await supabase.from("lakehouse_leads").insert({ email, consent } as any);
-    }
-  } catch (dbErr) {
-    console.warn("Lakehouse lead DB insert failed (optional):", dbErr);
-  }
-
   const brochurePdfUrl =
     typeof process.env.BROCHURE_PDF_URL === "string" && process.env.BROCHURE_PDF_URL.trim()
       ? process.env.BROCHURE_PDF_URL.trim()
       : null;
 
+  const html = getCelestiaBrochureHtml(baseUrl, project, brochurePdfUrl);
+  const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl);
+
   const from =
     process.env.CONTACT_FROM_EMAIL || "Brownstone <onboarding@resend.dev>";
   const subject = "Your Celestia Property Brochure — Brownstone Construction";
-
-  const html = getCelestiaBrochureHtml(baseUrl, "lakehouse", brochurePdfUrl);
-  const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl);
 
   const { error } = await resend.emails.send({
     from,
@@ -76,9 +69,9 @@ export async function POST(request: Request) {
   });
 
   if (error) {
-    console.error("Resend error:", error);
+    console.error("Resend error (brochure):", error);
     return NextResponse.json(
-      { error: "We could not send the email. Please try again." },
+      { error: "We could not send the brochure. Please try again." },
       { status: 502 }
     );
   }

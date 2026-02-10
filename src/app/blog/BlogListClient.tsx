@@ -227,7 +227,7 @@ export function BlogListClient({
               <div className="space-y-3">
                 <input
                   type="email"
-                  placeholder="Email Address"
+                  placeholder="Your email"
                   className="w-full bg-white border border-earthy/10 rounded-lg text-sm px-4 py-3 focus:ring-primary focus:border-primary outline-none"
                 />
                 <button

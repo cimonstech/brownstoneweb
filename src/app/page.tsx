@@ -13,7 +13,7 @@ export default function Home() {
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent z-10" />
             <img
-              src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/lakehouseimage_0350.webp"
+              src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/lakehouse-wide.webp"
               alt="Brownstone Construction luxury development and modern architecture"
               className="absolute inset-0 w-full h-full object-cover object-center scale-105"
             />
@@ -40,7 +40,9 @@ export default function Home() {
                   className="bg-primary text-white px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg font-bold text-xs sm:text-sm uppercase tracking-widest flex items-center gap-2 hover:bg-white hover:text-earthy transition-all touch-manipulation"
                 >
                   Explore Projects
-                  <FaIcon name="arrowRight" className="text-sm" />
+                  <span className="inline-flex items-center justify-center w-4 h-4 shrink-0" aria-hidden>
+                    <FaIcon name="arrowRight" className="w-full h-full" />
+                  </span>
                 </Link>
                 <Link
                   href="/about"
@@ -152,10 +154,11 @@ export default function Home() {
                 View All Projects
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
               {[
                 { location: "Akosombo", title: "Celestia", href: "/celestia", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CHALETS_.webp", alt: "Celestia chalets at Akosombo – luxury residential development" },
-                { location: "East Legon", title: "East Legon Trio", href: "/portfolio", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/east-legon-townhouses2.webp", alt: "East Legon Trio townhouses – East Legon development" },
+                { location: "East Legon", title: "East Legon Trio", href: "/portfolio?project=east-legon", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/east-legon-townhouses2.webp", alt: "East Legon Trio townhouses – East Legon development" },
+                { location: "Wilma Crescent", title: "Wilma Crescent", href: "/portfolio?project=wilma-crescent", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/WilmaCrescent/wilmacresent1.webp", alt: "Wilma Crescent development" },
               ].map(({ location, title, href, img, alt }) => (
                 <div
                   key={title}
