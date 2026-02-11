@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { NowSellingSidebar } from "@/components/blog/NowSellingSidebar";
+import { assetUrl } from "@/lib/assets";
 
 type Category = { id: string; name: string; slug: string };
 type NowSellingItem = { position: number; image_url: string | null; property_name: string | null; project_link: string | null };
@@ -53,7 +54,7 @@ export function BlogListClient({
     p.post_categories?.[0]?.categories ?? null;
 
   const BLOG_HEADER_IMAGE =
-    "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/blogIMG_0350.webp";
+    assetUrl("blogIMG_0350.webp");
 
   return (
     <>

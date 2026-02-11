@@ -2,6 +2,7 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BrochureForm from "@/components/BrochureForm";
+import { assetUrl } from "@/lib/assets";
 
 export const metadata = {
   title: "Celestia | Luxury Living in Akosombo",
@@ -9,19 +10,18 @@ export const metadata = {
     "Experience the pinnacle of luxury living in Akosombo by Brownstone Construction. Where luxury finds its true landscape.",
 };
 
-const R2_BASE = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
-const heroImage = `${R2_BASE}/MAIN-ENTRANCE-townhouse1-day.webp`;
+const heroImage = assetUrl("MAIN-ENTRANCE-townhouse1-day.webp");
 const philosophyImages = [
-  `${R2_BASE}/BrownStone%20Celestia-Riverside-House.jpeg`,
-  `${R2_BASE}/celestia-townhouse-LIVING-AREA1.webp`,
+  assetUrl("BrownStone%20Celestia-Riverside-House.jpeg"),
+  assetUrl("celestia-townhouse-LIVING-AREA1.webp"),
 ];
-const townhomesImage = `${R2_BASE}/TOWNHOMEUNIT-portrait.webp`;
-const chaletsImage = `${R2_BASE}/CHALET-UNIT-PERSPECTIVE_DAY.webp`;
+const townhomesImage = assetUrl("TOWNHOMEUNIT-portrait.webp");
+const chaletsImage = assetUrl("CHALET-UNIT-PERSPECTIVE_DAY.webp");
 const lakehouseImages = [
-  `${R2_BASE}/lakehouse/LAKEHOUSE_LIVING-AREA.webp`,
-  `${R2_BASE}/lakehouse/LAKEHOUSE-GYM.webp`,
-  `${R2_BASE}/lakehouse/LAKEHOUSE-BATHROOM.webp`,
-  `${R2_BASE}/lakehouse/LAKEHOUSE_LIVING-AREA3.webp`,
+  assetUrl("lakehouse/LAKEHOUSE_LIVING-AREA.webp"),
+  assetUrl("lakehouse/LAKEHOUSE-GYM.webp"),
+  assetUrl("lakehouse/LAKEHOUSE-BATHROOM.webp"),
+  assetUrl("lakehouse/LAKEHOUSE_LIVING-AREA3.webp"),
 ];
 export default function CelestiaPage() {
   return (

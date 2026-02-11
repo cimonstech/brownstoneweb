@@ -4,8 +4,9 @@
  * Celestia logo + Brownstone brand colors.
  */
 
-const CELESTIA_LOGO_URL =
-  "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CelestiaLogo-bstone.png";
+import { assetUrl } from "@/lib/assets";
+
+const CELESTIA_LOGO_URL = assetUrl("CelestiaLogo-bstone.png");
 
 // Brownstone palette
 const EARTHY = "#411600";

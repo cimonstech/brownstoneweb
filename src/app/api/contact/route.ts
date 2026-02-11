@@ -35,7 +35,10 @@ export async function POST(request: Request) {
     );
   }
 
-  const from = process.env.CONTACT_FROM_EMAIL || "Brownstone Contact <onboarding@resend.dev>";
+  const fromInquiry =
+    process.env.RESEND_FROM_SUPPORT || process.env.CONTACT_FROM_EMAIL || "Brownstone Support <support@brownstoneltd.com>";
+  const fromAutoReply =
+    process.env.RESEND_FROM_NOREPLY || process.env.CONTACT_FROM_EMAIL || "Brownstone <noreply@brownstoneltd.com>";
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
@@ -43,7 +46,7 @@ export async function POST(request: Request) {
 
   try {
     const { error: inquiryError } = await resend.emails.send({
-      from,
+      from: fromInquiry,
       to: to.trim(),
       replyTo: emailTrimmed,
       subject: `Website inquiry from ${name.trim()}${projectType ? ` — ${projectType}` : ""}`,
@@ -73,7 +76,7 @@ export async function POST(request: Request) {
         : undefined;
 
     const { error: autoReplyError } = await resend.emails.send({
-      from,
+      from: fromAutoReply,
       to: emailTrimmed,
       subject: "We've received your message — Brownstone Construction",
       html: getContactReceivedHtml(baseUrl, brownstoneLogoUrl),

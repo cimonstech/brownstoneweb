@@ -3,7 +3,9 @@
  * Refined, understated luxury tone. No spam triggers.
  */
 
-const LOGO_URL = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CelestiaLogo-bstone.png";
+import { assetUrl } from "@/lib/assets";
+
+const LOGO_URL = assetUrl("CelestiaLogo-bstone.png");
 const PRIMARY = "#411600";
 const PRIMARY_LIGHT = "#5c3d2e";
 const MUTED = "#7a5c4a";

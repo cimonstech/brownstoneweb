@@ -3,14 +3,14 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import BrochureForm from "@/components/BrochureForm";
+import { assetUrl } from "@/lib/assets";
 
-const R2 = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
-const defaultOgImage = `${R2}/MAIN-ENTRANCE-townhouse1-day.webp`;
+const defaultOgImage = assetUrl("MAIN-ENTRANCE-townhouse1-day.webp");
 
 export const metadata: Metadata = {
-  title: "Luxury Townhomes for Sale in Akosombo | Celestia by Brown Stone",
+  title: "Luxury Townhomes for Sale in Akosombo | Celestia",
   description:
-    "2-bedroom luxury townhomes at Celestia Akosombo: private Jacuzzis, waterfront access, high-yield rental potential. Turnkey investment 90 minutes from Accra. Phase 1 now open.",
+    "2-bedroom luxury townhomes at Celestia Akosombo: Jacuzzis, waterfront, turnkey investment. 90 min from Accra. Phase 1 now open.",
   keywords: [
     "luxury townhomes Akosombo",
     "Celestia townhouses",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     "turnkey property Ghana",
   ],
   openGraph: {
-    title: "Luxury Townhomes for Sale in Akosombo | Celestia by Brown Stone",
+    title: "Luxury Townhomes for Sale in Akosombo | Celestia",
     description:
       "2-bedroom luxury townhomes at Celestia Akosombo: private Jacuzzis, waterfront access, high-yield rental potential. Turnkey investment 90 minutes from Accra.",
     images: [{ url: defaultOgImage, alt: "Celestia Akosombo luxury townhouse exterior with modern gabled roof" }],
@@ -31,25 +31,24 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Luxury Townhomes for Sale in Akosombo | Celestia by Brown Stone",
+    title: "Luxury Townhomes for Sale in Akosombo | Celestia",
     description:
       "2-bedroom luxury townhomes at Celestia: waterfront, Jacuzzis, turnkey investment. 90 minutes from Accra.",
   },
 };
-const HERO_IMAGE = `${R2}/MAIN-ENTRANCE-townhouse1-day.webp`;
-const RESIDENCE_IMAGE = `${R2}/celestia-townhouse-LIVING-AREA1.webp`;
-const WATERFRONT_IMAGE = `${R2}/TOWNHOMEUNIT-portrait.webp`;
+const HERO_IMAGE = assetUrl("MAIN-ENTRANCE-townhouse1-day.webp");
+const RESIDENCE_IMAGE = assetUrl("celestia-townhouse-LIVING-AREA1.webp");
+const WATERFRONT_IMAGE = assetUrl("TOWNHOMEUNIT-portrait.webp");
 
-const R2_TOWNHOUSE = `${R2}/townhouse`;
 const GALLERY_IMAGES = [
-  { src: `${R2}/celestia-townhouse-LIVING-AREA1.webp`, alt: "Celestia townhouse living area" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA2.webp`, alt: "Celestia townhouse living area" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA3.webp`, alt: "Celestia townhouse living area" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA4.webp`, alt: "Celestia townhouse living area" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA5.webp`, alt: "Celestia townhouse living area" },
-  { src: `${R2_TOWNHOUSE}/celestia-townhouse-BEDROOM1.webp`, alt: "Celestia townhouse bedroom" },
-  { src: `${R2_TOWNHOUSE}/celestia-townhouse-BEDROOM2.webp`, alt: "Celestia townhouse bedroom" },
-  { src: `${R2_TOWNHOUSE}/celestia-townhouse-BEDROOM3.webp`, alt: "Celestia townhouse bedroom" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA1.webp"), alt: "Celestia townhouse living area" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA2.webp"), alt: "Celestia townhouse living area" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA3.webp"), alt: "Celestia townhouse living area" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA4.webp"), alt: "Celestia townhouse living area" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA5.webp"), alt: "Celestia townhouse living area" },
+  { src: assetUrl("townhouse/celestia-townhouse-BEDROOM1.webp"), alt: "Celestia townhouse bedroom" },
+  { src: assetUrl("townhouse/celestia-townhouse-BEDROOM2.webp"), alt: "Celestia townhouse bedroom" },
+  { src: assetUrl("townhouse/celestia-townhouse-BEDROOM3.webp"), alt: "Celestia townhouse bedroom" },
 ];
 
 export default function TownhousesPage() {
@@ -312,7 +311,7 @@ export default function TownhousesPage() {
         <div className="absolute inset-0 z-0 opacity-20">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${R2}/celestia-townhouse-LIVING-AREA3.webp)` }}
+            style={{ backgroundImage: `url(${assetUrl("celestia-townhouse-LIVING-AREA3.webp")})` }}
           />
         </div>
         <div className="relative z-10 text-center max-w-2xl mx-auto">

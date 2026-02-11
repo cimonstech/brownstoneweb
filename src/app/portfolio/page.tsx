@@ -7,35 +7,35 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
 
-const R2 = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
+import { assetUrl } from "@/lib/assets";
 
 const celestiaImages = [
-  { src: `${R2}/MAIN-ENTRANCE-townhouse1-day.webp`, alt: "Celestia main entrance" },
-  { src: `${R2}/TOWNHOMEUNIT-portrait.webp`, alt: "Celestia townhome unit" },
-  { src: `${R2}/CHALETS_.webp`, alt: "Celestia chalets" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA1.webp`, alt: "Celestia living area" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA3.webp`, alt: "Celestia living area interior" },
-  { src: `${R2}/MAIN-ENTRANCE-townhouse2.webp`, alt: "Celestia townhouse exterior" },
-  { src: `${R2}/celestia-townhouse-LIVING-AREA5.webp`, alt: "Celestia townhouse living space" },
+  { src: assetUrl("MAIN-ENTRANCE-townhouse1-day.webp"), alt: "Celestia main entrance" },
+  { src: assetUrl("TOWNHOMEUNIT-portrait.webp"), alt: "Celestia townhome unit" },
+  { src: assetUrl("CHALETS_.webp"), alt: "Celestia chalets" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA1.webp"), alt: "Celestia living area" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA3.webp"), alt: "Celestia living area interior" },
+  { src: assetUrl("MAIN-ENTRANCE-townhouse2.webp"), alt: "Celestia townhouse exterior" },
+  { src: assetUrl("celestia-townhouse-LIVING-AREA5.webp"), alt: "Celestia townhouse living space" },
 ];
 
 const eastLegonImages = [
-  { src: `${R2}/east-legon-townhouses2.webp`, alt: "East Legon Trio townhouses development" },
-  { src: `${R2}/east-legon-townhouses3.webp`, alt: "East Legon Trio townhouse exterior" },
-  { src: `${R2}/east-legon-townhouses4.webp`, alt: "East Legon Trio project view" },
-  { src: `${R2}/EastLegon-3D.webp`, alt: "East Legon Trio" },
-  { src: `${R2}/eastlegon-townhouses.webp`, alt: "East Legon Trio townhouses" },
-  { src: `${R2}/eastlegon-trio/eastlegon-trio1.webp`, alt: "East Legon Trio development" },
-  { src: `${R2}/eastlegon-trio/eastlegon-trio2.webp`, alt: "East Legon Trio project" },
-  { src: `${R2}/eastlegon-trio/eastlegon-trio3.webp`, alt: "East Legon Trio view" },
+  { src: assetUrl("east-legon-townhouses2.webp"), alt: "East Legon Trio townhouses development" },
+  { src: assetUrl("east-legon-townhouses3.webp"), alt: "East Legon Trio townhouse exterior" },
+  { src: assetUrl("east-legon-townhouses4.webp"), alt: "East Legon Trio project view" },
+  { src: assetUrl("EastLegon-3D.webp"), alt: "East Legon Trio" },
+  { src: assetUrl("eastlegon-townhouses.webp"), alt: "East Legon Trio townhouses" },
+  { src: assetUrl("eastlegon-trio/eastlegon-trio1.webp"), alt: "East Legon Trio development" },
+  { src: assetUrl("eastlegon-trio/eastlegon-trio2.webp"), alt: "East Legon Trio project" },
+  { src: assetUrl("eastlegon-trio/eastlegon-trio3.webp"), alt: "East Legon Trio view" },
 ];
 
 const wilmaCrescentImages = [
-  { src: `${R2}/WilmaCrescent/wilmacresent1.webp`, alt: "Wilma Crescent development" },
-  { src: `${R2}/WilmaCrescent/wilmacresent2.webp`, alt: "Wilma Crescent" },
-  { src: `${R2}/WilmaCrescent/wilmacresent3.webp`, alt: "Wilma Crescent project" },
-  { src: `${R2}/WilmaCrescent/wilmacresent4.webp`, alt: "Wilma Crescent view" },
-  { src: `${R2}/WilmaCrescent/wilmacresent5.webp`, alt: "Wilma Crescent" },
+  { src: assetUrl("WilmaCrescent/wilmacresent1.webp"), alt: "Wilma Crescent development" },
+  { src: assetUrl("WilmaCrescent/wilmacresent2.webp"), alt: "Wilma Crescent" },
+  { src: assetUrl("WilmaCrescent/wilmacresent3.webp"), alt: "Wilma Crescent project" },
+  { src: assetUrl("WilmaCrescent/wilmacresent4.webp"), alt: "Wilma Crescent view" },
+  { src: assetUrl("WilmaCrescent/wilmacresent5.webp"), alt: "Wilma Crescent" },
 ];
 
 const tabs = [

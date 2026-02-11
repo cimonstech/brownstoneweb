@@ -30,7 +30,7 @@ import {
   faKitchenSet,
   faSailboat,
 } from "@fortawesome/free-solid-svg-icons";
-import { faLinkedin, faInstagram, faXTwitter, faFacebook, faWhatsapp } from "@fortawesome/free-brands-svg-icons";
+import { faLinkedin, faInstagram, faXTwitter, faFacebook, faWhatsapp, faYoutube } from "@fortawesome/free-brands-svg-icons";
 
 export { FontAwesomeIcon };
 export const icons = {
@@ -66,6 +66,7 @@ export const icons = {
   xTwitter: faXTwitter,
   facebook: faFacebook,
   whatsapp: faWhatsapp,
+  youtube: faYoutube,
 } as const;
 
 export type IconName = keyof typeof icons;

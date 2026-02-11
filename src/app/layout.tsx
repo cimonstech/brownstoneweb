@@ -15,12 +15,24 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
+const baseUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+  "https://brownstoneltd.com";
+
 export const metadata: Metadata = {
-  title: "Brownstone Construction Limited | Luxury Construction in Accra",
+  metadataBase: new URL(baseUrl),
+  title: {
+    default: "Brownstone Construction | Luxury Construction in Accra",
+    template: "%s | Brownstone Construction",
+  },
   description:
-    "Brownstone Construction Limited — Reinventing Africa's Future, Brick by Brick. Premium construction and real estate development in Accra, Ghana.",
+    "Premium construction and real estate development in Accra, Ghana. Reinventing Africa's future, brick by brick.",
   icons: {
     icon: "/favicon.ico",
+  },
+  openGraph: {
+    url: baseUrl,
   },
 };
 
@@ -35,9 +47,40 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const orgSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Brownstone Construction Limited",
+    url: baseUrl,
+    logo: `${baseUrl}/BrownStoneW.png`,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "1 Airport Square",
+      addressLocality: "Accra",
+      addressCountry: "GH",
+    },
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: "+233-244-028-773",
+      email: "info@brownstoneltd.com",
+      contactType: "customer service",
+    },
+    sameAs: [
+      "https://x.com/brownstneltdgh",
+      "https://facebook.com/brownstonelimited",
+      "https://instagram.com/brownstone.ltd",
+      "https://www.linkedin.com/company/brownstone-construction-firm/",
+      "https://www.youtube.com/@brownstoneltd",
+    ],
+  };
+
   return (
     <html lang="en" className={`${manrope.variable} ${playfair.variable}`}>
       <body className="min-h-screen bg-white text-dark-brown antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
+        />
         {children}
         <ExitIntent />
       </body>

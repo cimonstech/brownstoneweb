@@ -61,7 +61,7 @@ export async function POST(request: Request) {
       : null;
 
   const from =
-    process.env.CONTACT_FROM_EMAIL || "Brownstone <onboarding@resend.dev>";
+    process.env.RESEND_FROM_NOREPLY || process.env.CONTACT_FROM_EMAIL || "Brownstone <noreply@brownstoneltd.com>";
   const subject = "Your Celestia Property Brochure — Brownstone Construction";
 
   const html = getCelestiaBrochureHtml(baseUrl, "lakehouse", brochurePdfUrl);

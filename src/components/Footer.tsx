@@ -68,6 +68,15 @@ export default function Footer() {
               >
                 <FaIcon name="whatsapp" className="size-5" />
               </a>
+              <a
+                className="size-11 sm:size-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:border-primary transition-all touch-manipulation"
+                href="https://www.youtube.com/@brownstoneltd"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+              >
+                <FaIcon name="youtube" className="size-5" />
+              </a>
             </div>
           </div>
           <div>

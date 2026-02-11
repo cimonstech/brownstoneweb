@@ -2,6 +2,7 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
+import { assetUrl } from "@/lib/assets";
 
 export default function Home() {
   return (
@@ -60,7 +61,7 @@ export default function Home() {
           <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-20 items-center">
             <div className="relative">
               <img
-                src="https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/TOWNHOMEUNIT-portrait.webp"
+                src={assetUrl("TOWNHOMEUNIT-portrait.webp")}
                 alt="Brownstone Construction townhome unit portrait – luxury residential development"
                 className="aspect-[4/5] w-full object-cover object-center rounded-xl shadow-2xl"
               />
@@ -156,9 +157,9 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
               {[
-                { location: "Akosombo", title: "Celestia", href: "/celestia", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/CHALETS_.webp", alt: "Celestia chalets at Akosombo – luxury residential development" },
-                { location: "East Legon", title: "East Legon Trio", href: "/portfolio?project=east-legon", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/east-legon-townhouses2.webp", alt: "East Legon Trio townhouses – East Legon development" },
-                { location: "Wilma Crescent", title: "Wilma Crescent", href: "/portfolio?project=wilma-crescent", img: "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main/WilmaCrescent/wilmacresent1.webp", alt: "Wilma Crescent development" },
+                { location: "Akosombo", title: "Celestia", href: "/celestia", img: assetUrl("CHALETS_.webp"), alt: "Celestia chalets at Akosombo – luxury residential development" },
+                { location: "East Legon", title: "East Legon Trio", href: "/portfolio?project=east-legon", img: assetUrl("east-legon-townhouses2.webp"), alt: "East Legon Trio townhouses – East Legon development" },
+                { location: "Wilma Crescent", title: "Wilma Crescent", href: "/portfolio?project=wilma-crescent", img: assetUrl("WilmaCrescent/wilmacresent1.webp"), alt: "Wilma Crescent development" },
               ].map(({ location, title, href, img, alt }) => (
                 <div
                   key={title}

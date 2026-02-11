@@ -59,8 +59,12 @@ If `BROCHURE_PDF_URL` is not set, the email still sends; it just omits the downl
 Required env (already in use):
 
 - **`RESEND_API_KEY`** — From [Resend](https://resend.com) → API Keys.
-- **`CONTACT_FROM_EMAIL`** — Sender for all Resend emails (e.g. `Brownstone <hello@yourdomain.com>`). Must be a verified domain in Resend.
+- **`RESEND_FROM_SUPPORT`** — Sender for inquiry emails to your team (e.g. `Brownstone Support <support@brownstoneltd.com>`). Must use a verified domain.
+- **`RESEND_FROM_NOREPLY`** — Sender for automated emails to users (auto-reply, brochure) (e.g. `Brownstone <noreply@brownstoneltd.com>`). Must use a verified domain.
+- **`CONTACT_FROM_EMAIL`** — Fallback if the above are not set. Prefer `RESEND_FROM_SUPPORT` and `RESEND_FROM_NOREPLY` for clarity.
 - **`CONTACTFORMMAIL`** — Where contact form submissions are sent (your team inbox).
+
+**Important:** Verify `brownstoneltd.com` at [resend.com/domains](https://resend.com/domains) before sending. Unverified domains can only send to your own email.
 
 ### Newsletters with Resend
 
@@ -99,7 +103,9 @@ If you want, we can add a small **newsletter signup API** that:
 | Variable | Purpose |
 |----------|---------|
 | `RESEND_API_KEY` | Resend API key (required for all emails). |
-| `CONTACT_FROM_EMAIL` | Sender address for Resend (e.g. `Brownstone <hello@brownstoneltd.com>`). |
+| `RESEND_FROM_SUPPORT` | Sender for inquiry emails to your team (e.g. `Brownstone Support <support@brownstoneltd.com>`). Use verified domain. |
+| `RESEND_FROM_NOREPLY` | Sender for automated emails to users (e.g. `Brownstone <noreply@brownstoneltd.com>`). Use verified domain. |
+| `CONTACT_FROM_EMAIL` | Fallback sender if the above are not set. |
 | `CONTACTFORMMAIL` | Recipient for contact form submissions. |
 | `BROWNSTONE_LOGO_URL` | Optional. Logo URL for contact auto-reply (other emails). |
 | `BROCHURE_PDF_URL` | Optional. URL of Celestia brochure PDF for the “Download PDF” link in brochure email. |

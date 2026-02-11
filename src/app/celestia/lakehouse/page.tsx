@@ -2,6 +2,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import JettyLeadForm from "@/components/JettyLeadForm";
 import { FaIcon } from "@/components/Icons";
+import { assetUrl } from "@/lib/assets";
 
 export const metadata = {
   title: "The Lakehouse Experience | Celestia",
@@ -9,17 +10,14 @@ export const metadata = {
     "Designed for focus, wellness, and connection. Explore workspaces, wellness amenities, and leisure spaces at Celestia Lakehouse.",
 };
 
-const R2 = "https://pub-3e7b2072ee7b4288bdc8a3613d022372.r2.dev/main";
-const LH = `${R2}/lakehouse`;
-
 const workImages = [
-  `${LH}/LAKEHOUSE_LIVING-AREA.webp`,
-  `${LH}/CONFERENCE-AREA.webp`,
-  `${LH}/WORK-AREA.webp`,
+  assetUrl("lakehouse/LAKEHOUSE_LIVING-AREA.webp"),
+  assetUrl("lakehouse/CONFERENCE-AREA.webp"),
+  assetUrl("lakehouse/WORK-AREA.webp"),
 ];
 const wellnessImages = [
-  { src: `${LH}/LAKEHOUSE-GYM.webp`, label: "State-of-the-art gym", title: "Peak Performance" },
-  { src: `${LH}/LAKEHOUSE-BATHROOM.webp`, label: "Massage & restoration", title: "Therapeutic Relaxation" },
+  { src: assetUrl("lakehouse/LAKEHOUSE-GYM.webp"), label: "State-of-the-art gym", title: "Peak Performance" },
+  { src: assetUrl("lakehouse/LAKEHOUSE-BATHROOM.webp"), label: "Massage & restoration", title: "Therapeutic Relaxation" },
 ];
 export default function LakehousePage() {
   return (
@@ -32,7 +30,7 @@ export default function LakehousePage() {
           <div
             className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-[1.2s] ease-out"
             style={{
-              backgroundImage: `url(${LH}/lakehouse_frontview.webp)`,
+              backgroundImage: `url(${assetUrl("lakehouse/lakehouse_frontview.webp")})`,
             }}
           />
           <div
@@ -107,7 +105,7 @@ export default function LakehousePage() {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${LH}/LAKEHOUSE-GYM.webp)` }}
+            style={{ backgroundImage: `url(${assetUrl("lakehouse/LAKEHOUSE-GYM.webp")})` }}
           />
           <div className="absolute inset-0 bg-earthy/50" />
         </div>
@@ -154,7 +152,7 @@ export default function LakehousePage() {
         <div className="lg:w-1/2 relative overflow-hidden min-h-[50vh] lg:min-h-full">
           <div
             className="absolute inset-0 bg-cover bg-center scale-105 hover:scale-100 transition-transform duration-[8s] ease-out"
-            style={{ backgroundImage: `url(${R2}/lakehouseIMG_0350.webp)` }}
+            style={{ backgroundImage: `url(${assetUrl("lakehouseIMG_0350.webp")})` }}
           />
         </div>
         <div className="lg:w-1/2 flex flex-col justify-center px-8 lg:px-24 py-20">
@@ -188,7 +186,7 @@ export default function LakehousePage() {
         <div className="absolute inset-0 z-0">
           <div
             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 hover:scale-105"
-            style={{ backgroundImage: `url(${R2}/lakehouse-wide.webp)` }}
+            style={{ backgroundImage: `url(${assetUrl("lakehouse-wide.webp")})` }}
           />
           <div className="absolute inset-0 bg-earthy/55" />
         </div>
