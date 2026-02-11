@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Nav from "@/components/Nav";
@@ -50,7 +50,7 @@ const TAB_FROM_PARAM: Record<string, "celestia" | "east-legon" | "wilma-crescent
   "wilma-crescent": "wilma-crescent",
 };
 
-export default function Portfolio() {
+function PortfolioContent() {
   const searchParams = useSearchParams();
   const projectParam = searchParams.get("project");
   const initialTab = (projectParam && TAB_FROM_PARAM[projectParam]) || "celestia";
@@ -238,5 +238,76 @@ export default function Portfolio() {
         </div>
       )}
     </div>
+  );
+}
+
+function PortfolioFallback() {
+  return (
+    <div className="bg-background-light text-earthy min-h-screen">
+      <Nav activePath="/portfolio" />
+      <main className="pt-14 sm:pt-16 md:pt-20">
+        <section className="relative min-h-[350px] sm:min-h-[450px] md:min-h-[500px] h-[50vh] sm:h-[55vh] md:h-[60vh] w-full flex items-center justify-center overflow-hidden">
+          <img
+            alt="Brownstone Construction portfolio of luxury developments"
+            className="absolute inset-0 w-full h-full object-cover"
+            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80"
+          />
+          <div className="absolute inset-0 bg-black/50 backdrop-brightness-75" />
+          <div className="relative z-10 text-center px-4 sm:px-6 md:px-10">
+            <span className="text-primary text-xs font-bold uppercase tracking-[0.4em] mb-4 block">
+              Excellence in Craftsmanship
+            </span>
+            <h1 className="text-white text-5xl md:text-7xl lg:text-8xl font-black mb-6 font-serif">
+              Our Portfolio
+            </h1>
+            <div className="w-24 h-1 bg-primary mx-auto" />
+          </div>
+        </section>
+        <section className="px-4 sm:px-6 md:px-10 py-12 sm:py-16 lg:px-16 xl:px-24 max-w-[1440px] mx-auto">
+          <div className="mb-16">
+            <div className="max-w-2xl">
+              <h2 className="text-earthy text-2xl sm:text-3xl font-bold leading-tight mb-4 sm:mb-6 uppercase tracking-tight font-serif">
+                Defining the future of{" "}
+                <span className="text-primary">sustainable living.</span>
+              </h2>
+              <p className="text-grey text-lg font-light leading-relaxed max-w-xl">
+                A curated selection of high-end residential estates,
+                award-winning community centers, and carbon-neutral
+                infrastructure.
+              </p>
+            </div>
+          </div>
+          <div className="flex gap-4 p-4 border-b border-grey/10 mb-12 items-center">
+            <span className="text-xs font-black uppercase tracking-widest text-grey mr-4">
+              Filter By:
+            </span>
+            {tabs.map(({ id, label }) => (
+              <button
+                key={id}
+                type="button"
+                disabled
+                className="flex h-10 shrink-0 items-center justify-center rounded-full px-6 text-xs font-bold uppercase tracking-widest bg-background-light border border-grey/20 text-earthy"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="columns-1 sm:columns-2 md:columns-3 gap-6 min-h-[400px]" style={{ columnGap: "1.5rem" }}>
+            <div className="w-full h-48 rounded-xl bg-grey/10 animate-pulse mb-6" />
+            <div className="w-full h-64 rounded-xl bg-grey/10 animate-pulse mb-6" />
+            <div className="w-full h-56 rounded-xl bg-grey/10 animate-pulse mb-6" />
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+export default function Portfolio() {
+  return (
+    <Suspense fallback={<PortfolioFallback />}>
+      <PortfolioContent />
+    </Suspense>
   );
 }
