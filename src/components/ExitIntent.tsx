@@ -71,7 +71,7 @@ export default function ExitIntent() {
       const res = await fetch("/api/lakehouse-leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim(), consent }),
+        body: JSON.stringify({ email: email.trim(), consent, source: "exit_intent" }),
       });
       const data = await res.json();
       if (!res.ok) {

@@ -51,7 +51,7 @@ export default function Contact() {
         <section
           className="h-[400px] flex items-center justify-center text-center relative overflow-hidden"
           style={{
-            backgroundImage: `linear-gradient(rgba(65, 22, 0, 0.4), rgba(65, 22, 0, 0.6)), url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80')`,
+            backgroundImage: `linear-gradient(rgba(65, 22, 0, 0.4), rgba(65, 22, 0, 0.6)), url('https://assets.brownstoneltd.com/main/airportsquare1.webp')`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}
@@ -127,6 +127,7 @@ export default function Contact() {
                     </span>
                     <select name="projectType" className="rounded-lg border border-neutral-grey/20 bg-transparent focus:border-primary focus:ring-1 focus:ring-primary h-14 px-4 text-brown-deep">
                       <option value="">Select a category</option>
+                      <option value="Private viewing">Private viewing</option>
                       <option value="Residential Luxury Development">Residential Luxury Development</option>
                       <option value="Commercial Construction">Commercial Construction</option>
                       <option value="Sustainable Renovation">Sustainable Renovation</option>

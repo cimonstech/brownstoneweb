@@ -34,7 +34,11 @@ export default function BrochureForm({
     }
     if (!consent) {
       setStatus("error");
-      setMessage("Please accept the terms to receive the brochure.");
+      setMessage(
+        project === "townhouse"
+          ? "Please accept the terms to receive the Celestia Townhouses Brochure."
+          : "Please accept the terms to receive the brochure."
+      );
       return;
     }
 
@@ -64,6 +68,18 @@ export default function BrochureForm({
       setMessage(successMessage);
       setEmail("");
       setConsent(false);
+
+      // Auto-download PDF if URL returned
+      if (data.brochurePdfUrl && typeof data.brochurePdfUrl === "string") {
+        const a = document.createElement("a");
+        a.href = data.brochurePdfUrl;
+        a.download = data.brochurePdfUrl.split("/").pop()?.split("?")[0] ?? "brochure.pdf";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
     } catch {
       setStatus("error");
       setMessage("Something went wrong. Please try again.");
@@ -87,12 +103,12 @@ export default function BrochureForm({
 
   const formClass =
     variant === "compact"
-      ? "flex flex-col sm:flex-row gap-3"
+      ? "flex flex-col sm:flex-row gap-4 sm:flex-wrap sm:items-center"
       : "flex flex-col gap-4 max-w-md mx-auto";
 
   return (
     <form onSubmit={handleSubmit} className={`${formClass} ${className}`}>
-      <div className={variant === "compact" ? "flex-1 min-w-0" : ""}>
+      <div className={variant === "compact" ? "w-full sm:w-auto sm:flex-1 sm:min-w-[220px]" : ""}>
         <input
           type="email"
           name="email"
@@ -138,7 +154,11 @@ export default function BrochureForm({
         disabled={status === "loading"}
         className="bg-primary text-white px-10 py-4 rounded-lg font-bold hover:bg-primary/90 transition-all disabled:opacity-70 disabled:cursor-not-allowed shrink-0"
       >
-        {status === "loading" ? "Sending…" : "Get the Brochure"}
+        {status === "loading"
+          ? "Sending…"
+          : project === "townhouse"
+            ? "Get the Celestia Townhouses Brochure"
+            : "Get the Brochure"}
       </button>
       {status === "error" && message && (
         <p className="text-red-600 text-sm">{message}</p>

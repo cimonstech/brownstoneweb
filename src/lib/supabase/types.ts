@@ -274,6 +274,44 @@ export interface Database {
           created_at?: string;
         };
       };
+      leads: {
+        Row: {
+          id: string;
+          email: string;
+          phone: string | null;
+          country_code: string | null;
+          name: string | null;
+          message: string | null;
+          source: string;
+          project: string | null;
+          consent: boolean | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          phone?: string | null;
+          country_code?: string | null;
+          name?: string | null;
+          message?: string | null;
+          source: string;
+          project?: string | null;
+          consent?: boolean | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          phone?: string | null;
+          country_code?: string | null;
+          name?: string | null;
+          message?: string | null;
+          source?: string;
+          project?: string | null;
+          consent?: boolean | null;
+          created_at?: string;
+        };
+      };
     };
   };
 }

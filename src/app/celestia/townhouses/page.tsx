@@ -87,7 +87,7 @@ export default function TownhousesPage() {
             Ghana’s Volta; ambition meets serenity. You’ll feel it the moment you step in.
           </p>
           <Link
-            href="/contact?interest=townhouses"
+            href="#viewing"
             className="inline-flex items-center justify-center bg-primary text-white px-8 py-4 rounded-lg font-bold text-sm uppercase tracking-widest hover:bg-primary/90 transition-all shadow-lg"
           >
             Secure Your Private Viewing
@@ -319,12 +319,12 @@ export default function TownhousesPage() {
             Secure Your Private Viewing
           </h2>
           <p className="text-white/85 text-lg font-light leading-relaxed mb-6">
-            Receive the property brochure by email, then book a private viewing when you’re ready.
+            Receive the Celestia Townhouses Brochure by email. When you're ready, reply to that email or contact us to arrange your private viewing.
           </p>
           <div className="w-full max-w-md mx-auto mb-10">
             <BrochureForm
               project="townhouse"
-              successMessage="Thank you for your interest. We've sent the Celestia townhouse brochure to your email."
+              successMessage="Thank you for your interest. We've sent the Celestia Townhouses Brochure to your email."
               className="[&_input]:bg-white/10 [&_input]:border-white/30 [&_input]:text-white [&_input]:placeholder:text-white/60 [&_label]:text-white/90 [&_a]:text-primary [&_button]:border [&_button]:border-white/40 [&_button]:bg-transparent [&_button]:text-white [&_button:hover]:bg-white [&_button:hover]:text-earthy"
             />
           </div>

@@ -43,6 +43,18 @@ export default function JettyLeadForm() {
       setMessage("Check your inbox for exclusive details.");
       setEmail("");
       setConsent(false);
+
+      // Auto-download PDF if URL returned
+      if (data.brochurePdfUrl && typeof data.brochurePdfUrl === "string") {
+        const a = document.createElement("a");
+        a.href = data.brochurePdfUrl;
+        a.download = data.brochurePdfUrl.split("/").pop()?.split("?")[0] ?? "brochure.pdf";
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
     } catch {
       setStatus("error");
       setMessage("Something went wrong. Please try again.");

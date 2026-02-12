@@ -13,6 +13,7 @@ const navItems = [
   { href: "/admin/categories", label: "Categories", icon: "folder" },
   { href: "/admin/media", label: "Media", icon: "image" },
   { href: "/admin/now-selling", label: "Signature Listings", icon: "home" },
+  { href: "/admin/leads", label: "Leads", icon: "mail" },
   { href: "/admin/roles", label: "Roles", icon: "badge" },
   { href: "/admin/profile", label: "Profile", icon: "person" },
   { href: "/admin/users", label: "Users", icon: "people" },
@@ -52,6 +53,10 @@ function NavIcon({ name }: { name: (typeof navItems)[number]["icon"] }) {
     case "home":
       return (
         <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8h5zm0-2v-6h4v6h5v-8h3L12 3 2 12h3v8h5z"/></svg>
+      );
+    case "mail":
+      return (
+        <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
       );
     default:
       return null;

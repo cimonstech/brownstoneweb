@@ -13,7 +13,7 @@ export async function POST(request: Request) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
 
-  let body: { email?: string; consent?: boolean };
+  let body: { email?: string; consent?: boolean; source?: string };
   try {
     body = await request.json();
   } catch {
@@ -22,6 +22,7 @@ export async function POST(request: Request) {
 
   const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
   const consent = body.consent === true;
+  const source = body.source === "exit_intent" ? "exit_intent" : "lakehouse";
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     return NextResponse.json(
@@ -50,6 +51,13 @@ export async function POST(request: Request) {
       const supabase = createAdminClient();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for lakehouse_leads insert
       await supabase.from("lakehouse_leads").insert({ email, consent } as any);
+      // Also store in unified leads
+      await supabase.from("leads").insert({
+        email,
+        source,
+        project: "lakehouse",
+        consent,
+      } as never);
     }
   } catch (dbErr) {
     console.warn("Lakehouse lead DB insert failed (optional):", dbErr);
@@ -65,11 +73,15 @@ export async function POST(request: Request) {
   const subject = "Your Celestia Property Brochure — Brownstone Construction";
 
   const html = getCelestiaBrochureHtml(baseUrl, "lakehouse", brochurePdfUrl);
-  const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl);
+  const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl, "lakehouse");
+
+  const replyTo =
+    process.env.RESEND_REPLY_TO ?? "support@brownstoneltd.com";
 
   const { error } = await resend.emails.send({
     from,
     to: email,
+    replyTo,
     subject,
     html,
     text,
@@ -83,5 +95,5 @@ export async function POST(request: Request) {
     );
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, brochurePdfUrl: brochurePdfUrl ?? undefined });
 }

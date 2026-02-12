@@ -98,6 +98,18 @@ If you want, we can add a small **newsletter signup API** that:
 
 ---
 
+## Leads capture (admin panel)
+
+Brochure, contact, and lakehouse form submissions are stored in the **leads** table (visible in **Admin → Leads**).
+
+**Requirements:** 1) **`SUPABASE_SERVICE_ROLE_KEY`** — From Supabase Dashboard → Settings → API → copy the `service_role` key. Add to `.env.local` and Vercel. 2) **Migration applied** — Run `supabase db push` or apply `supabase/migrations/008_leads.sql`.
+
+Without `SUPABASE_SERVICE_ROLE_KEY`, leads are not stored. Check server logs for `Leads insert error` if inserts fail.
+
+## Email deliverability (avoiding Promotions)
+
+Verify SPF, DKIM, DMARC at Resend Domains. Brochure emails use `Reply-To: support@brownstoneltd.com`. We avoid "reply to this email" (noreply can't receive); instead we direct users to the contact page.
+
 ## Env summary
 
 | Variable | Purpose |
@@ -105,8 +117,11 @@ If you want, we can add a small **newsletter signup API** that:
 | `RESEND_API_KEY` | Resend API key (required for all emails). |
 | `RESEND_FROM_SUPPORT` | Sender for inquiry emails to your team (e.g. `Brownstone Support <support@brownstoneltd.com>`). Use verified domain. |
 | `RESEND_FROM_NOREPLY` | Sender for automated emails to users (e.g. `Brownstone <noreply@brownstoneltd.com>`). Use verified domain. |
+| `RESEND_REPLY_TO` | Where replies go (default: `support@brownstoneltd.com`). |
 | `CONTACT_FROM_EMAIL` | Fallback sender if the above are not set. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Required for leads capture. From Supabase → Settings → API. |
 | `CONTACTFORMMAIL` | Recipient for contact form submissions. |
 | `BROWNSTONE_LOGO_URL` | Optional. Logo URL for contact auto-reply (other emails). |
-| `BROCHURE_PDF_URL` | Optional. URL of Celestia brochure PDF for the “Download PDF” link in brochure email. |
+| `BROCHURE_PDF_URL` | Optional. URL of Celestia brochure PDF. |
+| `BROCHURE_PDF_URL_TOWNHOUSE` | Optional. URL of townhouse brochure PDF. | for the “Download PDF” link in brochure email. |
 | `NEXT_PUBLIC_SITE_URL` | Base URL for links in emails (e.g. `https://brownstoneltd.com`). |

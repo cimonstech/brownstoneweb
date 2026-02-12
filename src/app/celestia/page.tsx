@@ -203,7 +203,7 @@ export default function CelestiaPage() {
                   ))}
                 </ul>
                 <Link
-                  href="/contact"
+                  href="/celestia/townhouses"
                   className="block w-full py-4 border border-earthy/20 rounded-lg font-bold hover:bg-earthy hover:text-white transition-all text-center"
                 >
                   Explore Details

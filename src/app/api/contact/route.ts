@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { getContactReceivedHtml, getContactReceivedText } from "@/lib/emails/contact-received";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(request: Request) {
   const to = process.env.CONTACTFORMMAIL;
@@ -43,6 +44,24 @@ export async function POST(request: Request) {
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
     "https://brownstoneltd.com";
+
+  // Store lead — requires SUPABASE_SERVICE_ROLE_KEY (Supabase Dashboard → Settings → API)
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    try {
+      const supabase = createAdminClient();
+      const { error: insertError } = await supabase.from("leads").insert({
+        email: emailTrimmed,
+        name: name?.trim() ?? null,
+        message: (message?.trim() ?? "").slice(0, 5000) || null,
+        source: "contact",
+        project: projectType?.trim() || null,
+        consent: true,
+      } as never);
+      if (insertError) console.error("Leads insert error (contact):", insertError);
+    } catch (err) {
+      console.error("Leads insert failed (contact):", err);
+    }
+  }
 
   try {
     const { error: inquiryError } = await resend.emails.send({

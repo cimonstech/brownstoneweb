@@ -107,7 +107,7 @@ function PortfolioContent() {
           <img
             alt="Brownstone Construction portfolio of luxury developments"
             className="absolute inset-0 w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80"
+            src={assetUrl("WilmaCrescent/wilmacresent1.webp")}
           />
           <div className="absolute inset-0 bg-black/50 backdrop-brightness-75" />
           <div className="relative z-10 text-center px-4 sm:px-6 md:px-10">
@@ -136,8 +136,8 @@ function PortfolioContent() {
             </div>
           </div>
 
-          <div className="flex gap-4 p-4 border-b border-grey/10 mb-12 items-center">
-            <span className="text-xs font-black uppercase tracking-widest text-grey mr-4">
+          <div className="flex flex-wrap gap-3 p-4 border-b border-grey/10 mb-12 items-center">
+            <span className="text-xs font-black uppercase tracking-wider text-grey mr-2 sm:mr-4 shrink-0">
               Filter By:
             </span>
             {tabs.map(({ id, label }) => (
@@ -145,7 +145,7 @@ function PortfolioContent() {
                 key={id}
                 type="button"
                 onClick={() => setActiveTab(id)}
-                className={`flex h-10 shrink-0 items-center justify-center rounded-full px-6 text-xs font-bold uppercase tracking-widest transition-all ${
+                className={`flex h-9 sm:h-10 items-center justify-center rounded-full px-4 sm:px-6 text-[11px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest transition-all ${
                   activeTab === id
                     ? "bg-primary text-white"
                     : "bg-background-light border border-grey/20 text-earthy hover:border-primary"
@@ -250,7 +250,7 @@ function PortfolioFallback() {
           <img
             alt="Brownstone Construction portfolio of luxury developments"
             className="absolute inset-0 w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80"
+            src={assetUrl("WilmaCrescent/wilmacresent1.webp")}
           />
           <div className="absolute inset-0 bg-black/50 backdrop-brightness-75" />
           <div className="relative z-10 text-center px-4 sm:px-6 md:px-10">
@@ -277,8 +277,8 @@ function PortfolioFallback() {
               </p>
             </div>
           </div>
-          <div className="flex gap-4 p-4 border-b border-grey/10 mb-12 items-center">
-            <span className="text-xs font-black uppercase tracking-widest text-grey mr-4">
+          <div className="flex flex-wrap gap-3 p-4 border-b border-grey/10 mb-12 items-center">
+            <span className="text-xs font-black uppercase tracking-wider text-grey mr-2 sm:mr-4 shrink-0">
               Filter By:
             </span>
             {tabs.map(({ id, label }) => (
@@ -286,7 +286,7 @@ function PortfolioFallback() {
                 key={id}
                 type="button"
                 disabled
-                className="flex h-10 shrink-0 items-center justify-center rounded-full px-6 text-xs font-bold uppercase tracking-widest bg-background-light border border-grey/20 text-earthy"
+                className="flex h-9 sm:h-10 items-center justify-center rounded-full px-4 sm:px-6 text-[11px] sm:text-xs font-bold uppercase tracking-wider sm:tracking-widest bg-background-light border border-grey/20 text-earthy"
               >
                 {label}
               </button>

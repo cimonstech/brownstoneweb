@@ -5,6 +5,7 @@ import {
   getCelestiaBrochureText,
   type BrochureProject,
 } from "@/lib/emails/celestia-brochure";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(request: Request) {
   if (!process.env.RESEND_API_KEY) {
@@ -53,16 +54,38 @@ export async function POST(request: Request) {
       ? process.env.BROCHURE_PDF_URL.trim()
       : null;
 
+  // Store lead (optional)
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
+    try {
+      const supabase = createAdminClient();
+      await supabase.from("leads").insert({
+        email,
+        source: "brochure",
+        project,
+        consent: true,
+      } as never);
+    } catch {
+      // Ignore
+    }
+  }
+
   const html = getCelestiaBrochureHtml(baseUrl, project, brochurePdfUrl);
-  const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl);
+  const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl, project);
 
   const from =
     process.env.RESEND_FROM_NOREPLY || process.env.CONTACT_FROM_EMAIL || "Brownstone <noreply@brownstoneltd.com>";
-  const subject = "Your Celestia Property Brochure — Brownstone Construction";
+  const subject =
+    project === "townhouse"
+      ? "Your Celestia Townhouses Brochure — Brownstone Construction"
+      : "Your Celestia Property Brochure — Brownstone Construction";
+
+  const replyTo =
+    process.env.RESEND_REPLY_TO ?? "support@brownstoneltd.com";
 
   const { error } = await resend.emails.send({
     from,
     to: email,
+    replyTo,
     subject,
     html,
     text,
@@ -71,10 +94,15 @@ export async function POST(request: Request) {
   if (error) {
     console.error("Resend error (brochure):", error);
     return NextResponse.json(
-      { error: "We could not send the brochure. Please try again." },
+      {
+        error:
+          project === "townhouse"
+            ? "We could not send the Celestia Townhouses Brochure. Please try again."
+            : "We could not send the brochure. Please try again.",
+      },
       { status: 502 }
     );
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, brochurePdfUrl: brochurePdfUrl ?? undefined });
 }

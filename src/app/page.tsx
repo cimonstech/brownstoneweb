@@ -159,7 +159,7 @@ export default function Home() {
               {[
                 { location: "Akosombo", title: "Celestia", href: "/celestia", img: assetUrl("CHALETS_.webp"), alt: "Celestia chalets at Akosombo – luxury residential development" },
                 { location: "East Legon", title: "East Legon Trio", href: "/portfolio?project=east-legon", img: assetUrl("east-legon-townhouses2.webp"), alt: "East Legon Trio townhouses – East Legon development" },
-                { location: "Wilma Crescent", title: "Wilma Crescent", href: "/portfolio?project=wilma-crescent", img: assetUrl("WilmaCrescent/wilmacresent1.webp"), alt: "Wilma Crescent development" },
+                { location: "Adjiringanor", title: "Wilma Crescent", href: "/portfolio?project=wilma-crescent", img: assetUrl("WilmaCrescent/wilmacresent1.webp"), alt: "Wilma Crescent development" },
               ].map(({ location, title, href, img, alt }) => (
                 <div
                   key={title}

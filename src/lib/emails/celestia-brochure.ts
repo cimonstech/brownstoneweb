@@ -27,9 +27,21 @@ export function getCelestiaBrochureHtml(
 ): string {
   const townhouseUrl = `${baseUrl}/celestia/townhouses`;
   const lakehouseUrl = `${baseUrl}/celestia/lakehouse`;
+  const chaletsUrl = `${baseUrl}/celestia/chalets`;
   const celestiaUrl = `${baseUrl}/celestia`;
+  const contactUrl = `${baseUrl}/contact?interest=townhouses`;
 
   const hasPdf = !!brochurePdfUrl?.trim();
+  const isTownhouse = project === "townhouse";
+  const isCelestia = project === "celestia";
+  const brochureTitle = isTownhouse ? "Your Celestia Townhouses Brochure" : "Your Celestia Property Brochure";
+  const pdfLabel = isTownhouse ? "Download your Celestia Townhouses Brochure" : "Download your brochure";
+
+  const introText = isTownhouse
+    ? "Thank you for your interest in our luxury townhomes at Celestia. As requested, here are the highlights and next steps for our terrace homes in Akosombo — 90 minutes from Accra."
+    : isCelestia
+      ? "Thank you for taking the time to explore Celestia — our flagship luxury development in Akosombo, just 90 minutes from Accra. Celestia brings together refined townhomes, exclusive chalets, and the Lakehouse — a communal sanctuary for work, wellness, and leisure. Here are the highlights and next steps."
+      : "Thank you for taking the time to explore Celestia. As requested, here are the highlights and next steps for our luxury residences in Akosombo — 90 minutes from Accra.";
 
   return `
 <!DOCTYPE html>
@@ -38,7 +50,7 @@ export function getCelestiaBrochureHtml(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Your Celestia Brochure — Brownstone Construction</title>
+  <title>${brochureTitle} — Brownstone Construction</title>
   <style type="text/css">
     @media only screen and (max-width: 600px) {
       .wrapper { padding: 24px 16px !important; }
@@ -81,7 +93,7 @@ export function getCelestiaBrochureHtml(
                 ${hasPdf ? `
                 <tr>
                   <td style="padding:24px 0;background:linear-gradient(135deg, rgba(65,22,0,0.04) 0%, rgba(239,100,28,0.06) 100%);border-radius:4px;border:1px solid ${BORDER};margin-bottom:24px;">
-                    <p style="margin:0 0 16px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:${MUTED};font-weight:600;">Download your brochure</p>
+                    <p style="margin:0 0 16px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:${MUTED};font-weight:600;">${pdfLabel}</p>
                     <a href="${brochurePdfUrl}" style="display:inline-block;padding:14px 28px;background-color:${PRIMARY};color:${WHITE};text-decoration:none;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;font-weight:600;border-radius:4px;">Download PDF Brochure</a>
                   </td>
                 </tr>
@@ -94,6 +106,16 @@ export function getCelestiaBrochureHtml(
                       Two-bedroom ensuite terraced homes with private Jacuzzis, waterfront access, and turnkey investment potential. High occupancy year-round; professional management available.
                     </p>
                     <a href="${townhouseUrl}" class="btn" style="display:inline-block;padding:14px 28px;background-color:${EARTHY};color:${BG};text-decoration:none;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;">View Townhouses</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="padding:24px 0;border-top:1px solid ${BORDER};">
+                    <p style="margin:0 0 10px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:${MUTED};font-weight:600;">Exclusive living</p>
+                    <p style="margin:0 0 14px;font-size:17px;font-weight:600;color:${EARTHY};">Private Chalets</p>
+                    <p style="margin:0 0 18px;font-size:15px;line-height:1.75;color:${PRIMARY_LIGHT};">
+                      Bespoke residences built into the mountain face with river access. Ultimate privacy and seclusion.
+                    </p>
+                    <a href="${chaletsUrl}" class="btn" style="display:inline-block;padding:14px 28px;background-color:${EARTHY};color:${BG};text-decoration:none;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;">Explore Chalets</a>
                   </td>
                 </tr>
                 <tr>
@@ -112,8 +134,15 @@ export function getCelestiaBrochureHtml(
                   </td>
                 </tr>
                 <tr>
-                  <td style="padding:28px 0 0;font-size:13px;line-height:1.6;color:${MUTED};">
-                    For priority delivery of future updates, add this address to your contacts. Reply to this email anytime for a private viewing or the full prospectus.
+                  <td style="padding:24px 0 0;border-top:1px solid ${BORDER};">
+                    <p style="margin:0 0 12px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:${MUTED};font-weight:600;">Next steps</p>
+                    <p style="margin:0 0 12px;font-size:15px;line-height:1.6;color:${PRIMARY_LIGHT};">
+                      If you&apos;re interested in a private viewing or more information, simply reply to this email. We&apos;ll get back to you promptly.
+                    </p>
+                    <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:${PRIMARY_LIGHT};">
+                      To ensure you receive future updates and priority offers, add this address to your contacts.
+                    </p>
+                    <a href="${contactUrl}" class="btn" style="display:inline-block;padding:14px 28px;background-color:${PRIMARY};color:${WHITE};text-decoration:none;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;border-radius:4px;">Arrange Your Viewing</a>
                   </td>
                 </tr>
                 <tr>
@@ -141,14 +170,18 @@ export function getCelestiaBrochureHtml(
 
 export function getCelestiaBrochureText(
   baseUrl: string,
-  brochurePdfUrl?: string | null
+  brochurePdfUrl?: string | null,
+  project: BrochureProject = "celestia"
 ): string {
   const townhouseUrl = `${baseUrl}/celestia/townhouses`;
   const lakehouseUrl = `${baseUrl}/celestia/lakehouse`;
   const celestiaUrl = `${baseUrl}/celestia`;
+  const contactUrl = `${baseUrl}/contact?interest=townhouses`;
+  const isTownhouse = project === "townhouse";
+  const brochureTitle = isTownhouse ? "Your Celestia Townhouses Brochure" : "Your Celestia Property Brochure";
 
   let block = `
-THANK YOU FOR YOUR INTEREST — Your Celestia Property Brochure
+THANK YOU FOR YOUR INTEREST — ${brochureTitle}
 
 Thank you for taking the time to explore Celestia. Here are the highlights and next steps for our luxury residences in Akosombo — 90 minutes from Accra.
 `;
@@ -156,6 +189,11 @@ Thank you for taking the time to explore Celestia. Here are the highlights and n
     block += `\n\nDownload your brochure (PDF): ${brochurePdfUrl.trim()}\n`;
   }
   block += `
+
+NEXT STEPS
+If you're interested in a private viewing or more information, contact us via our contact page: ${contactUrl}
+We'll get back to you promptly.
+To ensure you receive future updates and priority offers, add support@brownstoneltd.com to your contacts.
 
 NOW AVAILABLE — PHASE 1: Luxury Townhomes at Celestia
 Two-bedroom ensuite terraced homes with private Jacuzzis, waterfront access, and turnkey investment potential.
@@ -168,8 +206,6 @@ Wellness amenities, elevated workspaces, pool, bar, and private jetty.
 Explore the Lakehouse: ${lakehouseUrl}
 
 Full Celestia vision: ${celestiaUrl}
-
-For priority delivery of future updates, add this address to your contacts. Reply anytime for a private viewing or the full prospectus.
 
 With best regards,
 The Brownstone Team
