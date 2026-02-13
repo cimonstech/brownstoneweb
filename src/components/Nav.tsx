@@ -83,7 +83,7 @@ export default function Nav({ activePath = "/", variant = "solid" }: NavProps) {
             }
             return (
               <div key={item.label} className="relative group">
-                <span className={dropdownTriggerClass} aria-haspopup="true" aria-expanded="false">
+                <span className={dropdownTriggerClass} role="button" aria-haspopup="true" aria-expanded="false">
                   {item.label}
                   <FaIcon name="chevronDown" className="text-[0.65rem] opacity-80" />
                 </span>

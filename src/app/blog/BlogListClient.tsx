@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { NowSellingSidebar } from "@/components/blog/NowSellingSidebar";
+import { NewsletterForm } from "@/components/NewsletterForm";
 import { assetUrl } from "@/lib/assets";
 
 type Category = { id: string; name: string; slug: string };
@@ -225,19 +226,7 @@ export function BlogListClient({
                 Exclusive construction insights and luxury trends delivered
                 monthly.
               </p>
-              <div className="space-y-3">
-                <input
-                  type="email"
-                  placeholder="Your email"
-                  className="w-full bg-white border border-earthy/10 rounded-lg text-sm px-4 py-3 focus:ring-primary focus:border-primary outline-none"
-                />
-                <button
-                  type="button"
-                  className="w-full bg-primary text-white font-bold py-3 rounded-lg text-xs tracking-[0.2em] uppercase hover:opacity-90 transition-opacity"
-                >
-                  SUBSCRIBE
-                </button>
-              </div>
+              <NewsletterForm variant="sidebar" />
             </div>
 
             {/* Popular topics */}

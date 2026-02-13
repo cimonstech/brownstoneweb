@@ -122,7 +122,10 @@ function renderListItem(item: unknown, style: string): string {
   const obj = item as ListItem;
   const content = typeof obj.content === "string" ? obj.content : normalizeBlockText(obj.content);
   const checked = style === "checklist" && obj.meta?.checked;
-  const attrs = checked ? ' class="list-item-checked" aria-checked="true"' : "";
+  const attrs =
+    style === "checklist"
+      ? ` class="${checked ? "list-item-checked" : ""}" role="checkbox" aria-checked="${checked ? "true" : "false"}"`
+      : "";
   const inner = sanitizeInlineHtml(content);
   const nested =
     Array.isArray(obj.items) && obj.items.length > 0

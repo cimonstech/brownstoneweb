@@ -14,6 +14,11 @@ const navItems = [
   { href: "/admin/media", label: "Media", icon: "image" },
   { href: "/admin/now-selling", label: "Signature Listings", icon: "home" },
   { href: "/admin/leads", label: "Leads", icon: "mail" },
+  { href: "/admin/crm/contacts", label: "Contacts", icon: "people" },
+  { href: "/admin/crm/pipeline", label: "Pipeline", icon: "pipeline" },
+  { href: "/admin/crm/campaigns", label: "Campaigns", icon: "campaigns" },
+  { href: "/admin/crm/templates", label: "Email Templates", icon: "templates" },
+  { href: "/admin/crm/analytics", label: "Analytics", icon: "analytics" },
   { href: "/admin/roles", label: "Roles", icon: "badge" },
   { href: "/admin/profile", label: "Profile", icon: "person" },
   { href: "/admin/users", label: "Users", icon: "people" },
@@ -57,6 +62,22 @@ function NavIcon({ name }: { name: (typeof navItems)[number]["icon"] }) {
     case "mail":
       return (
         <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      );
+    case "pipeline":
+      return (
+        <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+      );
+    case "campaigns":
+      return (
+        <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      );
+    case "templates":
+      return (
+        <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+      );
+    case "analytics":
+      return (
+        <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
       );
     default:
       return null;

@@ -7,6 +7,7 @@ import { renderEditorJsToHtml } from "@/lib/blog/render";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { NowSellingSidebar } from "@/components/blog/NowSellingSidebar";
+import { NewsletterForm } from "@/components/NewsletterForm";
 
 export const revalidate = 60;
 
@@ -253,19 +254,7 @@ export default async function BlogPostPage({ params }: Props) {
               Join industry leaders receiving our monthly editorial on sustainable
               development and luxury trends.
             </p>
-            <form className="flex flex-col md:flex-row gap-4" action="#">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="flex-1 bg-white/10 border border-white/20 text-white rounded-lg focus:ring-primary focus:border-primary px-6 py-4 outline-none placeholder:text-white/60"
-              />
-              <button
-                type="submit"
-                className="bg-primary text-white font-bold px-10 py-4 rounded-lg hover:bg-primary/90 transition-all uppercase tracking-widest text-sm"
-              >
-                Subscribe
-              </button>
-            </form>
+            <NewsletterForm variant="cta" />
           </div>
         </section>
       </main>

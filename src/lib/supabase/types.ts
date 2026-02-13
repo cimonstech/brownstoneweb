@@ -312,9 +312,183 @@ export interface Database {
           created_at?: string;
         };
       };
+      contacts: {
+        Row: {
+          id: string;
+          email: string;
+          name: string | null;
+          phone: string | null;
+          country_code: string | null;
+          company: string | null;
+          source: string | null;
+          status: string;
+          do_not_contact: boolean;
+          unsubscribed: boolean;
+          tags: string[];
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          name?: string | null;
+          phone?: string | null;
+          country_code?: string | null;
+          company?: string | null;
+          source?: string | null;
+          status?: string;
+          do_not_contact?: boolean;
+          unsubscribed?: boolean;
+          tags?: string[];
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          name?: string | null;
+          phone?: string | null;
+          country_code?: string | null;
+          company?: string | null;
+          source?: string | null;
+          status?: string;
+          do_not_contact?: boolean;
+          unsubscribed?: boolean;
+          tags?: string[];
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
+      contact_activities: {
+        Row: {
+          id: string;
+          contact_id: string;
+          type: string;
+          metadata: Json;
+          created_at: string;
+          created_by_id: string | null;
+        };
+        Insert: {
+          id?: string;
+          contact_id: string;
+          type: string;
+          metadata?: Json;
+          created_at?: string;
+          created_by_id?: string | null;
+        };
+        Update: {
+          id?: string;
+          contact_id?: string;
+          type?: string;
+          metadata?: Json;
+          created_at?: string;
+          created_by_id?: string | null;
+        };
+      };
+      email_templates: {
+        Row: {
+          id: string;
+          name: string;
+          subject: string;
+          body_html: string;
+          variables: string[];
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          subject: string;
+          body_html: string;
+          variables?: string[];
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          subject?: string;
+          body_html?: string;
+          variables?: string[];
+          created_at?: string;
+        };
+      };
+      campaigns: {
+        Row: {
+          id: string;
+          name: string;
+          type: string;
+          template_id: string | null;
+          status: string;
+          send_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          type?: string;
+          template_id?: string | null;
+          status?: string;
+          send_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          name?: string;
+          type?: string;
+          template_id?: string | null;
+          status?: string;
+          send_at?: string | null;
+          created_at?: string;
+        };
+      };
+      campaign_emails: {
+        Row: {
+          id: string;
+          campaign_id: string;
+          contact_id: string;
+          step_index: number;
+          status: string;
+          sent_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          campaign_id: string;
+          contact_id: string;
+          step_index?: number;
+          status?: string;
+          sent_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          campaign_id?: string;
+          contact_id?: string;
+          step_index?: number;
+          status?: string;
+          sent_at?: string | null;
+          created_at?: string;
+        };
+      };
     };
   };
 }
 
 export type PostStatus = "draft" | "published";
 export type RoleName = "admin" | "moderator" | "author";
+
+export type ContactStatus =
+  | "new_lead"
+  | "contacted"
+  | "engaged"
+  | "qualified"
+  | "negotiation"
+  | "converted"
+  | "dormant";
+
+export type ContactActivityType =
+  | "form_submit"
+  | "email_sent"
+  | "email_received"
+  | "note"
+  | "call"
+  | "meeting";
