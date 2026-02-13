@@ -73,14 +73,14 @@ export async function POST(request: Request) {
   const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl, project);
 
   const from =
-    process.env.RESEND_FROM_NOREPLY || process.env.CONTACT_FROM_EMAIL || "Brownstone <noreply@brownstoneltd.com>";
+    process.env.RESEND_FROM_NOREPLY?.trim() || process.env.CONTACT_FROM_EMAIL || "Brownstone <info@brownstoneltd.com>";
   const subject =
     project === "townhouse"
       ? "Your Celestia Townhouses Brochure — Brownstone Construction"
       : "Your Celestia Property Brochure — Brownstone Construction";
 
   const replyTo =
-    process.env.RESEND_REPLY_TO ?? "support@brownstoneltd.com";
+    process.env.RESEND_REPLY_TO ?? "info@brownstoneltd.com";
 
   const { error } = await resend.emails.send({
     from,

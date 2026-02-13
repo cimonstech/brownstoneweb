@@ -541,3 +541,39 @@ Cloudflare already has a record for that host, so you can’t add another one. Y
 - Don’t create a new record for the same host.
 - Edit the existing record so it points to Vercel (`76.76.21.21` or `cname.vercel-dns.com`).
 - If you need a different record type, delete the old record, then add the new one.
+
+## DMARC configuration
+
+You configure this in **Cloudflare**, since your nameservers are there.
+
+**Steps in Cloudflare:**
+
+1. Open your domain → **DNS** → **Records**
+2. Click **Add record**
+3. Set:
+   - **Type:** TXT
+   - **Name:** `_dmarc` (leaves the zone as `_dmarc.brownstoneltd.com`)
+   - **Content:** `v=DMARC1; p=none;`
+   - **TTL:** Auto
+
+Cloudflare manages DNS, so any DNS records (including DMARC) go there. Vercel only needs the domain added and pointed to them, not DNS management.
+
+---
+
+## Deploying on Vercel
+
+This setup works well on Vercel.
+
+- **Next.js** – Vercel is built for Next.js
+- **Supabase** – external API; works normally from Vercel
+- **Resend** – external API; works normally from Vercel
+- **R2 assets** – served via public URLs; no server-side dependency
+- **Custom domain** – add it in Vercel and point it via Cloudflare (A/CNAME records)
+
+**Vercel configuration:**
+
+1. Add your repo and deploy
+2. Add environment variables from `.env.local` (Supabase, Resend, assets URL, etc.)
+3. Add your domain in Vercel and update DNS in Cloudflare per Vercel’s instructions (usually a CNAME `cname.vercel-dns.com` or A records)
+
+Your domain and DNS stay in Cloudflare; DMARC and other records live there.

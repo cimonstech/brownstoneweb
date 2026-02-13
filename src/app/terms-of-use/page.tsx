@@ -2,6 +2,10 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
+export const metadata = {
+  alternates: { canonical: "/terms-of-use" },
+};
+
 export default function TermsOfUse() {
   return (
     <div className="bg-background-light text-earthy min-h-screen">

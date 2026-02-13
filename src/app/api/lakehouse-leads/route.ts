@@ -69,14 +69,14 @@ export async function POST(request: Request) {
       : null;
 
   const from =
-    process.env.RESEND_FROM_NOREPLY || process.env.CONTACT_FROM_EMAIL || "Brownstone <noreply@brownstoneltd.com>";
+    process.env.RESEND_FROM_NOREPLY?.trim() || process.env.CONTACT_FROM_EMAIL || "Brownstone <info@brownstoneltd.com>";
   const subject = "Your Celestia Property Brochure — Brownstone Construction";
 
   const html = getCelestiaBrochureHtml(baseUrl, "lakehouse", brochurePdfUrl);
   const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl, "lakehouse");
 
   const replyTo =
-    process.env.RESEND_REPLY_TO ?? "support@brownstoneltd.com";
+    process.env.RESEND_REPLY_TO ?? "info@brownstoneltd.com";
 
   const { error } = await resend.emails.send({
     from,

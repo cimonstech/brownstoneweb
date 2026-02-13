@@ -4,6 +4,10 @@ import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
 import type { IconName } from "@/components/Icons";
 
+export const metadata = {
+  alternates: { canonical: "/services" },
+};
+
 const services: { icon: IconName; title: string; desc: string; link: string }[] = [
   {
     icon: "house",

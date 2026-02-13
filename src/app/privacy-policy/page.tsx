@@ -2,6 +2,10 @@ import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
+export const metadata = {
+  alternates: { canonical: "/privacy-policy" },
+};
+
 export default function PrivacyPolicy() {
   return (
     <div className="bg-background-light text-earthy min-h-screen">

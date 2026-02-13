@@ -140,7 +140,7 @@ export function getCelestiaBrochureHtml(
                       If you&apos;re interested in a private viewing or more information, simply reply to this email. We&apos;ll get back to you promptly.
                     </p>
                     <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:${PRIMARY_LIGHT};">
-                      To ensure you receive future updates and priority offers, add this address to your contacts.
+                      To ensure you receive future updates and priority offers, add <strong>info@brownstoneltd.com</strong> to your contacts.
                     </p>
                     <a href="${contactUrl}" class="btn" style="display:inline-block;padding:14px 28px;background-color:${PRIMARY};color:${WHITE};text-decoration:none;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;border-radius:4px;">Arrange Your Viewing</a>
                   </td>
@@ -191,9 +191,8 @@ Thank you for taking the time to explore Celestia. Here are the highlights and n
   block += `
 
 NEXT STEPS
-If you're interested in a private viewing or more information, contact us via our contact page: ${contactUrl}
-We'll get back to you promptly.
-To ensure you receive future updates and priority offers, add support@brownstoneltd.com to your contacts.
+If you're interested in a private viewing or more information, simply reply to this email. We'll get back to you promptly.
+To ensure you receive future updates and priority offers, add info@brownstoneltd.com to your contacts.
 
 NOW AVAILABLE — PHASE 1: Luxury Townhomes at Celestia
 Two-bedroom ensuite terraced homes with private Jacuzzis, waterfront access, and turnkey investment potential.

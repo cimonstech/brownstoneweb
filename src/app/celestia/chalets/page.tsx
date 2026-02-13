@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 export const metadata = {
   title: "Celestia Chalets | Celestia",
   description: "Celestia Chalets — coming soon.",
+  alternates: { canonical: "/celestia/chalets" },
 };
 
 export default function ChaletsPage() {

@@ -108,7 +108,7 @@ Without `SUPABASE_SERVICE_ROLE_KEY`, leads are not stored. Check server logs for
 
 ## Email deliverability (avoiding Promotions)
 
-Verify SPF, DKIM, DMARC at Resend Domains. Brochure emails use `Reply-To: support@brownstoneltd.com`. We avoid "reply to this email" (noreply can't receive); instead we direct users to the contact page.
+Verify SPF, DKIM, DMARC at Resend Domains. Brochure emails use `Reply-To: info@brownstoneltd.com` (same as sender). We encourage "reply to this email" and "add info@brownstoneltd.com to your contacts" — both improve deliverability and engagement. Avoid leading/trailing spaces in `RESEND_FROM_NOREPLY` (code trims automatically).
 
 ## Env summary
 
@@ -116,8 +116,8 @@ Verify SPF, DKIM, DMARC at Resend Domains. Brochure emails use `Reply-To: suppor
 |----------|---------|
 | `RESEND_API_KEY` | Resend API key (required for all emails). |
 | `RESEND_FROM_SUPPORT` | Sender for inquiry emails to your team (e.g. `Brownstone Support <support@brownstoneltd.com>`). Use verified domain. |
-| `RESEND_FROM_NOREPLY` | Sender for automated emails to users (e.g. `Brownstone <noreply@brownstoneltd.com>`). Use verified domain. |
-| `RESEND_REPLY_TO` | Where replies go (default: `support@brownstoneltd.com`). |
+| `RESEND_FROM_NOREPLY` | Sender for automated emails to users (e.g. `Candace from Brownstone <info@brownstoneltd.com>`). Use verified domain. No leading spaces. |
+| `RESEND_REPLY_TO` | Where replies go (default: `info@brownstoneltd.com`). |
 | `CONTACT_FROM_EMAIL` | Fallback sender if the above are not set. |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required for leads capture. From Supabase → Settings → API. |
 | `CONTACTFORMMAIL` | Recipient for contact form submissions. |

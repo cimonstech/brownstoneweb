@@ -8,6 +8,7 @@ export const metadata = {
   title: "Celestia | Luxury Living in Akosombo",
   description:
     "Experience the pinnacle of luxury living in Akosombo by Brownstone Construction. Where luxury finds its true landscape.",
+  alternates: { canonical: "/celestia" },
 };
 
 const heroImage = assetUrl("MAIN-ENTRANCE-townhouse1-day.webp");

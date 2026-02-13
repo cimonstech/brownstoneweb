@@ -8,6 +8,7 @@ export const metadata = {
   title: "The Lakehouse Experience | Celestia",
   description:
     "Designed for focus, wellness, and connection. Explore workspaces, wellness amenities, and leisure spaces at Celestia Lakehouse.",
+  alternates: { canonical: "/celestia/lakehouse" },
 };
 
 const workImages = [

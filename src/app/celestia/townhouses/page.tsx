@@ -35,6 +35,7 @@ export const metadata: Metadata = {
     description:
       "2-bedroom luxury townhomes at Celestia: waterfront, Jacuzzis, turnkey investment. 90 minutes from Accra.",
   },
+  alternates: { canonical: "/celestia/townhouses" },
 };
 const HERO_IMAGE = assetUrl("MAIN-ENTRANCE-townhouse1-day.webp");
 const RESIDENCE_IMAGE = assetUrl("celestia-townhouse-LIVING-AREA1.webp");

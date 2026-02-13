@@ -39,7 +39,7 @@ export async function POST(request: Request) {
   const fromInquiry =
     process.env.RESEND_FROM_SUPPORT || process.env.CONTACT_FROM_EMAIL || "Brownstone Support <support@brownstoneltd.com>";
   const fromAutoReply =
-    process.env.RESEND_FROM_NOREPLY || process.env.CONTACT_FROM_EMAIL || "Brownstone <noreply@brownstoneltd.com>";
+    process.env.RESEND_FROM_NOREPLY?.trim() || process.env.CONTACT_FROM_EMAIL || "Brownstone <info@brownstoneltd.com>";
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||

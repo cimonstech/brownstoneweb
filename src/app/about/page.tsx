@@ -5,6 +5,10 @@ import Footer from "@/components/Footer";
 import { FaIcon } from "@/components/Icons";
 import { assetUrl } from "@/lib/assets";
 
+export const metadata = {
+  alternates: { canonical: "/about" },
+};
+
 export default function About() {
   return (
     <div className="bg-background-light text-earthy min-h-screen">

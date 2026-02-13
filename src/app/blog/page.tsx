@@ -6,6 +6,10 @@ import { BlogListClient } from "./BlogListClient";
 
 export const revalidate = 60;
 
+export const metadata = {
+  alternates: { canonical: "/blog" },
+};
+
 type CategoryObj = { id: string; name: string; slug: string };
 type PostWithCategories = {
   id: string;
