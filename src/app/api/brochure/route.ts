@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { ServerClient } from "postmark";
 import {
   getCelestiaBrochureHtml,
   getCelestiaBrochureText,
@@ -7,15 +7,17 @@ import {
 } from "@/lib/emails/celestia-brochure";
 import { createAdminClient } from "@/lib/supabase/admin";
 
+const FROM = "candace@brownstoneltd.com";
+
 export async function POST(request: Request) {
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.POSTMARK_API_KEY) {
     return NextResponse.json(
       { error: "Email service is not configured." },
       { status: 503 }
     );
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const client = new ServerClient(process.env.POSTMARK_API_KEY);
 
   let body: { email?: string; project?: string; consent?: boolean };
   try {
@@ -72,27 +74,23 @@ export async function POST(request: Request) {
   const html = getCelestiaBrochureHtml(baseUrl, project, brochurePdfUrl);
   const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl, project);
 
-  const from =
-    process.env.RESEND_FROM_NOREPLY?.trim() || process.env.CONTACT_FROM_EMAIL || "Brownstone <info@brownstoneltd.com>";
   const subject =
     project === "townhouse"
       ? "Your Celestia Townhouses Brochure — Brownstone Construction"
       : "Your Celestia Property Brochure — Brownstone Construction";
+  const replyTo = process.env.POSTMARK_REPLY_TO ?? "candace@brownstoneltd.com";
 
-  const replyTo =
-    process.env.RESEND_REPLY_TO ?? "info@brownstoneltd.com";
-
-  const { error } = await resend.emails.send({
-    from,
-    to: email,
-    replyTo,
-    subject,
-    html,
-    text,
-  });
-
-  if (error) {
-    console.error("Resend error (brochure):", error);
+  try {
+    await client.sendEmail({
+      From: FROM,
+      To: email,
+      ReplyTo: replyTo,
+      Subject: subject,
+      HtmlBody: html,
+      TextBody: text,
+    });
+  } catch (err) {
+    console.error("Postmark error (brochure):", err);
     return NextResponse.json(
       {
         error:

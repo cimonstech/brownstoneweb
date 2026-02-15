@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { EditButton, DeleteButton } from "@/components/admin/ActionIcons";
 import { DeletePostButton } from "./DeletePostButton";

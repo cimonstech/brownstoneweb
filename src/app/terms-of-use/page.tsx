@@ -22,7 +22,7 @@ export default function TermsOfUse() {
           </div>
         </section>
         <section className="py-16 px-6">
-          <div className="max-w-3xl mx-auto prose prose-earthy prose-lg">
+          <div className="max-w-3xl mx-auto prose-like prose-lg">
             <p className="text-earthy/80 leading-relaxed mb-8">
               Welcome to Brownstone Construction Limited. By accessing or using
               our website brownstoneltd.com, you agree to be bound by these

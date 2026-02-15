@@ -44,3 +44,9 @@ export async function deletePost(postId: string) {
   revalidatePath("/blog");
   return { ok: true };
 }
+
+/** Revalidate blog list and a specific post by slug. */
+export async function revalidateBlog(slug: string) {
+  revalidatePath("/blog");
+  revalidatePath(`/blog/${slug}`);
+}

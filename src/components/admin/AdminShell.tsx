@@ -179,7 +179,7 @@ export function AdminShell({
                     {crmOpen && (
                       <div className="mt-1 ml-4 space-y-1 border-l border-white/10 pl-2">
                         {section.items.map(({ href, label, icon }) => {
-                          const active = pathname === href || (href !== "/admin/dashboard" && pathname?.startsWith(href));
+                          const active = pathname === href || pathname?.startsWith(href + "/");
                           return (
                             <Link
                               key={href}
@@ -201,7 +201,7 @@ export function AdminShell({
                 ) : (
                   <div className="space-y-1">
                     {section.items.map(({ href, label, icon }) => {
-                      const active = pathname === href || (href !== "/admin/dashboard" && pathname?.startsWith(href));
+                      const active = pathname === href || pathname?.startsWith(href + "/");
                       return (
                         <Link
                           key={href}

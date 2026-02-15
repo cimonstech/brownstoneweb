@@ -22,7 +22,7 @@ export default function PrivacyPolicy() {
           </div>
         </section>
         <section className="py-16 px-6">
-          <div className="max-w-3xl mx-auto prose prose-earthy prose-lg">
+          <div className="max-w-3xl mx-auto prose-like prose-lg">
             <p className="text-earthy/80 leading-relaxed mb-8">
               Brownstone Construction Limited (&quot;we&quot;, &quot;us&quot;, or
               &quot;our&quot;) is committed to protecting your privacy. This

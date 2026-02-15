@@ -27,7 +27,7 @@ export function TiptapEditor({
     content: initialContent ?? undefined,
     editorProps: {
       attributes: {
-        class: "prose prose-sm sm:prose-base max-w-none min-h-[300px] px-4 py-3 focus:outline-none",
+        class: "prose-like max-w-none min-h-[300px] px-4 py-3 focus:outline-none text-sm sm:text-base [&_p]:my-2",
       },
     },
     onUpdate: ({ editor }) => {

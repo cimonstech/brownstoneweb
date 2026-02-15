@@ -152,7 +152,7 @@ export default async function BlogPostPage({ params }: Props) {
         <section className="max-w-7xl mx-auto px-6 md:px-20 py-20 flex flex-col lg:flex-row gap-20">
           <article className="flex-1">
             <div
-              className="prose prose-base sm:prose-lg prose-earthy max-w-none prose-headings:font-serif prose-img:rounded-xl prose-p:mb-6 sm:prose-p:mb-8 prose-p:text-base sm:prose-p:text-lg prose-p:leading-[1.75] prose-headings:mt-10 prose-headings:mb-4 first:prose-headings:mt-0 prose-ul:my-6 prose-ol:my-6 prose-li:my-1 prose-blockquote:my-8 prose-figure:my-8 editorial-content"
+              className="prose-like max-w-none editorial-content text-base sm:text-lg [&_p]:mb-6 sm:[&_p]:mb-8 [&_img]:rounded-xl"
               dangerouslySetInnerHTML={{ __html: html }}
             />
           </article>

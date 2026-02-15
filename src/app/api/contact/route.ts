@@ -1,7 +1,9 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { ServerClient } from "postmark";
 import { getContactReceivedHtml, getContactReceivedText } from "@/lib/emails/contact-received";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+const FROM = "candace@brownstoneltd.com";
 
 export async function POST(request: Request) {
   const to = process.env.CONTACTFORMMAIL;
@@ -11,14 +13,14 @@ export async function POST(request: Request) {
       { status: 503 }
     );
   }
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.POSTMARK_API_KEY) {
     return NextResponse.json(
-      { error: "Email service not configured (RESEND_API_KEY)." },
+      { error: "Email service not configured (POSTMARK_API_KEY)." },
       { status: 503 }
     );
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const client = new ServerClient(process.env.POSTMARK_API_KEY);
 
   let body: { name?: string; email?: string; projectType?: string; message?: string };
   try {
@@ -36,10 +38,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const fromInquiry =
-    process.env.RESEND_FROM_SUPPORT || process.env.CONTACT_FROM_EMAIL || "Brownstone Support <support@brownstoneltd.com>";
-  const fromAutoReply =
-    process.env.RESEND_FROM_NOREPLY?.trim() || process.env.CONTACT_FROM_EMAIL || "Brownstone <info@brownstoneltd.com>";
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ||
     (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
@@ -64,12 +62,12 @@ export async function POST(request: Request) {
   }
 
   try {
-    const { error: inquiryError } = await resend.emails.send({
-      from: fromInquiry,
-      to: to.trim(),
-      replyTo: emailTrimmed,
-      subject: `Website inquiry from ${name.trim()}${projectType ? ` — ${projectType}` : ""}`,
-      text: [
+    await client.sendEmail({
+      From: FROM,
+      To: to.trim(),
+      ReplyTo: emailTrimmed,
+      Subject: `Website inquiry from ${name.trim()}${projectType ? ` — ${projectType}` : ""}`,
+      TextBody: [
         `Name: ${name.trim()}`,
         `Email: ${emailTrimmed}`,
         projectType ? `Project type: ${projectType}` : null,
@@ -81,30 +79,22 @@ export async function POST(request: Request) {
         .join("\n"),
     });
 
-    if (inquiryError) {
-      console.error("Resend error (inquiry):", inquiryError);
-      return NextResponse.json(
-        { error: "Failed to send message. Please try again." },
-        { status: 502 }
-      );
-    }
-
     const brownstoneLogoUrl =
       typeof process.env.BROWNSTONE_LOGO_URL === "string" && process.env.BROWNSTONE_LOGO_URL.trim()
         ? process.env.BROWNSTONE_LOGO_URL.trim()
         : undefined;
 
-    const { error: autoReplyError } = await resend.emails.send({
-      from: fromAutoReply,
-      to: emailTrimmed,
-      subject: "We've received your message — Brownstone Construction",
-      html: getContactReceivedHtml(baseUrl, brownstoneLogoUrl),
-      text: getContactReceivedText(baseUrl),
-    });
-
-    if (autoReplyError) {
-      console.error("Resend error (auto-reply):", autoReplyError);
-      // Inquiry was sent; don't fail the request, only log
+    try {
+      await client.sendEmail({
+        From: FROM,
+        To: emailTrimmed,
+        Subject: "We've received your message — Brownstone Construction",
+        HtmlBody: getContactReceivedHtml(baseUrl, brownstoneLogoUrl),
+        TextBody: getContactReceivedText(baseUrl),
+      });
+    } catch (autoReplyErr) {
+      console.error("Postmark auto-reply error:", autoReplyErr);
+      // Inquiry was sent; don't fail the request, just log
     }
 
     return NextResponse.json({ success: true });

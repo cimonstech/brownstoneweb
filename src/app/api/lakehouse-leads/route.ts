@@ -1,17 +1,19 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import { ServerClient } from "postmark";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCelestiaBrochureHtml, getCelestiaBrochureText } from "@/lib/emails/celestia-brochure";
 
+const FROM = "candace@brownstoneltd.com";
+
 export async function POST(request: Request) {
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.POSTMARK_API_KEY) {
     return NextResponse.json(
       { error: "Email service is not configured." },
       { status: 503 }
     );
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+  const client = new ServerClient(process.env.POSTMARK_API_KEY);
 
   let body: { email?: string; consent?: boolean; source?: string };
   try {
@@ -73,27 +75,22 @@ export async function POST(request: Request) {
       ? process.env.BROCHURE_PDF_URL.trim()
       : null;
 
-  const from =
-    process.env.RESEND_FROM_NOREPLY?.trim() || process.env.CONTACT_FROM_EMAIL || "Brownstone <info@brownstoneltd.com>";
   const subject = "Your Celestia Property Brochure — Brownstone Construction";
-
   const html = getCelestiaBrochureHtml(baseUrl, "lakehouse", brochurePdfUrl);
   const text = getCelestiaBrochureText(baseUrl, brochurePdfUrl, "lakehouse");
+  const replyTo = process.env.POSTMARK_REPLY_TO ?? "candace@brownstoneltd.com";
 
-  const replyTo =
-    process.env.RESEND_REPLY_TO ?? "info@brownstoneltd.com";
-
-  const { error } = await resend.emails.send({
-    from,
-    to: email,
-    replyTo,
-    subject,
-    html,
-    text,
-  });
-
-  if (error) {
-    console.error("Resend error:", error);
+  try {
+    await client.sendEmail({
+      From: FROM,
+      To: email,
+      ReplyTo: replyTo,
+      Subject: subject,
+      HtmlBody: html,
+      TextBody: text,
+    });
+  } catch (err) {
+    console.error("Postmark error:", err);
     return NextResponse.json(
       { error: "We could not send the email. Please try again." },
       { status: 502 }

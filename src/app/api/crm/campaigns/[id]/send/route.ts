@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
+import { ServerClient } from "postmark";
 import { createClient } from "@/lib/supabase/server";
-import { Resend } from "resend";
 import { getUserRoles } from "@/lib/supabase/auth";
 import {
   getCampaignById,
@@ -29,7 +29,7 @@ export async function POST(
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
   }
 
-  if (!process.env.RESEND_API_KEY) {
+  if (!process.env.POSTMARK_API_KEY) {
     return NextResponse.json(
       { error: "Email service not configured" },
       { status: 503 }
@@ -80,15 +80,10 @@ export async function POST(
     });
   }
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
-  // Use support-style address for cold emails so they land in Primary, not Promotions/Spam
-  const from =
-    process.env.RESEND_FROM_CAMPAIGNS?.trim() ||
-    process.env.RESEND_FROM_SUPPORT?.trim() ||
-    process.env.CONTACT_FROM_EMAIL ||
-    "Brownstone <ghanaisthefuture@brownstoneltd.com>";
+  const client = new ServerClient(process.env.POSTMARK_API_KEY);
+  const from = "candace@brownstoneltd.com";
   const replyTo =
-    process.env.RESEND_REPLY_TO?.trim() || "ghanaisthefuture@brownstoneltd.com";
+    process.env.POSTMARK_REPLY_TO?.trim() || "candace@brownstoneltd.com";
 
   let sent = 0;
   const errors: string[] = [];
@@ -109,16 +104,17 @@ export async function POST(
     const subject = interpolateTemplate(template.subject, vars);
     const bodyHtml = interpolateTemplate(template.body_html, vars);
 
-    const { error } = await resend.emails.send({
-      from,
-      to: contact.email,
-      replyTo,
-      subject,
-      html: bodyHtml,
-    });
-
-    if (error) {
-      errors.push(`${contact.email}: ${error.message}`);
+    try {
+      await client.sendEmail({
+        From: from,
+        To: contact.email,
+        ReplyTo: replyTo,
+        Subject: subject,
+        HtmlBody: bodyHtml,
+      });
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      errors.push(`${contact.email}: ${msg}`);
       continue;
     }
 

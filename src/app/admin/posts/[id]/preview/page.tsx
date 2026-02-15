@@ -46,7 +46,7 @@ export default async function AdminPreviewPostPage({
             </div>
           )}
           <div
-            className="prose prose-earthy max-w-none prose-headings:font-serif"
+            className="prose-like max-w-none"
             dangerouslySetInnerHTML={{ __html: html }}
           />
         </article>
