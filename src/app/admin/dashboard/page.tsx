@@ -8,6 +8,10 @@ export default async function AdminDashboardPage() {
     { count: draftCount },
     { count: publishedCount },
     { count: totalCount },
+    { count: contactsCount },
+    { count: campaignsCount },
+    { count: leadsCount },
+    { count: usersCount },
   ] = await Promise.all([
     supabase
       .from("posts")
@@ -17,6 +21,10 @@ export default async function AdminDashboardPage() {
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "draft"),
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "published"),
     supabase.from("posts").select("id", { count: "exact", head: true }),
+    supabase.from("contacts").select("id", { count: "exact", head: true }),
+    supabase.from("campaigns").select("id", { count: "exact", head: true }),
+    supabase.from("leads").select("id", { count: "exact", head: true }),
+    supabase.from("profiles").select("id", { count: "exact", head: true }),
   ]);
 
   const authorIds = [...new Set((posts ?? []).map((p) => p.author_id))];
@@ -32,6 +40,10 @@ export default async function AdminDashboardPage() {
   const total = totalCount ?? 0;
   const drafts = draftCount ?? 0;
   const published = publishedCount ?? 0;
+  const contacts = contactsCount ?? 0;
+  const campaigns = campaignsCount ?? 0;
+  const leads = leadsCount ?? 0;
+  const users = usersCount ?? 0;
 
   return (
     <div>
@@ -40,6 +52,7 @@ export default async function AdminDashboardPage() {
         <p className="text-slate-500 mt-1">Welcome back. Here&apos;s what&apos;s happening at Brownstone today.</p>
       </div>
 
+      <h3 className="text-lg font-bold text-slate-800 mb-3">Content</h3>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-primary/30 transition-all">
           <div className="flex items-center justify-between mb-4">
@@ -73,9 +86,65 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
+      <h3 className="text-lg font-bold text-slate-800 mb-3">CRM & Team</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <Link
+          href="/admin/crm/contacts"
+          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-primary/30 transition-all block group"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            </div>
+          </div>
+          <p className="text-slate-500 text-sm font-medium">Contacts</p>
+          <h3 className="text-3xl font-bold mt-1 text-slate-800">{contacts}</h3>
+          <p className="text-xs text-slate-400 mt-2">CRM</p>
+        </Link>
+        <Link
+          href="/admin/crm/campaigns"
+          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-primary/30 transition-all block group"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            </div>
+          </div>
+          <p className="text-slate-500 text-sm font-medium">Campaigns</p>
+          <h3 className="text-3xl font-bold mt-1 text-slate-800">{campaigns}</h3>
+          <p className="text-xs text-slate-400 mt-2">Email campaigns</p>
+        </Link>
+        <Link
+          href="/admin/leads"
+          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-primary/30 transition-all block group"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            </div>
+          </div>
+          <p className="text-slate-500 text-sm font-medium">Leads</p>
+          <h3 className="text-3xl font-bold mt-1 text-slate-800">{leads}</h3>
+          <p className="text-xs text-slate-400 mt-2">Form submissions</p>
+        </Link>
+        <Link
+          href="/admin/users"
+          className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:border-primary/30 transition-all block group"
+        >
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 group-hover:bg-primary/10 group-hover:text-primary transition-colors">
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+          </div>
+          <p className="text-slate-500 text-sm font-medium">Users</p>
+          <h3 className="text-3xl font-bold mt-1 text-slate-800">{users}</h3>
+          <p className="text-xs text-slate-400 mt-2">Team & roles</p>
+        </Link>
+      </div>
+
       <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
-          <h3 className="text-lg font-bold text-slate-800">Recent Activities</h3>
+          <h3 className="text-lg font-bold text-slate-800">Recent posts</h3>
           <Link
             href="/admin/posts/new"
             className="bg-primary hover:bg-primary/90 text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-all inline-flex items-center gap-2"

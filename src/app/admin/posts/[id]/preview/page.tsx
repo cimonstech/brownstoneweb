@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
-import { renderEditorJsToHtml } from "@/lib/blog/render";
+import { contentToHtml } from "@/lib/blog/render";
 import Link from "next/link";
 
 export default async function AdminPreviewPostPage({
@@ -26,7 +26,7 @@ export default async function AdminPreviewPostPage({
     roles.includes("admin");
   if (!canView) redirect("/admin/dashboard");
 
-  const html = renderEditorJsToHtml(post.content as import("@/components/admin/Editor").OutputData);
+  const html = contentToHtml(post.content);
 
   return (
     <div className="min-h-screen bg-white text-earthy">

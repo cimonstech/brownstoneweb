@@ -4,13 +4,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import type { OutputData } from "./Editor";
+import type { TiptapContent } from "./TiptapEditor";
 import { createClient } from "@/lib/supabase/client";
 import { postSchema } from "@/lib/blog/validate";
 import { revalidateBlog } from "@/app/admin/posts/actions";
 
-const Editor = dynamic(
-  () => import("./Editor").then((m) => ({ default: m.Editor })),
+const TiptapEditor = dynamic(
+  () => import("./TiptapEditor").then((m) => ({ default: m.TiptapEditor })),
   { ssr: false }
 );
 
@@ -31,7 +31,7 @@ type PostFormProps = {
   initialSlug?: string;
   initialExcerpt?: string | null;
   initialCoverImage?: string | null;
-  initialContent?: OutputData | null;
+  initialContent?: TiptapContent | string | null;
   initialStatus?: "draft" | "published";
   initialCategoryIds?: string[];
   initialReadTimeMinutes?: number | null;
@@ -61,7 +61,9 @@ export function PostForm({
   const [slug, setSlug] = useState(initialSlug);
   const [excerpt, setExcerpt] = useState(initialExcerpt ?? "");
   const [coverImage, setCoverImage] = useState(initialCoverImage ?? "");
-  const [content, setContent] = useState<OutputData | null>(initialContent);
+  const [content, setContent] = useState<TiptapContent | null>(
+    typeof initialContent === "object" && initialContent !== null ? initialContent : null
+  );
   const [status, setStatus] = useState<"draft" | "published">(initialStatus);
   const [categoryIds, setCategoryIds] = useState<string[]>(initialCategoryIds);
   const [readTimeMinutes, setReadTimeMinutes] = useState<number | null>(initialReadTimeMinutes);
@@ -327,7 +329,7 @@ export function PostForm({
       )}
       <div>
         <label className="block text-sm font-medium text-earthy mb-1">Content</label>
-        <Editor initialData={initialContent} onChange={setContent} />
+        <TiptapEditor initialContent={initialContent} onChange={setContent} />
       </div>
       <div className="flex items-center gap-4">
         <button

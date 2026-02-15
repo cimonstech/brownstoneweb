@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
-import { renderEditorJsToHtml } from "@/lib/blog/render";
+import { contentToHtml } from "@/lib/blog/render";
 import { ReadingProgressBar } from "@/components/blog/ReadingProgressBar";
 import { ShareButtons } from "@/components/blog/ShareButtons";
 import { NowSellingSidebar } from "@/components/blog/NowSellingSidebar";
@@ -88,7 +88,7 @@ export default async function BlogPostPage({ params }: Props) {
     nowSelling = [];
   }
 
-  const html = renderEditorJsToHtml(post.content);
+  const html = contentToHtml(post.content);
 
   const dateStr =
     post.published_at &&

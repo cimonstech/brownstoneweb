@@ -1,30 +1,52 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const noSidebarPaths = ["/admin/login", "/admin/reset-password"];
+const noSidebarPaths = ["/admin/login", "/admin/reset-password", "/admin/update-password"];
 
-const navItems = [
-  { href: "/admin/dashboard", label: "Dashboard", icon: "dashboard" },
-  { href: "/admin/posts", label: "Posts", icon: "article" },
-  { href: "/admin/categories", label: "Categories", icon: "folder" },
-  { href: "/admin/media", label: "Media", icon: "image" },
-  { href: "/admin/now-selling", label: "Signature Listings", icon: "home" },
-  { href: "/admin/leads", label: "Leads", icon: "mail" },
-  { href: "/admin/crm/contacts", label: "Contacts", icon: "people" },
-  { href: "/admin/crm/pipeline", label: "Pipeline", icon: "pipeline" },
-  { href: "/admin/crm/campaigns", label: "Campaigns", icon: "campaigns" },
-  { href: "/admin/crm/templates", label: "Email Templates", icon: "templates" },
-  { href: "/admin/crm/analytics", label: "Analytics", icon: "analytics" },
-  { href: "/admin/roles", label: "Roles", icon: "badge" },
-  { href: "/admin/profile", label: "Profile", icon: "person" },
-  { href: "/admin/users", label: "Users", icon: "people" },
+const navSections = [
+  {
+    label: "Overview",
+    items: [
+      { href: "/admin/dashboard", label: "Dashboard", icon: "dashboard" as const },
+    ],
+  },
+  {
+    label: "Content",
+    items: [
+      { href: "/admin/posts", label: "Posts", icon: "article" as const },
+      { href: "/admin/categories", label: "Categories", icon: "folder" as const },
+      { href: "/admin/media", label: "Media", icon: "image" as const },
+      { href: "/admin/now-selling", label: "Signature Listings", icon: "home" as const },
+    ],
+  },
+  {
+    label: "Leads & CRM",
+    items: [
+      { href: "/admin/leads", label: "Leads", icon: "mail" as const },
+      { href: "/admin/crm/contacts", label: "Contacts", icon: "people" as const },
+      { href: "/admin/crm/pipeline", label: "Pipeline", icon: "pipeline" as const },
+      { href: "/admin/crm/campaigns", label: "Campaigns", icon: "campaigns" as const },
+      { href: "/admin/crm/templates", label: "Email Templates", icon: "templates" as const },
+      { href: "/admin/crm/analytics", label: "Analytics", icon: "analytics" as const },
+    ],
+  },
+  {
+    label: "Admin",
+    items: [
+      { href: "/admin/users", label: "Users", icon: "people" as const },
+      { href: "/admin/roles", label: "Roles", icon: "badge" as const },
+      { href: "/admin/profile", label: "Profile", icon: "person" as const },
+    ],
+  },
 ] as const;
 
-function NavIcon({ name }: { name: (typeof navItems)[number]["icon"] }) {
+type NavIconName = "dashboard" | "article" | "folder" | "image" | "home" | "mail" | "people" | "pipeline" | "campaigns" | "templates" | "analytics" | "badge" | "person";
+
+function NavIcon({ name }: { name: NavIconName }) {
   const c = "w-5 h-5 shrink-0";
   switch (name) {
     case "dashboard":
@@ -102,6 +124,11 @@ export function AdminShell({
   const pathname = usePathname();
   const router = useRouter();
   const hideSidebar = noSidebarPaths.some((p) => pathname?.startsWith(p));
+  const isCrmPath = pathname?.startsWith("/admin/leads") || pathname?.startsWith("/admin/crm");
+  const [crmOpen, setCrmOpen] = useState(isCrmPath);
+  useEffect(() => {
+    if (isCrmPath) setCrmOpen(true);
+  }, [isCrmPath]);
 
   async function handleLogout() {
     const supabase = createClient();
@@ -118,33 +145,81 @@ export function AdminShell({
     <div className="flex min-h-screen bg-[#F8F9FA]">
       <aside className="w-64 bg-[#411600] fixed inset-y-0 left-0 z-50 flex flex-col shadow-xl">
         <div className="p-6">
-          <Link href="/admin/dashboard" className="flex items-center gap-2">
-            <Image
-              src="/BrownStoneW.png"
-              alt=""
-              width={48}
-              height={16}
-              className="h-4 w-auto object-contain shrink-0"
-            />
-            <span className="text-[#fff] text-sm font-bold tracking-tight whitespace-nowrap">Brownstone Admin</span>
+          <Link href="/admin/dashboard" className="text-[#fff] text-sm font-bold tracking-tight whitespace-nowrap hover:text-primary/90 transition-colors">
+            Brownstone Admin
           </Link>
         </div>
-        <nav className="flex-1 px-4 space-y-1">
-          {navItems.map(({ href, label, icon }) => {
-            const active = pathname === href || (href !== "/admin/dashboard" && pathname?.startsWith(href));
+        <nav className="flex-1 px-4 overflow-y-auto">
+          {navSections.map((section) => {
+            const isCrmSection = section.label === "Leads & CRM";
             return (
-              <Link
-                key={href}
-                href={href}
-                className={`flex items-center px-4 py-3 rounded-lg transition-all group border-l-4 ${
-                  active
-                    ? "bg-primary/20 border-primary text-[#fff]"
-                    : "border-transparent text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
-                }`}
-              >
-                <span className={active ? "text-primary mr-3" : "mr-3 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
-                <span className="font-medium text-inherit">{label}</span>
-              </Link>
+              <div key={section.label} className="mb-6">
+                <p className="px-4 mb-2 text-[10px] font-bold uppercase tracking-widest text-[#c4b5a8]">
+                  {section.label}
+                </p>
+                {isCrmSection ? (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setCrmOpen((o) => !o)}
+                      className="flex items-center justify-between w-full px-4 py-3 rounded-lg transition-all border-l-4 border-transparent text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
+                    >
+                      <span className="flex items-center font-medium">
+                        <span className="mr-3 text-[#e8e0dc]"><NavIcon name="people" /></span>
+                        CRM
+                      </span>
+                      <svg
+                        className={`w-5 h-5 shrink-0 transition-transform ${crmOpen ? "rotate-180" : ""}`}
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                      </svg>
+                    </button>
+                    {crmOpen && (
+                      <div className="mt-1 ml-4 space-y-1 border-l border-white/10 pl-2">
+                        {section.items.map(({ href, label, icon }) => {
+                          const active = pathname === href || (href !== "/admin/dashboard" && pathname?.startsWith(href));
+                          return (
+                            <Link
+                              key={href}
+                              href={href}
+                              className={`flex items-center px-3 py-2.5 rounded-lg transition-all group text-sm ${
+                                active
+                                  ? "bg-primary/20 text-[#fff]"
+                                  : "text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
+                              }`}
+                            >
+                              <span className={active ? "text-primary mr-2" : "mr-2 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
+                              <span className="font-medium text-inherit">{label}</span>
+                            </Link>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="space-y-1">
+                    {section.items.map(({ href, label, icon }) => {
+                      const active = pathname === href || (href !== "/admin/dashboard" && pathname?.startsWith(href));
+                      return (
+                        <Link
+                          key={href}
+                          href={href}
+                          className={`flex items-center px-4 py-3 rounded-lg transition-all group border-l-4 ${
+                            active
+                              ? "bg-primary/20 border-primary text-[#fff]"
+                              : "border-transparent text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
+                          }`}
+                        >
+                          <span className={active ? "text-primary mr-3" : "mr-3 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
+                          <span className="font-medium text-inherit">{label}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
             );
           })}
         </nav>

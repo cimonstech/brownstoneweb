@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
 import Link from "next/link";
 import { getCampaigns } from "@/lib/crm/campaigns";
+import { ViewButton, DeleteButton } from "@/components/admin/ActionIcons";
+import { DeleteCampaignButton } from "./DeleteCampaignButton";
 
 const STATUS_LABELS: Record<string, string> = {
   draft: "Draft",
@@ -117,12 +119,10 @@ export default async function AdminCrmCampaignsPage() {
                       })}
                     </td>
                     <td className="px-6 py-5">
-                      <Link
-                        href={`/admin/crm/campaigns/${c.id}`}
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        View
-                      </Link>
+                      <span className="inline-flex items-center gap-1">
+                        <ViewButton href={`/admin/crm/campaigns/${c.id}`} title="View campaign" />
+                        <DeleteCampaignButton campaignId={c.id} campaignName={c.name} />
+                      </span>
                     </td>
                   </tr>
                 ))

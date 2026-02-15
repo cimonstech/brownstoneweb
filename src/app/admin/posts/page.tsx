@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
+import { EditButton, DeleteButton } from "@/components/admin/ActionIcons";
+import { DeletePostButton } from "./DeletePostButton";
 
 export default async function AdminPostsPage() {
   const supabase = await createClient();
@@ -75,12 +76,10 @@ export default async function AdminPostsPage() {
                       {new Date(post.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-5 text-right">
-                      <Link
-                        href={`/admin/posts/${post.id}/edit`}
-                        className="text-sm font-semibold text-primary hover:underline"
-                      >
-                        Edit
-                      </Link>
+                      <span className="inline-flex items-center gap-1">
+                        <EditButton href={`/admin/posts/${post.id}/edit`} title="Edit post" />
+                        <DeletePostButton postId={post.id} postTitle={post.title} />
+                      </span>
                     </td>
                   </tr>
                 ))

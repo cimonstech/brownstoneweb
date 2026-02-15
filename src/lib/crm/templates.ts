@@ -68,6 +68,38 @@ export async function deleteTemplate(
   if (error) throw error;
 }
 
+/**
+ * Convert plain text to HTML for email body.
+ * Double newlines → paragraphs; single newlines → <br>; escapes HTML.
+ * Use when user pastes plain text into the template so the email looks rich without manual HTML.
+ */
+export function plainTextToHtml(plain: string): string {
+  const escaped = plain
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+  const paragraphs = escaped
+    .split(/\n\s*\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  if (paragraphs.length === 0) return "<p></p>";
+  return paragraphs
+    .map((p) => `<p>${p.replace(/\n/g, "<br>\n")}</p>`)
+    .join("\n");
+}
+
+/** True if body looks like plain text (no HTML tags). */
+export function looksLikePlainText(body: string): boolean {
+  const trimmed = body.trim();
+  return trimmed.length > 0 && !trimmed.includes("<");
+}
+
+/** Normalize template body: if plain text, convert to HTML before save. */
+export function normalizeTemplateBody(body: string): string {
+  return looksLikePlainText(body) ? plainTextToHtml(body) : body.trim();
+}
+
 /** Replace {{variable}} placeholders in template with contact data */
 export function interpolateTemplate(
   template: string,

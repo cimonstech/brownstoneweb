@@ -91,3 +91,50 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const roles = await getUserRoles();
+  if (!roles.includes("admin") && !roles.includes("moderator")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const { id } = await params;
+  const campaign = await getCampaignById(supabase, id);
+  if (!campaign) {
+    return NextResponse.json({ error: "Campaign not found" }, { status: 404 });
+  }
+
+  const { error: emailsError } = await supabase
+    .from("campaign_emails")
+    .delete()
+    .eq("campaign_id", id);
+  if (emailsError) {
+    console.error("Campaign emails delete error:", emailsError);
+    return NextResponse.json(
+      { error: "Failed to delete campaign" },
+      { status: 500 }
+    );
+  }
+
+  const { error: campaignError } = await supabase.from("campaigns").delete().eq("id", id);
+  if (campaignError) {
+    console.error("Campaign delete error:", campaignError);
+    return NextResponse.json(
+      { error: "Failed to delete campaign" },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ success: true });
+}

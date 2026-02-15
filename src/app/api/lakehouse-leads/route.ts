@@ -50,17 +50,22 @@ export async function POST(request: Request) {
     ) {
       const supabase = createAdminClient();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for lakehouse_leads insert
-      await supabase.from("lakehouse_leads").insert({ email, consent } as any);
-      // Also store in unified leads
-      await supabase.from("leads").insert({
+      const { error: lakehouseErr } = await supabase.from("lakehouse_leads").insert({ email, consent } as any);
+      if (lakehouseErr) console.error("Lakehouse leads insert error:", lakehouseErr);
+      const { error: leadsErr } = await supabase.from("leads").insert({
         email,
         source,
         project: "lakehouse",
         consent,
       } as never);
+      if (leadsErr) console.error("Unified leads insert error (lakehouse):", leadsErr);
+    } else {
+      console.warn(
+        "Leads not saved: set SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL in .env.local (and redeploy) to store leads."
+      );
     }
   } catch (dbErr) {
-    console.warn("Lakehouse lead DB insert failed (optional):", dbErr);
+    console.error("Lakehouse lead DB error:", dbErr);
   }
 
   const brochurePdfUrl =

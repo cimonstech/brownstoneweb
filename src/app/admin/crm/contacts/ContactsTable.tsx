@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import type { Database } from "@/lib/supabase/types";
 import { CONTACT_STATUS_LABELS } from "@/lib/crm/types";
+import { ViewButton, EditButton, DeleteButton } from "@/components/admin/ActionIcons";
 
 type Contact = Database["public"]["Tables"]["contacts"]["Row"];
 
@@ -22,6 +24,25 @@ export function ContactsTable({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  async function handleDeleteContact(contact: Contact) {
+    if (!confirm(`Delete ${contact.email}? This will remove their activity and campaign links. This cannot be undone.`)) return;
+    setDeletingId(contact.id);
+    try {
+      const res = await fetch(`/api/crm/contacts/${contact.id}`, { method: "DELETE" });
+      if (res.ok) {
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.error ?? "Failed to delete contact");
+      }
+    } catch {
+      alert("Failed to delete contact");
+    } finally {
+      setDeletingId(null);
+    }
+  }
 
   function updateFilters(updates: {
     status?: string;
@@ -133,7 +154,7 @@ export function ContactsTable({
                     <td className="px-6 py-5">
                       <Link
                         href={`/admin/crm/contacts/${contact.id}`}
-                        className="font-medium text-slate-800 hover:text-primary transition-colors"
+                        className="font-medium text-slate-800 hover:text-primary transition-colors text-[0.8rem]"
                       >
                         {contact.email}
                       </Link>
@@ -171,12 +192,17 @@ export function ContactsTable({
                       })}
                     </td>
                     <td className="px-6 py-5">
-                      <Link
-                        href={`/admin/crm/contacts/${contact.id}`}
-                        className="text-slate-400 hover:text-primary transition-colors text-sm font-medium"
-                      >
-                        View
-                      </Link>
+                      <span className="inline-flex items-center gap-1">
+                        <ViewButton href={`/admin/crm/contacts/${contact.id}`} title="View contact" />
+                        <EditButton href={`/admin/crm/contacts/${contact.id}/edit`} title="Edit contact" />
+                        <DeleteButton
+                          onClick={() => handleDeleteContact(contact)}
+                          disabled={deletingId === contact.id}
+                          loading={deletingId === contact.id}
+                          title="Delete contact"
+                          aria-label="Delete contact"
+                        />
+                      </span>
                     </td>
                   </tr>
                 ))

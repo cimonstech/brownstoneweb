@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Database } from "@/lib/supabase/types";
+import { EditButton, DeleteButton } from "@/components/admin/ActionIcons";
 import type { ContactStatus } from "@/lib/supabase/types";
 
 type Contact = Database["public"]["Tables"]["contacts"]["Row"];
@@ -34,6 +35,26 @@ export function ContactDetailClient({
   const [note, setNote] = useState("");
   const [savingStatus, setSavingStatus] = useState(false);
   const [savingNote, setSavingNote] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleDelete() {
+    if (!confirm(`Delete ${contact.email}? This will remove their activity and campaign links. This cannot be undone.`)) return;
+    setDeleting(true);
+    try {
+      const res = await fetch(`/api/crm/contacts/${contact.id}`, { method: "DELETE" });
+      if (res.ok) {
+        router.push("/admin/crm/contacts");
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.error ?? "Failed to delete contact");
+      }
+    } catch {
+      alert("Failed to delete contact");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   async function handleStatusChange(newStatus: string) {
     setSavingStatus(true);
@@ -73,8 +94,23 @@ export function ContactDetailClient({
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-      {/* Profile */}
       <div className="lg:col-span-2 space-y-6">
+        <div className="flex justify-end gap-1">
+          <EditButton
+            href={`/admin/crm/contacts/${contact.id}/edit`}
+            title="Edit contact"
+            aria-label="Edit contact"
+          />
+          <DeleteButton
+            onClick={handleDelete}
+            disabled={deleting}
+            loading={deleting}
+            title="Delete contact"
+            aria-label="Delete contact"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+          />
+        </div>
+        {/* Profile */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
           <h3 className="text-lg font-bold text-slate-800 mb-4">Profile</h3>
           <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -85,7 +121,7 @@ export function ContactDetailClient({
               <dd>
                 <a
                   href={`mailto:${contact.email}`}
-                  className="text-primary hover:underline"
+                  className="text-primary hover:underline text-[0.8rem]"
                 >
                   {contact.email}
                 </a>
@@ -180,10 +216,10 @@ export function ContactDetailClient({
           </dl>
         </div>
 
-        {/* Activities */}
+        {/* Conversation timeline & activity */}
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
           <h3 className="text-lg font-bold text-slate-800 mb-4">
-            Activity & Notes
+            Conversation & activity
           </h3>
           <form onSubmit={handleAddNote} className="mb-6">
             <textarea
@@ -202,39 +238,78 @@ export function ContactDetailClient({
               {savingNote ? "Adding..." : "Add note"}
             </button>
           </form>
-          <div className="space-y-3">
+          <div className="space-y-4">
             {activities.length === 0 ? (
               <p className="text-slate-500 text-sm">No activity yet.</p>
             ) : (
-              activities.map((a) => (
-                <div
-                  key={a.id}
-                  className="flex gap-4 py-3 border-b border-slate-100 last:border-0"
-                >
-                  <div className="shrink-0 w-24 text-xs text-slate-500">
-                    {new Date(a.created_at).toLocaleDateString(undefined, {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+              [...activities]
+                .sort(
+                  (a, b) =>
+                    new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+                )
+                .map((a) => (
+                  <div
+                    key={a.id}
+                    className={`flex gap-4 py-3 px-4 rounded-xl border ${
+                      a.type === "email_sent"
+                        ? "bg-primary/5 border-primary/20"
+                        : a.type === "email_received"
+                          ? "bg-slate-50 border-slate-200"
+                          : "border-slate-100"
+                    }`}
+                  >
+                    <div className="shrink-0 w-28 text-xs text-slate-500">
+                      {new Date(a.created_at).toLocaleDateString(undefined, {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <span className="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                        {a.type === "email_sent"
+                          ? "You sent"
+                          : a.type === "email_received"
+                            ? "They replied"
+                            : activityLabels[a.type] ?? a.type}
+                      </span>
+                      {a.type === "email_sent" &&
+                        a.metadata &&
+                        typeof a.metadata === "object" &&
+                        "subject" in a.metadata && (
+                          <p className="text-slate-800 text-sm mt-1 font-medium">
+                            {(a.metadata as { subject?: string }).subject}
+                          </p>
+                        )}
+                      {a.type === "email_received" &&
+                        a.metadata &&
+                        typeof a.metadata === "object" &&
+                        "subject" in a.metadata && (
+                          <p className="text-slate-700 text-sm mt-1">
+                            {(a.metadata as { subject?: string }).subject}
+                          </p>
+                        )}
+                      {a.type === "note" &&
+                        a.metadata &&
+                        typeof a.metadata === "object" &&
+                        "content" in a.metadata && (
+                          <p className="text-slate-700 text-sm mt-1 whitespace-pre-wrap">
+                            {String((a.metadata as { content?: string }).content)}
+                          </p>
+                        )}
+                      {(a.type === "form_submit" || a.type === "call" || a.type === "meeting") &&
+                        a.metadata &&
+                        typeof a.metadata === "object" &&
+                        Object.keys(a.metadata as object).length > 0 && (
+                          <p className="text-slate-600 text-sm mt-1">
+                            {JSON.stringify(a.metadata)}
+                          </p>
+                        )}
+                    </div>
                   </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-xs font-medium text-primary uppercase tracking-wider">
-                      {activityLabels[a.type] ?? a.type}
-                    </span>
-                    {a.type === "note" &&
-                    a.metadata &&
-                    typeof a.metadata === "object" &&
-                    "content" in a.metadata ? (
-                      <p className="text-slate-700 text-sm mt-1 whitespace-pre-wrap">
-                        {String((a.metadata as { content?: string }).content)}
-                      </p>
-                    ) : null}
-                  </div>
-                </div>
-              ))
+                ))
             )}
           </div>
         </div>

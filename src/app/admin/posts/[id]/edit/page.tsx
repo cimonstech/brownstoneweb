@@ -2,6 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { PostForm } from "@/components/admin/PostForm";
+import { renderEditorJsToHtml } from "@/lib/blog/render";
+import { DeletePostButton } from "../../DeletePostButton";
 
 export default async function AdminEditPostPage({
   params,
@@ -41,16 +43,31 @@ export default async function AdminEditPostPage({
     .select("id, name, slug")
     .order("name");
 
+  const rawContent = post.content as Record<string, unknown> | null | undefined;
+  const isLegacyEditorJs =
+    rawContent && typeof rawContent === "object" && Array.isArray((rawContent as { blocks?: unknown[] }).blocks);
+  const initialContent = isLegacyEditorJs
+    ? renderEditorJsToHtml(rawContent)
+    : (post.content as import("@tiptap/core").JSONContent | null);
+
   return (
     <div>
-      <h1 className="text-2xl font-bold text-earthy mb-6">Edit post</h1>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-bold text-earthy">Edit post</h1>
+        <DeletePostButton
+          postId={post.id}
+          postTitle={post.title}
+          variant="button"
+          className="text-red-600 hover:text-red-700 font-medium text-sm"
+        />
+      </div>
       <PostForm
         postId={post.id}
         initialTitle={post.title}
         initialSlug={post.slug}
         initialExcerpt={post.excerpt}
         initialCoverImage={post.cover_image}
-        initialContent={post.content as import("@/components/admin/Editor").OutputData | null}
+        initialContent={initialContent}
         initialStatus={post.status}
         initialCategoryIds={initialCategoryIds}
         initialReadTimeMinutes={(post as { read_time_minutes?: number | null }).read_time_minutes ?? null}

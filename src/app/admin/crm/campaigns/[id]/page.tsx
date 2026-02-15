@@ -3,6 +3,7 @@ import { redirect, notFound } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
 import Link from "next/link";
 import { getCampaignById } from "@/lib/crm/campaigns";
+import { getContacts } from "@/lib/crm/contacts";
 import { CampaignDetailClient } from "./CampaignDetailClient";
 
 const STATUS_LABELS: Record<string, string> = {
@@ -39,12 +40,14 @@ export default async function AdminCrmCampaignDetailPage({
     .order("created_at", { ascending: false });
 
   const contactIds = [...new Set((campaignEmails ?? []).map((ce) => ce.contact_id))];
-  const { data: contacts } = await supabase
+  const { data: campaignContacts } = await supabase
     .from("contacts")
     .select("id, email, name")
     .in("id", contactIds);
+  const contactMap = new Map((campaignContacts ?? []).map((c) => [c.id, c]));
 
-  const contactMap = new Map((contacts ?? []).map((c) => [c.id, c]));
+  const allContacts = await getContacts(supabase, {}, 500);
+  const existingContactIds = new Set(contactIds);
 
   return (
     <div>
@@ -66,6 +69,14 @@ export default async function AdminCrmCampaignDetailPage({
         campaign={campaign}
         campaignEmails={campaignEmails ?? []}
         contactMap={Object.fromEntries(contactMap)}
+        allContacts={allContacts.map((c) => ({
+          id: c.id,
+          email: c.email,
+          name: c.name ?? null,
+          do_not_contact: c.do_not_contact,
+          unsubscribed: c.unsubscribed,
+        }))}
+        existingContactIds={Array.from(existingContactIds)}
       />
     </div>
   );

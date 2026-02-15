@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
-import { getTemplates, createTemplate } from "@/lib/crm/templates";
+import { getTemplates, createTemplate, normalizeTemplateBody } from "@/lib/crm/templates";
 import { z } from "zod";
 
 const createTemplateSchema = z.object({
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     const template = await createTemplate(supabase, {
       name: parsed.data.name,
       subject: parsed.data.subject,
-      body_html: parsed.data.body_html,
+      body_html: normalizeTemplateBody(parsed.data.body_html),
       variables: parsed.data.variables ?? [],
     });
     return NextResponse.json(template);

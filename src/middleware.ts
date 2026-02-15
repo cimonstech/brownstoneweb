@@ -5,7 +5,7 @@ const adminPaths = ["/admin", "/admin/dashboard", "/admin/posts", "/admin/profil
 const adminPathPrefix = "/admin/";
 
 function isAdminRoute(pathname: string): boolean {
-  if (pathname === "/admin" || pathname === "/admin/login" || pathname === "/admin/reset-password") {
+  if (pathname === "/admin" || pathname === "/admin/login" || pathname === "/admin/reset-password" || pathname === "/admin/update-password") {
     return false;
   }
   return pathname.startsWith(adminPathPrefix);

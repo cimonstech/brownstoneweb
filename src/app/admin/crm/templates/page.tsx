@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
 import Link from "next/link";
+import { EditButton } from "@/components/admin/ActionIcons";
 import { getTemplates } from "@/lib/crm/templates";
 
 export default async function AdminCrmTemplatesPage() {
@@ -88,12 +89,7 @@ export default async function AdminCrmTemplatesPage() {
                       })}
                     </td>
                     <td className="px-6 py-5">
-                      <Link
-                        href={`/admin/crm/templates/${t.id}/edit`}
-                        className="text-sm font-medium text-primary hover:underline"
-                      >
-                        Edit
-                      </Link>
+                      <EditButton href={`/admin/crm/templates/${t.id}/edit`} title="Edit template" />
                     </td>
                   </tr>
                 ))

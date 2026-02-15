@@ -5,6 +5,7 @@ import {
   getTemplateById,
   updateTemplate,
   deleteTemplate,
+  normalizeTemplateBody,
 } from "@/lib/crm/templates";
 import { z } from "zod";
 
@@ -74,7 +75,11 @@ export async function PATCH(
   }
 
   try {
-    const template = await updateTemplate(supabase, id, parsed.data);
+    const update = { ...parsed.data };
+    if (typeof update.body_html === "string") {
+      update.body_html = normalizeTemplateBody(update.body_html);
+    }
+    const template = await updateTemplate(supabase, id, update);
     return NextResponse.json(template);
   } catch (err) {
     console.error("CRM template PATCH error:", err);

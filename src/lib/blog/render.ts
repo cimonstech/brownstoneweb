@@ -1,5 +1,8 @@
 import sanitizeHtml from "sanitize-html";
-import type { OutputData } from "@/components/admin/Editor";
+import { renderTiptapToHtml } from "./render-tiptap";
+
+/** Legacy Editor.js output shape (for old posts). */
+type EditorJsOutputData = { blocks?: unknown[]; time?: number; version?: string };
 
 /**
  * Allowed inline formatting from Editor.js
@@ -101,10 +104,12 @@ function escapeAttr(value: unknown): string {
 
 /**
  * Sanitize inline Editor.js HTML (bold, links, etc.)
+ * Preserves line breaks as <br> for soft breaks / pasted content.
  */
 function sanitizeInlineHtml(text: unknown): string {
   const s = normalizeBlockText(text);
-  return sanitizeHtml(s, INLINE_OPTIONS);
+  const withBreaks = s.replace(/\n/g, "<br />");
+  return sanitizeHtml(withBreaks, INLINE_OPTIONS);
 }
 
 /** List item shape from @editorjs/list: { content, meta?, items? } */
@@ -142,12 +147,12 @@ function renderListItems(items: unknown[], style: string): string {
  * Normalize content: if string, parse as JSON (Editor.js output is sometimes stored as string).
  */
 function normalizeContent(
-  data: OutputData | null | undefined | string
-): OutputData | null | undefined {
+  data: EditorJsOutputData | null | undefined | string
+): EditorJsOutputData | null | undefined {
   if (data == null) return data;
   if (typeof data === "string") {
     try {
-      return JSON.parse(data) as OutputData;
+      return JSON.parse(data) as EditorJsOutputData;
     } catch {
       return undefined;
     }
@@ -159,18 +164,20 @@ function normalizeContent(
  * Render Editor.js OutputData → HTML
  */
 export function renderEditorJsToHtml(
-  data: OutputData | null | undefined | string
+  data: EditorJsOutputData | null | undefined | string
 ): string {
   const normalized = normalizeContent(data);
-  if (!normalized?.blocks?.length) return "";
-  const dataToUse = normalized;
+  const blocks = normalized?.blocks ?? [];
+  if (blocks.length === 0) return "";
 
   const parts: string[] = [];
 
-  for (const block of dataToUse.blocks) {
+  type BlockShape = { type?: string; data?: Record<string, unknown> };
+  for (const block of blocks) {
     if (!block || typeof block !== "object") continue;
-    const blockType = String((block as { type?: string }).type ?? "").toLowerCase();
-    const data = (block as { data?: Record<string, unknown> }).data;
+    const b = block as BlockShape;
+    const blockType = String(b.type ?? "").toLowerCase();
+    const data = b.data;
 
     switch (blockType) {
       case "paragraph": {
@@ -197,7 +204,7 @@ export function renderEditorJsToHtml(
         const tag = style === "ordered" ? "ol" : "ul";
         const listClass =
           style === "checklist" ? " class=\"list-checklist\"" : "";
-        const items = (block.data as { items?: unknown[] })?.items ?? [];
+        const items = (b.data as { items?: unknown[] })?.items ?? [];
         parts.push(
           `<${tag}${listClass}>${renderListItems(items, style)}</${tag}>`
         );
@@ -223,30 +230,31 @@ export function renderEditorJsToHtml(
 
       case "code": {
         const code = (data?.code as string) ?? "";
+        const escaped = escapeAttr(code);
         parts.push(
-          `<pre><code>${escapeAttr(code)}</code></pre>`
+          `<div class="editorjs-code-wrap"><pre class="editorjs-code-block"><code>${escaped}</code></pre></div>`
         );
         break;
       }
 
       case "image": {
-        const file = (block.data as {
+        const blockData = b.data as {
           file?: { url?: string };
+          url?: string;
           caption?: unknown;
-        })?.file;
-
-        const src = file?.url;
+        };
+        const file = blockData?.file;
+        const src = file?.url ?? blockData?.url ?? "";
         if (!src) break;
 
-        const caption = (block.data as { caption?: unknown })?.caption;
+        const caption = blockData?.caption;
+        const captionText = caption != null ? getBlockText(caption) : "";
 
         parts.push(
-          `<figure>
-            <img src="${escapeAttr(src)}" alt="${escapeAttr(
-            caption
-          )}" loading="lazy" />
+          `<figure class="editorjs-figure">
+            <img src="${escapeAttr(src)}" alt="${escapeAttr(captionText) || "Image"}" loading="lazy" onerror="this.onerror=null;this.alt='Image unavailable';this.classList.add('editorjs-img-failed');" />
             ${
-              caption
+              captionText
                 ? `<figcaption>${sanitizeInlineHtml(caption)}</figcaption>`
                 : ""
             }
@@ -298,8 +306,8 @@ export function renderEditorJsToHtml(
       }
 
       case "table": {
-        const withHeadings = (block.data as { withHeadings?: boolean })?.withHeadings ?? false;
-        const content = (block.data as { content?: string[][] })?.content ?? [];
+        const withHeadings = (b.data as { withHeadings?: boolean })?.withHeadings ?? false;
+        const content = (b.data as { content?: string[][] })?.content ?? [];
         if (content.length === 0) break;
         const thead =
           withHeadings && content[0]?.length
@@ -317,24 +325,52 @@ export function renderEditorJsToHtml(
       case "simpleimage": {
         const url = (data?.url as string) ?? "";
         const caption = data?.caption;
+        const captionText = caption != null ? getBlockText(caption) : "";
         if (!url) break;
         parts.push(
-          `<figure>
-            <img src="${escapeAttr(url)}" alt="${escapeAttr(caption)}" loading="lazy" />
-            ${caption ? `<figcaption>${sanitizeInlineHtml(caption)}</figcaption>` : ""}
+          `<figure class="editorjs-figure">
+            <img src="${escapeAttr(url)}" alt="${escapeAttr(captionText) || "Image"}" loading="lazy" onerror="this.onerror=null;this.alt='Image unavailable';this.classList.add('editorjs-img-failed');" />
+            ${captionText ? `<figcaption>${sanitizeInlineHtml(caption)}</figcaption>` : ""}
           </figure>`
         );
         break;
       }
 
       default: {
-        const fallback =
-          (block.data as { text?: unknown })?.text ??
-          JSON.stringify(block.data);
-        parts.push(`<p>${sanitizeInlineHtml(fallback)}</p>`);
+        const fallbackText = getBlockText(b.data);
+        if (fallbackText) {
+          parts.push(`<p>${sanitizeInlineHtml(fallbackText)}</p>`);
+        }
       }
     }
   }
 
   return parts.join("\n");
+}
+
+/**
+ * Detect content format (Editor.js vs Tiptap) and render to HTML.
+ * Use this for blog post and preview display so both old and new posts work.
+ */
+export function contentToHtml(
+  content: EditorJsOutputData | import("@tiptap/core").JSONContent | null | undefined | string
+): string {
+  if (content == null) return "";
+  let data: unknown = content;
+  if (typeof content === "string") {
+    try {
+      data = JSON.parse(content) as unknown;
+    } catch {
+      return "";
+    }
+  }
+  if (typeof data !== "object" || data === null) return "";
+  const obj = data as Record<string, unknown>;
+  if (Array.isArray(obj.blocks)) {
+    return renderEditorJsToHtml(data as EditorJsOutputData);
+  }
+  if (obj.type === "doc" && Array.isArray(obj.content)) {
+    return renderTiptapToHtml(data as import("@tiptap/core").JSONContent);
+  }
+  return "";
 }

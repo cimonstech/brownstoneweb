@@ -46,7 +46,7 @@ export default async function AdminCrmContactDetailPage({
         <h2 className="text-3xl font-bold text-slate-800">
           {contact.name || contact.email}
         </h2>
-        <p className="text-slate-500 mt-1">{contact.email}</p>
+        <p className="text-slate-500 mt-1 text-[0.8rem]">{contact.email}</p>
       </div>
 
       <ContactDetailClient

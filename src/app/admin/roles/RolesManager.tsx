@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createRole, updateRole, deleteRole } from "./actions";
+import { IconEdit, IconDelete } from "@/components/admin/ActionIcons";
 
 const BUILT_IN = ["admin", "moderator", "author"];
 
@@ -108,21 +109,25 @@ export function RolesManager({ roles: initialRoles }: { roles: Role[] }) {
                     <span className="text-grey text-sm block mt-0.5">{role.description}</span>
                   )}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-1">
                   <button
                     type="button"
                     onClick={() => setEditingId(role.id)}
-                    className="text-sm text-primary hover:underline"
+                    className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-slate-500 hover:text-primary hover:bg-primary/10 transition-colors"
+                    title="Edit"
+                    aria-label="Edit"
                   >
-                    Edit
+                    <IconEdit />
                   </button>
                   {!BUILT_IN.includes(role.name) && (
                     <button
                       type="button"
                       onClick={() => handleDelete(role.id, role.name)}
-                      className="text-sm text-red-600 hover:underline"
+                      className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-red-600 hover:text-red-700 hover:bg-red-50 transition-colors"
+                      title="Delete"
+                      aria-label="Delete"
                     >
-                      Delete
+                      <IconDelete />
                     </button>
                   )}
                 </div>

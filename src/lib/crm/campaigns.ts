@@ -112,18 +112,18 @@ export async function getEmailsSentThisHour(
 
 export async function canSendMoreEmails(
   supabase: SupabaseClient<Database>
-): Promise<{ ok: boolean; limit: string }> {
+): Promise<{ ok: boolean; limit: string; sentThisHour?: number; sentToday?: number }> {
   const [today, thisHour] = await Promise.all([
     getEmailsSentToday(supabase),
     getEmailsSentThisHour(supabase),
   ]);
   if (today >= MAX_EMAILS_PER_DAY) {
-    return { ok: false, limit: `Daily limit (${MAX_EMAILS_PER_DAY}) reached` };
+    return { ok: false, limit: `Daily limit (${MAX_EMAILS_PER_DAY}) reached`, sentThisHour: thisHour, sentToday: today };
   }
   if (thisHour >= MAX_EMAILS_PER_HOUR) {
-    return { ok: false, limit: `Hourly limit (${MAX_EMAILS_PER_HOUR}) reached` };
+    return { ok: false, limit: `Hourly limit (${MAX_EMAILS_PER_HOUR}) reached`, sentThisHour: thisHour, sentToday: today };
   }
-  return { ok: true, limit: "" };
+  return { ok: true, limit: "", sentThisHour: thisHour, sentToday: today };
 }
 
 export function buildContactVars(contact: {

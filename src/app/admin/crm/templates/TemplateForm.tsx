@@ -89,18 +89,18 @@ export function TemplateForm({
         </div>
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-2">
-            Body (HTML) *
+            Body *
           </label>
           <textarea
             required
             value={bodyHtml}
             onChange={(e) => setBodyHtml(e.target.value)}
             rows={12}
-            className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none font-mono resize-y"
-            placeholder={`<p>Hi {{first_name}},</p>\n<p>We noticed your interest in {{company}}...</p>`}
+            className="w-full px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 outline-none resize-y"
+            placeholder={`Hi {{first_name}},\n\nI wanted to reach out from Brownstone — we're Ghana's luxury construction and real estate brand.\n\nWe'd love to give you a quick overview. Reply to this email or book a call.\n\nWarm regards,\nCandace Baker`}
           />
           <p className="text-xs text-slate-500 mt-1">
-            Variables: {"{{first_name}}"}, {"{{full_name}}"}, {"{{email}}"}, {"{{company}}"}, {"{{phone}}"}
+            Paste plain text and we'll format it as a proper email (paragraphs, line breaks). Or write HTML. Variables: {"{{first_name}}"}, {"{{full_name}}"}, {"{{email}}"}, {"{{company}}"}, {"{{phone}}"}
           </p>
         </div>
       </div>

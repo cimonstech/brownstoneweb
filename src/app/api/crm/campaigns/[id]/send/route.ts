@@ -10,7 +10,7 @@ import {
 } from "@/lib/crm/campaigns";
 import { getTemplateById, interpolateTemplate } from "@/lib/crm/templates";
 import { getContactById, addContactActivity } from "@/lib/crm/contacts";
-import { MAX_EMAILS_PER_HOUR } from "@/lib/crm/safety";
+import { MAX_EMAILS_PER_HOUR, MAX_EMAILS_PER_DAY } from "@/lib/crm/safety";
 
 export async function POST(
   _request: Request,
@@ -54,7 +54,7 @@ export async function POST(
     return NextResponse.json({ error: "Template not found" }, { status: 404 });
   }
 
-  const { ok, limit } = await canSendMoreEmails(supabase);
+  const { ok, limit, sentThisHour = 0, sentToday = 0 } = await canSendMoreEmails(supabase);
   if (!ok) {
     return NextResponse.json(
       { error: `Sending limit reached: ${limit}` },
@@ -62,7 +62,10 @@ export async function POST(
     );
   }
 
-  const batchLimit = Math.min(10, MAX_EMAILS_PER_HOUR);
+  // Cap batch at remaining hourly quota so one click never exceeds the limit (e.g. 3 sent this hour → send up to 7 more)
+  const remainingThisHour = MAX_EMAILS_PER_HOUR - sentThisHour;
+  const remainingToday = MAX_EMAILS_PER_DAY - sentToday;
+  const batchLimit = Math.min(10, remainingThisHour, remainingToday);
   const pending = await getCampaignEmailsForSending(
     supabase,
     id,
@@ -78,10 +81,14 @@ export async function POST(
   }
 
   const resend = new Resend(process.env.RESEND_API_KEY);
+  // Use support-style address for cold emails so they land in Primary, not Promotions/Spam
   const from =
-    process.env.RESEND_FROM_NOREPLY?.trim() ||
+    process.env.RESEND_FROM_CAMPAIGNS?.trim() ||
+    process.env.RESEND_FROM_SUPPORT?.trim() ||
     process.env.CONTACT_FROM_EMAIL ||
-    "Brownstone <info@brownstoneltd.com>";
+    "Brownstone <ghanaisthefuture@brownstoneltd.com>";
+  const replyTo =
+    process.env.RESEND_REPLY_TO?.trim() || "ghanaisthefuture@brownstoneltd.com";
 
   let sent = 0;
   const errors: string[] = [];
@@ -105,6 +112,7 @@ export async function POST(
     const { error } = await resend.emails.send({
       from,
       to: contact.email,
+      replyTo,
       subject,
       html: bodyHtml,
     });

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DeleteCampaignButton } from "../DeleteCampaignButton";
 
 type Campaign = {
   id: string;
@@ -18,14 +19,26 @@ type CampaignEmail = {
   sent_at: string | null;
 };
 
+type ContactOption = {
+  id: string;
+  email: string;
+  name: string | null;
+  do_not_contact: boolean;
+  unsubscribed: boolean;
+};
+
 export function CampaignDetailClient({
   campaign,
   campaignEmails,
   contactMap,
+  allContacts,
+  existingContactIds,
 }: {
   campaign: Campaign;
   campaignEmails: CampaignEmail[];
   contactMap: Record<string, { email: string; name: string | null }>;
+  allContacts: ContactOption[];
+  existingContactIds: string[];
 }) {
   const router = useRouter();
   const [sending, setSending] = useState(false);
@@ -33,6 +46,45 @@ export function CampaignDetailClient({
     sent: number;
     errors?: string[];
   } | null>(null);
+  const [addContactIds, setAddContactIds] = useState<Set<string>>(new Set());
+  const [addingContacts, setAddingContacts] = useState(false);
+
+  const existingSet = new Set(existingContactIds);
+  const addableContacts = allContacts.filter(
+    (c) => !c.do_not_contact && !c.unsubscribed && !existingSet.has(c.id)
+  );
+
+  function toggleAddContact(id: string) {
+    setAddContactIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  async function handleAddContacts() {
+    if (addContactIds.size === 0) return;
+    setAddingContacts(true);
+    try {
+      const res = await fetch(`/api/crm/campaigns/${campaign.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact_ids: Array.from(addContactIds) }),
+      });
+      if (res.ok) {
+        setAddContactIds(new Set());
+        router.refresh();
+      } else {
+        const data = await res.json();
+        alert(data.error ?? "Failed to add contacts");
+      }
+    } catch {
+      alert("Failed to add contacts");
+    } finally {
+      setAddingContacts(false);
+    }
+  }
 
   const pending = campaignEmails.filter((ce) => ce.status === "pending").length;
   const sent = campaignEmails.filter((ce) => ce.status === "sent").length;
@@ -56,7 +108,8 @@ export function CampaignDetailClient({
 
   return (
     <div className="mt-8 space-y-6">
-      <div className="flex flex-wrap gap-4">
+      <div className="flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap gap-4">
         <div className="bg-white rounded-xl border border-slate-100 p-4 min-w-[120px]">
           <p className="text-xs font-medium text-slate-500 uppercase">Total</p>
           <p className="text-2xl font-bold text-slate-800">{campaignEmails.length}</p>
@@ -69,6 +122,8 @@ export function CampaignDetailClient({
           <p className="text-xs font-medium text-slate-500 uppercase">Pending</p>
           <p className="text-2xl font-bold text-amber-600">{pending}</p>
         </div>
+        </div>
+        <DeleteCampaignButton campaignId={campaign.id} campaignName={campaign.name} variant="button" />
       </div>
 
       {pending > 0 && campaign.template_id && (
@@ -103,6 +158,42 @@ export function CampaignDetailClient({
               ))}
             </ul>
           ) : null}
+        </div>
+      )}
+
+      {addableContacts.length > 0 && (
+        <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+          <h3 className="font-bold text-slate-800 mb-2">Add contacts</h3>
+          <p className="text-sm text-slate-500 mb-4">
+            Add more recipients. They will be marked as pending and included when you send.
+          </p>
+          <div className="border border-slate-200 rounded-lg max-h-48 overflow-y-auto mb-4">
+            <div className="divide-y divide-slate-100">
+              {addableContacts.map((c) => (
+                <label
+                  key={c.id}
+                  className="flex items-center gap-3 p-3 hover:bg-slate-50/50 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={addContactIds.has(c.id)}
+                    onChange={() => toggleAddContact(c.id)}
+                    className="rounded border-slate-300 text-primary focus:ring-primary"
+                  />
+                  <span className="text-sm text-slate-800 truncate">{c.name || c.email}</span>
+                  <span className="text-xs text-slate-500 truncate flex-1">{c.email}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleAddContacts}
+            disabled={addingContacts || addContactIds.size === 0}
+            className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-xl font-semibold text-sm disabled:opacity-70"
+          >
+            {addingContacts ? "Adding…" : `Add ${addContactIds.size > 0 ? addContactIds.size + " " : ""}to campaign`}
+          </button>
         </div>
       )}
 

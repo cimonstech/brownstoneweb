@@ -62,6 +62,21 @@ export async function getContactById(
   return data as Contact;
 }
 
+export async function getContactByEmail(
+  supabase: SupabaseClient<Database>,
+  email: string
+): Promise<Contact | null> {
+  const normalized = email.trim().toLowerCase();
+  if (!normalized) return null;
+  const { data, error } = await supabase
+    .from("contacts")
+    .select("*")
+    .eq("email", normalized)
+    .maybeSingle();
+  if (error) throw error;
+  return data as Contact | null;
+}
+
 export async function createContact(
   supabase: SupabaseClient<Database>,
   insert: ContactInsert

@@ -68,15 +68,20 @@ export async function POST(request: Request) {
 
       try {
         const supabase = createAdminClient();
-        await supabase.from("leads").insert({
+        const { error: leadsErr } = await supabase.from("leads").insert({
           email,
           name: name || null,
           source: "newsletter",
           consent: true,
         } as never);
-      } catch {
-        // Ignore - leads insert is optional
+        if (leadsErr) console.error("Unified leads insert error (newsletter):", leadsErr);
+      } catch (err) {
+        console.error("Leads insert failed (newsletter):", err);
       }
+    } else {
+      console.warn(
+        "Leads/contacts not saved: set SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL in .env.local to store newsletter signups."
+      );
     }
 
     return NextResponse.json({ success: true });

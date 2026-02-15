@@ -123,7 +123,7 @@ export default function ExitIntent() {
               id="exit-intent-title"
               className="text-earthy text-2xl sm:text-3xl font-serif font-semibold leading-tight mb-2"
             >
-              Discover the Townhouses at Celestia
+              Discover the Lakehouse at Celestia
             </h2>
             <p id="exit-intent-desc" className="text-earthy/70 text-sm sm:text-base leading-relaxed mb-6">
               Receive exclusive details and highlights — one email, no spam.
@@ -161,7 +161,7 @@ export default function ExitIntent() {
                   className="mt-1 h-4 w-4 shrink-0 rounded border-earthy/30 text-primary focus:ring-primary accent-primary"
                 />
                 <span className="text-earthy/80 text-xs leading-relaxed">
-                  I’d like to hear from you about the townhouses and occasional updates. I can unsubscribe anytime.{" "}
+                  I’d like to hear from you about the lakehouse and occasional updates. I can unsubscribe anytime.{" "}
                   <Link href="/privacy-policy" className="text-primary underline hover:no-underline" onClick={(e) => e.stopPropagation()}>
                     Privacy policy
                   </Link>
@@ -191,11 +191,11 @@ export default function ExitIntent() {
 
           <p className="mt-6 text-center">
             <Link
-              href="/celestia/townhouses"
+              href="/celestia/lakehouse"
               className="text-earthy/60 text-xs hover:text-primary transition-colors underline"
               onClick={close}
             >
-              Take a look at the townhouses →
+              Take a look at the lakehouse →
             </Link>
           </p>
         </div>

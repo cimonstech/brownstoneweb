@@ -120,3 +120,40 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  _request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const roles = await getUserRoles();
+  if (!roles.includes("admin") && !roles.includes("moderator")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  const { id } = await params;
+  const contact = await getContactById(supabase, id);
+  if (!contact) {
+    return NextResponse.json({ error: "Contact not found" }, { status: 404 });
+  }
+
+  await supabase.from("contact_activities").delete().eq("contact_id", id);
+  await supabase.from("campaign_emails").delete().eq("contact_id", id);
+  const { error } = await supabase.from("contacts").delete().eq("id", id);
+  if (error) {
+    console.error("Contact delete error:", error);
+    return NextResponse.json(
+      { error: "Failed to delete contact" },
+      { status: 500 }
+    );
+  }
+
+  return NextResponse.json({ success: true });
+}
