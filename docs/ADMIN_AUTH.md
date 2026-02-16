@@ -16,10 +16,18 @@ So the system is **invite-only**: you control who has access by inviting them fr
 
 **Supabase config:** In Supabase Dashboard → **Authentication → URL Configuration**, add your **Redirect URLs** so the reset link works:
 
-- `https://yourdomain.com/admin/update-password`
+- `https://yourdomain.com/admin/update-password` (use your real domain; no trailing slash)
 - For local dev: `http://localhost:3000/admin/update-password`
 
-Without these, the reset link may be rejected by Supabase.
+Without these, the reset link may be rejected by Supabase. The URL must match exactly what you pass as `redirectTo` in the app (including path); any server redirect (e.g. http→https, www→non-www) can drop the `#...` fragment and break the “Set new password” form.
+
+### Password reset not working? Checklist
+
+1. **Redirect URLs** — In Supabase Dashboard → **Authentication → URL Configuration** → **Redirect URLs**, add the **exact** URL your app uses (e.g. `https://brownstoneltd.com/admin/update-password`). No extra path, no trailing slash unless your app uses it.
+2. **Site URL** — In the same page, set **Site URL** to your app’s origin (e.g. `https://brownstoneltd.com`). Supabase uses this when building the reset link.
+3. **Email delivery** — If the reset email never arrives, check **Authentication → SMTP Settings** (if using custom SMTP/Postmark) or **Authentication → Email Templates** (Reset Password). Default Supabase emails can land in spam.
+4. **Link opens but “Set new password” form doesn’t show** — The reset link includes a hash (`#access_token=...&type=recovery`). If your host or CDN redirects (e.g. HTTP→HTTPS, adding/removing www), the hash can be lost and the page will show “This page is for setting a new password…” with no form. Fix: use a Redirect URL that does **not** trigger a server redirect (e.g. the final HTTPS URL), and ensure the link in the email points straight to that URL.
+5. **User not found** — `resetPasswordForEmail` only works for emails that already have an account (invited users). It does not create accounts.
 
 ## Custom “from” and branding (Brownstone instead of Supabase)
 

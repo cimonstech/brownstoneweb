@@ -62,7 +62,7 @@ export async function POST(request: Request) {
 
   try {
     await client.sendEmail({
-      From: getPostmarkFrom(),
+      From: getPostmarkFrom("contact"),
       To: to.trim(),
       ReplyTo: emailTrimmed,
       Subject: `Website inquiry from ${name.trim()}${projectType ? ` — ${projectType}` : ""}`,
@@ -83,10 +83,13 @@ export async function POST(request: Request) {
         ? process.env.BROWNSTONE_LOGO_URL.trim()
         : undefined;
 
+    const autoReplyReplyTo =
+      process.env.POSTMARK_REPLY_TO?.trim() || process.env.CONTACTFORMMAIL?.trim() || undefined;
     try {
       await client.sendEmail({
-        From: getPostmarkFrom(),
+        From: getPostmarkFrom("contact"),
         To: emailTrimmed,
+        ...(autoReplyReplyTo && { ReplyTo: autoReplyReplyTo }),
         Subject: "We've received your message — Brownstone Construction",
         HtmlBody: getContactReceivedHtml(baseUrl, brownstoneLogoUrl),
         TextBody: getContactReceivedText(baseUrl),

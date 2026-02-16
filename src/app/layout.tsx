@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ExitIntentDynamic from "@/components/ExitIntentDynamic";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -82,6 +83,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }}
         />
         {children}
+        <GoogleAnalytics />
         <ExitIntentDynamic />
       </body>
     </html>

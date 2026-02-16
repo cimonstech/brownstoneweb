@@ -82,7 +82,7 @@ export async function POST(
   }
 
   const client = new ServerClient(process.env.POSTMARK_API_KEY);
-  const from = getPostmarkFrom();
+  const from = getPostmarkFrom("campaigns");
   const replyTo =
     process.env.POSTMARK_REPLY_TO?.trim() || "candace@brownstoneltd.com";
 
