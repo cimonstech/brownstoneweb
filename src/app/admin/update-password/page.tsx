@@ -1,27 +1,41 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
 /**
- * Page users land on after clicking the "Reset password" link in their email.
- * Supabase redirects here with type=recovery in the URL hash; we show a form to set a new password.
+ * Page users land on after:
+ * - Clicking the "Reset password" link (type=recovery in hash), or
+ * - Clicking an invite link (type=invite in hash).
+ * We show a form to set or create their password in both cases.
  */
 export default function AdminUpdatePasswordPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [isRecovery, setIsRecovery] = useState<boolean | null>(null);
+  const [hashType, setHashType] = useState<"recovery" | "invite" | null>(null);
+  const [hasCheckedHash, setHasCheckedHash] = useState(false);
 
   useEffect(() => {
+    // Type can come from query (after /auth/callback redirect) or from hash (direct Supabase redirect)
+    const fromQuery = searchParams.get("type");
+    if (fromQuery === "invite" || fromQuery === "recovery") {
+      setHashType(fromQuery);
+      setHasCheckedHash(true);
+      return;
+    }
     const hash = typeof window !== "undefined" ? window.location.hash : "";
-    setIsRecovery(hash.includes("type=recovery"));
-  }, []);
+    if (hash.includes("type=invite")) setHashType("invite");
+    else if (hash.includes("type=recovery")) setHashType("recovery");
+    else setHashType(null);
+    setHasCheckedHash(true);
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -46,7 +60,7 @@ export default function AdminUpdatePasswordPage() {
     setTimeout(() => router.push("/admin/dashboard"), 1500);
   }
 
-  if (isRecovery === null) {
+  if (!hasCheckedHash) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center text-slate-500">
@@ -56,11 +70,11 @@ export default function AdminUpdatePasswordPage() {
     );
   }
 
-  if (!isRecovery) {
+  if (hashType !== "recovery" && hashType !== "invite") {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center">
-          <p className="text-earthy mb-4">This page is for setting a new password after using the reset link from your email.</p>
+          <p className="text-earthy mb-4">This page is for setting a new password after using the reset or invite link from your email.</p>
           <Link href="/admin/login" className="text-primary font-medium underline hover:no-underline">
             Back to login
           </Link>
@@ -69,11 +83,16 @@ export default function AdminUpdatePasswordPage() {
     );
   }
 
+  const isInvite = hashType === "invite";
+  const title = isInvite ? "Create your password" : "Set new password";
+  const buttonLabel = isInvite ? "Create password" : "Update password";
+  const successMessage = isInvite ? "Password created. Redirecting to dashboard…" : "Password updated. Redirecting to dashboard…";
+
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center">
-          <p className="text-earthy font-medium text-green-700">Password updated. Redirecting to dashboard…</p>
+          <p className="text-earthy font-medium text-green-700">{successMessage}</p>
         </div>
       </div>
     );
@@ -82,7 +101,7 @@ export default function AdminUpdatePasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-earthy mb-6">Set new password</h1>
+        <h1 className="text-2xl font-bold text-earthy mb-6">{title}</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1">
             <span className="text-sm font-medium text-earthy">New password</span>
@@ -116,7 +135,7 @@ export default function AdminUpdatePasswordPage() {
             disabled={loading}
             className="bg-primary text-white font-bold py-2 rounded-lg hover:opacity-90 disabled:opacity-50"
           >
-            {loading ? "Updating…" : "Update password"}
+            {loading ? (isInvite ? "Creating…" : "Updating…") : buttonLabel}
           </button>
         </form>
         <Link href="/admin/login" className="mt-4 inline-block text-sm text-primary hover:underline">

@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
   if (!me) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${request.nextUrl.origin}/admin/login`,
+    redirectTo: `${request.nextUrl.origin}/auth/callback`,
   });
   if (inviteError) {
     if (inviteError.message?.includes("already been invited") || inviteError.message?.includes("already registered")) {
