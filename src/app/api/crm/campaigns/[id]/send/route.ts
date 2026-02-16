@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { ServerClient } from "postmark";
+import { getPostmarkFrom } from "@/lib/emails/postmark-from";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import {
@@ -81,7 +82,7 @@ export async function POST(
   }
 
   const client = new ServerClient(process.env.POSTMARK_API_KEY);
-  const from = "candace@brownstoneltd.com";
+  const from = getPostmarkFrom();
   const replyTo =
     process.env.POSTMARK_REPLY_TO?.trim() || "candace@brownstoneltd.com";
 

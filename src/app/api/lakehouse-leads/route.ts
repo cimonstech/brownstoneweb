@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { ServerClient } from "postmark";
+import { getPostmarkFrom } from "@/lib/emails/postmark-from";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCelestiaBrochureHtml, getCelestiaBrochureText } from "@/lib/emails/celestia-brochure";
 
-const FROM = "candace@brownstoneltd.com";
 
 export async function POST(request: Request) {
   if (!process.env.POSTMARK_API_KEY) {
@@ -82,7 +82,7 @@ export async function POST(request: Request) {
 
   try {
     await client.sendEmail({
-      From: FROM,
+      From: getPostmarkFrom(),
       To: email,
       ReplyTo: replyTo,
       Subject: subject,

@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import { ServerClient } from "postmark";
 import { getContactReceivedHtml, getContactReceivedText } from "@/lib/emails/contact-received";
+import { getPostmarkFrom } from "@/lib/emails/postmark-from";
 import { createAdminClient } from "@/lib/supabase/admin";
-
-const FROM = "candace@brownstoneltd.com";
 
 export async function POST(request: Request) {
   const to = process.env.CONTACTFORMMAIL;
@@ -63,7 +62,7 @@ export async function POST(request: Request) {
 
   try {
     await client.sendEmail({
-      From: FROM,
+      From: getPostmarkFrom(),
       To: to.trim(),
       ReplyTo: emailTrimmed,
       Subject: `Website inquiry from ${name.trim()}${projectType ? ` — ${projectType}` : ""}`,
@@ -86,7 +85,7 @@ export async function POST(request: Request) {
 
     try {
       await client.sendEmail({
-        From: FROM,
+        From: getPostmarkFrom(),
         To: emailTrimmed,
         Subject: "We've received your message — Brownstone Construction",
         HtmlBody: getContactReceivedHtml(baseUrl, brownstoneLogoUrl),

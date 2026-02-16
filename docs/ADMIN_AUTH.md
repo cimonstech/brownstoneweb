@@ -25,19 +25,19 @@ Without these, the reset link may be rejected by Supabase.
 
 By default, auth emails (password reset, invite) are sent from **Supabase** (`noreply@mail.app.supabase.io`). To send them from your own address and brand them as Brownstone:
 
-### 1. Custom SMTP (Resend) so emails are from Brownstone
+### 1. Custom SMTP (Postmark) so emails are from Brownstone
 
-You already use Resend for the site. Use it for Supabase auth emails too:
+You use Postmark for the site. Use it for Supabase auth emails too:
 
 1. In **Supabase Dashboard** go to **Authentication → SMTP Settings**.
 2. **Enable Custom SMTP** and fill in:
-   - **Sender email:** An address on your verified domain, e.g. `noreply@brownstoneltd.com` or `auth@brownstoneltd.com`. Must be a domain you’ve verified in [Resend → Domains](https://resend.com/domains).
+   - **Sender email:** An address on your verified domain, e.g. `candace@brownstoneltd.com`. Must be a domain you’ve verified in [Postmark → Sender Signatures](https://account.postmarkapp.com/sender_signatures).
    - **Sender name:** e.g. `Brownstone` or `Brownstone Construction`.
-   - **Host:** `smtp.resend.com`
-   - **Port:** `465`
-   - **Username:** `resend`
-   - **Password:** Your **Resend API key** (same as `RESEND_API_KEY` in your app).
-3. Save. From then on, password reset and invite emails are sent via Resend from your sender address.
+   - **Host:** `smtp.postmarkapp.com`
+   - **Port:** `587` (TLS)
+   - **Username:** Your **Postmark Server API token** (same as `POSTMARK_API_KEY`).
+   - **Password:** Same as Username (Postmark uses the API token for both).
+3. Save. From then on, password reset and invite emails are sent via Postmark from your sender address.
 
 ### 2. Edit the email template (subject and body)
 
