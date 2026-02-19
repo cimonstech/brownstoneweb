@@ -6,8 +6,8 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
 /**
- * Page users land on after clicking the "Reset password" link in their email.
- * Supabase redirects here with type=recovery in the URL hash; we show a form to set a new password.
+ * Page for setting a new password: after invite link or password-reset link.
+ * Show the form when: URL hash has type=recovery/invite (direct from email) OR user has a session (came from /auth/callback).
  */
 export default function AdminUpdatePasswordPage() {
   const router = useRouter();
@@ -16,11 +16,19 @@ export default function AdminUpdatePasswordPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [isRecovery, setIsRecovery] = useState<boolean | null>(null);
+  const [showForm, setShowForm] = useState<boolean | null>(null);
 
   useEffect(() => {
     const hash = typeof window !== "undefined" ? window.location.hash : "";
-    setIsRecovery(hash.includes("type=recovery"));
+    const fromHash = hash.includes("type=recovery") || hash.includes("type=invite");
+    if (fromHash) {
+      setShowForm(true);
+      return;
+    }
+    const supabase = createClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setShowForm(!!session);
+    });
   }, []);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -46,7 +54,7 @@ export default function AdminUpdatePasswordPage() {
     setTimeout(() => router.push("/admin/dashboard"), 1500);
   }
 
-  if (isRecovery === null) {
+  if (showForm === null) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center text-slate-500">
@@ -56,11 +64,11 @@ export default function AdminUpdatePasswordPage() {
     );
   }
 
-  if (!isRecovery) {
+  if (!showForm) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center">
-          <p className="text-earthy mb-4">This page is for setting a new password after using the reset link from your email.</p>
+          <p className="text-earthy mb-4">This page is for setting a new password after using the reset or invite link from your email.</p>
           <Link href="/admin/login" className="text-primary font-medium underline hover:no-underline">
             Back to login
           </Link>

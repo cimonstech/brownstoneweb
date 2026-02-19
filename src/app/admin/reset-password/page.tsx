@@ -42,7 +42,8 @@ export default function AdminResetPasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-earthy mb-6">Reset password</h1>
+        <h1 className="text-2xl font-bold text-earthy mb-2">Reset password</h1>
+        <p className="text-slate-500 text-sm mb-4">Enter your account email and we&apos;ll send a link to set a new password.</p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1">
             <span className="text-sm font-medium text-earthy">Email</span>

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import Link from "next/link";
 
 export default async function AdminDashboardPage() {
@@ -27,6 +28,13 @@ export default async function AdminDashboardPage() {
     supabase.from("profiles").select("id", { count: "exact", head: true }),
   ]);
 
+  const admin = createAdminClient();
+  const { data: adminRoleData } = await admin.from("roles").select("id").ilike("name", "admin").maybeSingle();
+  const adminRole = adminRoleData as { id: string } | null;
+  const { count: adminUserCount } = adminRole
+    ? await admin.from("user_roles").select("user_id", { count: "exact", head: true }).eq("role_id", adminRole.id)
+    : { count: 0 };
+
   const authorIds = [...new Set((posts ?? []).map((p) => p.author_id))];
   const { data: profiles } = await supabase
     .from("profiles")
@@ -43,7 +51,8 @@ export default async function AdminDashboardPage() {
   const contacts = contactsCount ?? 0;
   const campaigns = campaignsCount ?? 0;
   const leads = leadsCount ?? 0;
-  const users = usersCount ?? 0;
+  const totalProfiles = usersCount ?? 0;
+  const users = Math.max(0, totalProfiles - (adminUserCount ?? 0));
 
   return (
     <div>

@@ -21,6 +21,10 @@ export async function POST(request: NextRequest) {
   if (!allowedRoles.includes(roleName)) {
     return NextResponse.json({ error: "Invalid role" }, { status: 400 });
   }
+  const isAdminCaller = roles.includes("admin");
+  if (!isAdminCaller && roleName === "admin") {
+    return NextResponse.json({ error: "Only admins can invite users as admin" }, { status: 403 });
+  }
 
   const admin = createAdminClient();
 
@@ -31,20 +35,24 @@ export async function POST(request: NextRequest) {
   const { data: { user: me } } = await supabase.auth.getUser();
   if (!me) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(email, {
-    redirectTo: `${request.nextUrl.origin}/admin/login`,
-  });
-  if (inviteError) {
-    if (inviteError.message?.includes("already been invited") || inviteError.message?.includes("already registered")) {
-      return NextResponse.json({ error: "User already invited or already exists" }, { status: 409 });
-    }
-    return NextResponse.json({ error: inviteError.message ?? "Invite failed" }, { status: 400 });
-  }
-
+  // Insert invite row first so the DB trigger (on auth.users insert/update) can assign the role when they sign up
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for invites insert
   const { error: insertError } = await admin.from("invites").insert({ email, role_id: role.id, invited_by_id: me.id } as any);
   if (insertError) {
     return NextResponse.json({ error: insertError.message }, { status: 500 });
+  }
+
+  const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(email, {
+    redirectTo: `${request.nextUrl.origin}/auth/callback?redirect_to=/admin/update-password`,
+  });
+  if (inviteError) {
+    if (inviteError.message?.includes("already been invited") || inviteError.message?.includes("already registered")) {
+      return NextResponse.json({
+        error: "This email already has an account. If they need to set or reset their password, ask them to use **Reset password** on the login page.",
+        code: "already_exists",
+      }, { status: 409 });
+    }
+    return NextResponse.json({ error: inviteError.message ?? "Invite failed" }, { status: 400 });
   }
 
   return NextResponse.json({ ok: true, message: "Invitation sent" });

@@ -112,6 +112,7 @@ type CurrentUser = {
   fullName: string;
   avatarUrl?: string;
   roleLabel: string;
+  isAdmin?: boolean;
 };
 
 export function AdminShell({
@@ -178,7 +179,9 @@ export function AdminShell({
                     </button>
                     {crmOpen && (
                       <div className="mt-1 ml-4 space-y-1 border-l border-white/10 pl-2">
-                        {section.items.map(({ href, label, icon }) => {
+                        {section.items
+                          .filter((item) => ((item as { href: string }).href === "/admin/roles" ? currentUser?.isAdmin === true : true))
+                          .map(({ href, label, icon }) => {
                           const active = pathname === href || pathname?.startsWith(href + "/");
                           return (
                             <Link
@@ -200,23 +203,25 @@ export function AdminShell({
                   </>
                 ) : (
                   <div className="space-y-1">
-                    {section.items.map(({ href, label, icon }) => {
-                      const active = pathname === href || pathname?.startsWith(href + "/");
-                      return (
-                        <Link
-                          key={href}
-                          href={href}
-                          className={`flex items-center px-4 py-3 rounded-lg transition-all group border-l-4 ${
-                            active
-                              ? "bg-primary/20 border-primary text-[#fff]"
-                              : "border-transparent text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
-                          }`}
-                        >
-                          <span className={active ? "text-primary mr-3" : "mr-3 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
-                          <span className="font-medium text-inherit">{label}</span>
-                        </Link>
-                      );
-                    })}
+                    {section.items
+                      .filter((item) => ((item as { href: string }).href === "/admin/roles" ? currentUser?.isAdmin === true : true))
+                      .map(({ href, label, icon }) => {
+                        const active = pathname === href || pathname?.startsWith(href + "/");
+                        return (
+                          <Link
+                            key={href}
+                            href={href}
+                            className={`flex items-center px-4 py-3 rounded-lg transition-all group border-l-4 ${
+                              active
+                                ? "bg-primary/20 border-primary text-[#fff]"
+                                : "border-transparent text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
+                            }`}
+                          >
+                            <span className={active ? "text-primary mr-3" : "mr-3 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
+                            <span className="font-medium text-inherit">{label}</span>
+                          </Link>
+                        );
+                      })}
                   </div>
                 )}
               </div>

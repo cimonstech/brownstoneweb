@@ -11,6 +11,7 @@ type Props = {
   currentRoles: string[];
   isMe: boolean;
   roleOptions: { id: string; name: string }[];
+  canSeeAdminRole?: boolean;
 };
 
 export function UserRoleManager({
@@ -18,11 +19,13 @@ export function UserRoleManager({
   currentRoles,
   isMe,
   roleOptions,
+  canSeeAdminRole = true,
 }: Props) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
+  const visibleRoles = canSeeAdminRole ? currentRoles : currentRoles.filter((r) => r !== "admin");
   const availableToAdd = roleOptions.filter((r) => !currentRoles.includes(r.name));
 
   async function handleAdd(roleName: string) {
@@ -45,7 +48,7 @@ export function UserRoleManager({
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      {ROLE_ORDER.filter((r) => currentRoles.includes(r)).map((name) => (
+      {ROLE_ORDER.filter((r) => visibleRoles.includes(r)).map((name) => (
         <span
           key={name}
           className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-sm font-medium bg-earthy/10 text-earthy"
@@ -64,7 +67,7 @@ export function UserRoleManager({
           )}
         </span>
       ))}
-      {currentRoles.length === 0 && (
+      {visibleRoles.length === 0 && (
         <span className="text-grey text-sm">No role</span>
       )}
       {availableToAdd.length > 0 && !isMe && (

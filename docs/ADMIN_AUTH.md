@@ -14,12 +14,16 @@ So the system is **invite-only**: you control who has access by inviting them fr
 3. **Email:** Supabase sends a password-reset email. The link sends them to **Set new password** (`/admin/update-password`).
 4. **Set password:** They enter and confirm a new password, then are redirected to the dashboard.
 
-**Supabase config:** In Supabase Dashboard → **Authentication → URL Configuration**, add your **Redirect URLs** so the reset link works:
+**Supabase config:** In Supabase Dashboard → **Authentication → URL Configuration**, set:
 
-- `https://yourdomain.com/admin/update-password`
-- For local dev: `http://localhost:3000/admin/update-password`
+- **Site URL:** e.g. `https://yourdomain.com` (or `http://localhost:3000` for local).
+- **Redirect URLs:** Add these (invite and password-reset links use the auth callback):
+  - `https://yourdomain.com/auth/callback`
+  - `https://yourdomain.com/admin/update-password`
+  - `https://yourdomain.com/admin/login`
+  - For local: `http://localhost:3000/auth/callback`, `http://localhost:3000/admin/update-password`, `http://localhost:3000/admin/login`
 
-Without these, the reset link may be rejected by Supabase.
+Without the callback URL, invite links will 404. Without the update-password URL, reset links may be rejected.
 
 ## Custom “from” and branding (Brownstone instead of Supabase)
 
@@ -50,6 +54,41 @@ The content of the reset (and invite) email is still Supabase’s default until 
 5. Save.
 
 After both steps, users will receive reset (and invite) emails from your Brownstone address with your chosen text.
+
+## Testing password reset and invite
+
+Before testing, confirm in **Supabase Dashboard**:
+
+1. **Authentication → SMTP Settings** — Custom SMTP is enabled and uses your Postmark credentials (so Supabase can send mail).
+2. **Authentication → URL Configuration → Redirect URLs** — Include:
+   - `https://yourdomain.com/auth/callback` (required for invite and recovery links)
+   - `https://yourdomain.com/admin/update-password`
+   - `https://yourdomain.com/admin/login`
+   - For local: `http://localhost:3000/auth/callback`, `http://localhost:3000/admin/update-password`, `http://localhost:3000/admin/login`
+
+### Test 1: Password reset
+
+1. Open `/admin/login` and click **Reset password**.
+2. Enter an email that **already has an account** (e.g. your admin email).
+3. Click **Send reset link**.
+4. You should see **"Check your email for the reset link"** (no error).
+5. Check that inbox (and spam). You should get an email with a link.
+6. Click the link — you should land on `/admin/update-password` with a form to set a new password.
+7. Set and confirm a new password, submit — you should be redirected to the dashboard.
+
+If you see "Error sending recovery email", Supabase is not sending mail: check SMTP settings and Postmark.
+
+### Test 2: User invitation
+
+1. Log in as an **admin**.
+2. Go to **Admin → Users**.
+3. In the invite form, enter a **new** email (not already in the system) and choose a role.
+4. Click **Invite**.
+5. You should see **"Invitation sent. They can sign in with the link in the email."** (no error).
+6. Check that recipient's inbox (and spam). They should get an invite email with a link.
+7. They click the link, set their password on the page Supabase shows, then can sign in at `/admin/login`.
+
+If the API returns an error (e.g. "User already invited or already exists"), use a different email. If the invite "succeeds" but no email arrives, check Supabase SMTP and Postmark.
 
 ## Summary
 

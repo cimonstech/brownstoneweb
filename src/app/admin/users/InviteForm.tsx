@@ -11,11 +11,13 @@ export function InviteForm({ roleOptions }: Props) {
   const [role, setRole] = useState(roleOptions[0]?.name ?? "author");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [errorCode, setErrorCode] = useState<string | null>(null);
   const [message, setMessage] = useState("");
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
+    setErrorCode(null);
     setMessage("");
     setBusy(true);
     try {
@@ -26,7 +28,9 @@ export function InviteForm({ roleOptions }: Props) {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.error ?? "Invite failed");
+        const msg = data.error ?? "Invite failed";
+        setError(typeof msg === "string" ? msg.replace(/\*\*/g, "") : msg);
+        setErrorCode(data.code ?? null);
         return;
       }
       setMessage("Invitation sent. They can sign in with the link in the email.");
@@ -69,7 +73,16 @@ export function InviteForm({ roleOptions }: Props) {
       >
         {busy ? "Sending…" : "Invite"}
       </button>
-      {error && <span className="text-red-600 text-sm">{error}</span>}
+      {error && (
+        <span className="text-red-600 text-sm block">
+          {error}
+          {errorCode === "already_exists" && (
+            <span className="block mt-1 text-slate-600 font-normal">
+              They can use the Reset password link on the <a href="/admin/login" className="text-primary underline">login page</a>.
+            </span>
+          )}
+        </span>
+      )}
       {message && <span className="text-green-700 text-sm">{message}</span>}
     </form>
   );
