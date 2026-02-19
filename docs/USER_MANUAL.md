@@ -758,4 +758,16 @@ A: Deleted files may be cached briefly. The image will disappear from the post o
 
 ---
 
-*This manual is current as of February 2026. For support, contact your team moderator.*
+## Platform & Services
+
+| Service | Provider |
+|---|---|
+| **Database** | Supabase |
+| **CDN & Nameservers** | Cloudflare / R2 |
+| **Email Service** | Postmark |
+| **Analytics** | Google Analytics (creative@brownstoneltd.com) |
+| **Hosting** | Vercel |
+
+---
+
+*This manual is current as of February 2026.*

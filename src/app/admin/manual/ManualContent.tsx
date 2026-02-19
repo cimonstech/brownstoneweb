@@ -901,7 +901,36 @@ export function ManualContent() {
 
         <HR />
 
-        <P><em className="text-slate-400">This manual is current as of February 2026. For support, contact your team moderator.</em></P>
+        {/* ==== PLATFORM INFO ==== */}
+        <H2 id="platform">Platform &amp; Services</H2>
+        <div className="overflow-x-auto mb-6">
+          <table className="w-full text-sm border border-slate-200 rounded-lg overflow-hidden">
+            <thead className="bg-slate-50">
+              <tr>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b">Service</th>
+                <th className="text-left px-4 py-3 font-semibold text-slate-700 border-b">Provider</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100">
+              {[
+                ["Database", "Supabase"],
+                ["CDN & Nameservers", "Cloudflare / R2"],
+                ["Email Service", "Postmark"],
+                ["Analytics", "Google Analytics (creative@brownstoneltd.com)"],
+                ["Hosting", "Vercel"],
+              ].map(([service, provider], i) => (
+                <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-slate-50/50"}>
+                  <td className="px-4 py-2.5 font-semibold text-slate-800">{service}</td>
+                  <td className="px-4 py-2.5 text-slate-600">{provider}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <HR />
+
+        <P><em className="text-slate-400">This manual is current as of February 2026.</em></P>
       </div>
     </div>
   );
