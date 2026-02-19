@@ -41,11 +41,12 @@ const navSections = [
       { href: "/admin/roles", label: "Roles", icon: "badge" as const },
       { href: "/admin/audit-log", label: "Audit Log", icon: "audit" as const, adminOnly: true },
       { href: "/admin/profile", label: "Profile", icon: "person" as const },
+      { href: "/admin/manual", label: "Manual", icon: "book" as const },
     ],
   },
 ] as const;
 
-type NavIconName = "dashboard" | "article" | "folder" | "image" | "home" | "mail" | "people" | "pipeline" | "campaigns" | "templates" | "analytics" | "badge" | "person" | "audit";
+type NavIconName = "dashboard" | "article" | "folder" | "image" | "home" | "mail" | "people" | "pipeline" | "campaigns" | "templates" | "analytics" | "badge" | "person" | "audit" | "book";
 
 function NavIcon({ name }: { name: NavIconName }) {
   const c = "w-5 h-5 shrink-0";
@@ -105,6 +106,10 @@ function NavIcon({ name }: { name: NavIconName }) {
     case "audit":
       return (
         <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 9h-2V9.5C11 8.67 10.33 8 9.5 8S8 8.67 8 9.5V11H6V9.5C6 7.57 7.57 6 9.5 6S13 7.57 13 9.5V11zm-2 7H8v-2h3v2zm5-4H8v-2h8v2zm-1-9V3.5L18.5 9H13z"/></svg>
+      );
+    case "book":
+      return (
+        <svg className={c} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
       );
     default:
       return null;
@@ -261,7 +266,7 @@ export function AdminShell({
                         const href = (item as { href: string }).href;
                         if ("adminOnly" in item && item.adminOnly && currentUser?.isAdmin !== true) return false;
                         if (href === "/admin/roles" && currentUser?.isAdmin !== true) return false;
-                        if (isAuthorOnly && section.label === "Admin" && href !== "/admin/profile") return false;
+                        if (isAuthorOnly && section.label === "Admin" && href !== "/admin/profile" && href !== "/admin/manual") return false;
                         return true;
                       })
                       .map(({ href, label, icon }) => {

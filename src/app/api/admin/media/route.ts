@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import { S3Client, ListObjectsV2Command, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:admin:media");
 
 const R2_ACCOUNT_ID = process.env.R2_ACCOUNT_ID;
 const R2_ACCESS_KEY_ID = process.env.R2_ACCESS_KEY_ID;
@@ -86,4 +90,61 @@ export async function GET() {
   items.sort((a, b) => (b.lastModified > a.lastModified ? 1 : -1));
 
   return NextResponse.json({ items });
+}
+
+export async function DELETE(request: Request) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const { getUserRoles } = await import("@/lib/supabase/auth");
+  const roles = await getUserRoles();
+  if (!roles.includes("admin") && !roles.includes("moderator")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
+  let body: { key?: string };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+
+  const key = body.key?.trim();
+  if (!key || !key.startsWith("media/")) {
+    return NextResponse.json({ error: "Invalid key" }, { status: 400 });
+  }
+
+  const client = getR2Client();
+  if (!client || !R2_BUCKET_NAME) {
+    return NextResponse.json({ error: "R2 storage not configured." }, { status: 503 });
+  }
+
+  try {
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: R2_BUCKET_NAME,
+        Key: key,
+      })
+    );
+
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "delete",
+      resourceType: "media",
+      resourceId: key,
+      description: `Deleted media file ${key.split("/").pop()}`,
+    }).catch(() => {});
+
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    log.error("Media deletion failed", err);
+    return NextResponse.json({ error: "Failed to delete file" }, { status: 500 });
+  }
 }

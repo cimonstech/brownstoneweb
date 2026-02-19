@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { getUserRoles } from "@/lib/supabase/auth";
 import { MediaLibrary } from "./MediaLibrary";
 
 export default async function AdminMediaPage() {
@@ -9,6 +10,9 @@ export default async function AdminMediaPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
 
+  const roles = await getUserRoles();
+  const canDelete = roles.includes("admin") || roles.includes("moderator");
+
   return (
     <div>
       <div className="mb-8">
@@ -17,7 +21,7 @@ export default async function AdminMediaPage() {
           All files uploaded to R2 (cover images and inline editor images). Use &quot;Copy URL&quot; to paste into the cover image field or elsewhere.
         </p>
       </div>
-      <MediaLibrary />
+      <MediaLibrary canDelete={canDelete} />
     </div>
   );
 }

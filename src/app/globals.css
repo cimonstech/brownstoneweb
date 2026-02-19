@@ -215,3 +215,18 @@
   background: rgba(65, 22, 0, 0.08);
   min-height: 120px;
 }
+
+/* Print styles for the manual page */
+@media print {
+  body { background: white !important; }
+  nav, header, aside, footer,
+  .print\:hidden,
+  [class*="AdminShell"] > aside,
+  [class*="AdminShell"] > header { display: none !important; }
+  main { margin: 0 !important; padding: 0 !important; max-width: 100% !important; }
+  .prose-manual { font-size: 11pt; }
+  .prose-manual img { max-height: 400px; object-fit: contain; break-inside: avoid; }
+  .prose-manual h2 { break-after: avoid; }
+  .prose-manual table { break-inside: avoid; }
+  @page { margin: 2cm; }
+}
