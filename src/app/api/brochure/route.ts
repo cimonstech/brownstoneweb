@@ -82,7 +82,7 @@ export async function POST(request: Request) {
 
   try {
     await client.sendEmail({
-      From: getPostmarkFrom(),
+      From: getPostmarkFrom("brochure"),
       To: email,
       ReplyTo: replyTo,
       Subject: subject,

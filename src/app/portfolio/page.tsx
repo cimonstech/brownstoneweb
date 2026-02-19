@@ -13,6 +13,7 @@ const celestiaImages = [
   { src: assetUrl("MAIN-ENTRANCE-townhouse1-day.webp"), alt: "Celestia main entrance" },
   { src: assetUrl("TOWNHOMEUNIT-portrait.webp"), alt: "Celestia townhome unit" },
   { src: assetUrl("CHALETS_.webp"), alt: "Celestia chalets" },
+  { src: assetUrl("celestia_chalet.webp"), alt: "Celestia chalet" },
   { src: assetUrl("celestia-townhouse-LIVING-AREA1.webp"), alt: "Celestia living area" },
   { src: assetUrl("celestia-townhouse-LIVING-AREA3.webp"), alt: "Celestia living area interior" },
   { src: assetUrl("MAIN-ENTRANCE-townhouse2.webp"), alt: "Celestia townhouse exterior" },
@@ -38,23 +39,33 @@ const wilmaCrescentImages = [
   { src: assetUrl("WilmaCrescent/wilmacresent5.webp"), alt: "Wilma Crescent" },
 ];
 
+const othersImages = [
+  { src: assetUrl("Tawiah1.webp"), alt: "Tawiah project" },
+  { src: assetUrl("Tawiah2.webp"), alt: "Tawiah project" },
+  { src: assetUrl("Tawiah3.webp"), alt: "Tawiah project" },
+  { src: assetUrl("Tawiah4.webp"), alt: "Tawiah project" },
+  { src: assetUrl("Tawiah5.webp"), alt: "Tawiah project" },
+];
+
 const tabs = [
   { id: "celestia" as const, label: "Celestia" },
   { id: "east-legon" as const, label: "East Legon Trio" },
   { id: "wilma-crescent" as const, label: "Wilma Crescent" },
+  { id: "others" as const, label: "Others" },
 ];
 
-const TAB_FROM_PARAM: Record<string, "celestia" | "east-legon" | "wilma-crescent"> = {
+const TAB_FROM_PARAM: Record<string, "celestia" | "east-legon" | "wilma-crescent" | "others"> = {
   celestia: "celestia",
   "east-legon": "east-legon",
   "wilma-crescent": "wilma-crescent",
+  others: "others",
 };
 
 function PortfolioContent() {
   const searchParams = useSearchParams();
   const projectParam = searchParams.get("project");
   const initialTab = (projectParam && TAB_FROM_PARAM[projectParam]) || "celestia";
-  const [activeTab, setActiveTab] = useState<"celestia" | "east-legon" | "wilma-crescent">(initialTab);
+  const [activeTab, setActiveTab] = useState<"celestia" | "east-legon" | "wilma-crescent" | "others">(initialTab);
   const [lightbox, setLightbox] = useState<{ src: string; alt: string; index: number } | null>(null);
 
   useEffect(() => {
@@ -67,7 +78,9 @@ function PortfolioContent() {
       ? celestiaImages
       : activeTab === "east-legon"
         ? eastLegonImages
-        : wilmaCrescentImages;
+        : activeTab === "wilma-crescent"
+          ? wilmaCrescentImages
+          : othersImages;
 
   const openLightbox = useCallback((src: string, alt: string, index: number) => {
     setLightbox({ src, alt, index });

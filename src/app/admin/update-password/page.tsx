@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
@@ -11,6 +11,7 @@ import Link from "next/link";
  */
 export default function AdminUpdatePasswordPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
@@ -19,6 +20,12 @@ export default function AdminUpdatePasswordPage() {
   const [showForm, setShowForm] = useState<boolean | null>(null);
 
   useEffect(() => {
+    // Type can come from query (after /auth/callback redirect) or from hash (direct Supabase redirect)
+    const fromQuery = searchParams.get("type");
+    if (fromQuery === "invite" || fromQuery === "recovery") {
+      setShowForm(true);
+      return;
+    }
     const hash = typeof window !== "undefined" ? window.location.hash : "";
     const fromHash = hash.includes("type=recovery") || hash.includes("type=invite");
     if (fromHash) {
@@ -29,7 +36,7 @@ export default function AdminUpdatePasswordPage() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setShowForm(!!session);
     });
-  }, []);
+  }, [searchParams]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -77,11 +84,17 @@ export default function AdminUpdatePasswordPage() {
     );
   }
 
+  const typeFromQuery = searchParams.get("type");
+  const isInvite = typeFromQuery === "invite" || (typeof window !== "undefined" && window.location.hash.includes("type=invite"));
+  const title = isInvite ? "Create your password" : "Set new password";
+  const buttonLabel = isInvite ? "Create password" : "Update password";
+  const successMessage = isInvite ? "Password created. Redirecting to dashboard…" : "Password updated. Redirecting to dashboard…";
+
   if (success) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center">
-          <p className="text-earthy font-medium text-green-700">Password updated. Redirecting to dashboard…</p>
+          <p className="text-earthy font-medium text-green-700">{successMessage}</p>
         </div>
       </div>
     );
@@ -90,7 +103,7 @@ export default function AdminUpdatePasswordPage() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8">
-        <h1 className="text-2xl font-bold text-earthy mb-6">Set new password</h1>
+        <h1 className="text-2xl font-bold text-earthy mb-6">{title}</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <label className="flex flex-col gap-1">
             <span className="text-sm font-medium text-earthy">New password</span>
@@ -124,7 +137,7 @@ export default function AdminUpdatePasswordPage() {
             disabled={loading}
             className="bg-primary text-white font-bold py-2 rounded-lg hover:opacity-90 disabled:opacity-50"
           >
-            {loading ? "Updating…" : "Update password"}
+            {loading ? (isInvite ? "Creating…" : "Updating…") : buttonLabel}
           </button>
         </form>
         <Link href="/admin/login" className="mt-4 inline-block text-sm text-primary hover:underline">

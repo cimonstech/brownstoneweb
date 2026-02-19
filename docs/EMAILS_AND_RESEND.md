@@ -47,24 +47,42 @@ If `BROCHURE_PDF_URL` is not set, the email still sends; it just omits the downl
 
 ---
 
-## Resend configuration
+## Sender addresses (Postmark)
+
+This project uses **Postmark** for sending. Each flow can use a **different sender** so forms and campaigns don’t all show the same “From” address.
+
+| Flow | Env var | Example |
+|------|---------|--------|
+| Contact form (inquiry to team + auto-reply to user) | `POSTMARK_FROM_CONTACT` | `Candace from Brownstone <candace@brownstoneltd.com>` |
+| Brochure request (Celestia / Townhouses) | `POSTMARK_FROM_BROCHURE` | `Brownstone <info@brownstoneltd.com>` |
+| Lakehouse / Jetty lead (brochure email) | `POSTMARK_FROM_LAKEHOUSE` | `Brownstone Celestia <celestia@brownstoneltd.com>` |
+| Exit intent signup | same as Lakehouse | uses `POSTMARK_FROM_LAKEHOUSE` |
+| Admin → Campaigns (cold email) | `POSTMARK_FROM_CAMPAIGNS` | `Candace from Brownstone <candace@brownstoneltd.com>` |
+| **Password reset & invite** | **Supabase Dashboard** | Set in **Authentication → SMTP**: sender name + sender email (e.g. `Brownstone <noreply@brownstoneltd.com>`). Different from the above. |
+
+If a flow-specific var is not set, **`POSTMARK_FROM`** is used as fallback. Format: `"Name <email@domain.com>"` or just the email. Verify your domain in [Postmark → Sender Signatures](https://account.postmarkapp.com/sender_signatures).
+
+---
+
+## Postmark configuration
 
 ### Current use (transactional)
 
-- **Contact form** → Resend sends:
+- **Contact form** → Postmark sends:
   - One email to your team (to `CONTACTFORMMAIL`),
   - One auto-reply to the user (contact-received template).
-- **Brochure / Lakehouse** → Resend sends the Celestia brochure to the user.
+- **Brochure / Lakehouse** → Postmark sends the Celestia brochure to the user.
 
-Required env (already in use):
+Required env:
 
-- **`RESEND_API_KEY`** — From [Resend](https://resend.com) → API Keys.
-- **`RESEND_FROM_SUPPORT`** — Sender for inquiry emails to your team (e.g. `Brownstone Support <support@brownstoneltd.com>`). Must use a verified domain.
-- **`RESEND_FROM_NOREPLY`** — Sender for automated emails to users (auto-reply, brochure) (e.g. `Brownstone <noreply@brownstoneltd.com>`). Must use a verified domain.
-- **`CONTACT_FROM_EMAIL`** — Fallback if the above are not set. Prefer `RESEND_FROM_SUPPORT` and `RESEND_FROM_NOREPLY` for clarity.
+- **`POSTMARK_API_KEY`** — From [Postmark](https://account.postmarkapp.com) → Server → API Tokens.
+- **`POSTMARK_FROM`** — Fallback From address (e.g. `Candace from Brownstone <candace@brownstoneltd.com>`).
+- **`POSTMARK_FROM_CONTACT`**, **`POSTMARK_FROM_BROCHURE`**, **`POSTMARK_FROM_LAKEHOUSE`**, **`POSTMARK_FROM_CAMPAIGNS`** — Optional; per-flow senders (see table above).
 - **`CONTACTFORMMAIL`** — Where contact form submissions are sent (your team inbox).
 
-**Important:** Verify `brownstoneltd.com` at [resend.com/domains](https://resend.com/domains) before sending. Unverified domains can only send to your own email.
+**No confusion:** `CONTACTFORMMAIL` is the **recipient** — the inbox that receives the inquiry (e.g. `creative@brownstoneltd.com`). `POSTMARK_FROM_CONTACT` is the **sender** — the From name and address shown on the email (e.g. `Brownstone Contact Form <noreply@brownstoneltd.com>`). So the team receives at creative@; the user sees the message as coming from noreply@. Both are independent.
+
+**Important:** Verify your domain in Postmark (Sender Signatures) so mail doesn’t show “via postmarkapp.com” and land in spam.
 
 ### Newsletters with Resend
 
@@ -112,15 +130,15 @@ Without `SUPABASE_SERVICE_ROLE_KEY`, leads are not stored. Check server logs for
 
 ### Sender and “via …” / spam
 
-- **Use a clear, professional From** so the inbox shows e.g. **“Candace from Brownstone”** with your domain, not a generic or relay address. Set **`RESEND_FROM_CAMPAIGNS`** to a real name + verified address, for example:
+- **Use a clear, professional From** so the inbox shows e.g. **“Candace from Brownstone”** with your domain, not a generic or relay address. Set **`POSTMARK_FROM_CAMPAIGNS`** to a real name + verified address, for example:
   - `Candace from Brownstone <candace@brownstoneltd.com>`  
   - or `Candace from Brownstone <hello@brownstoneltd.com>`
-- If the recipient sees **“via amazonses.com”** (or similar), your **sending domain is not fully authenticated**. Add and verify **brownstoneltd.com** in [Resend → Domains](https://resend.com/domains): add the domain, then add the SPF/DKIM records Resend gives you to your DNS. After verification, Resend sends from your domain and the “via” line and spam risk go down.
-- Use the **same address** (or a known support address) for **`RESEND_REPLY_TO`** so replies go to the right inbox (e.g. `candace@brownstoneltd.com` or `hello@brownstoneltd.com`).
+- If the recipient sees **“via postmarkapp.com”** (or similar), your **sending domain is not fully authenticated**. Add and verify **brownstoneltd.com** in [Postmark → Sender Signatures](https://account.postmarkapp.com/sender_signatures): add the domain, then add the DNS records Postmark gives you. After that, mail sends from your domain and the “via” line and spam risk go down.
+- Set **`POSTMARK_REPLY_TO`** so replies go to the right inbox (e.g. `candace@brownstoneltd.com`).
 
 Using a real name + verified domain helps deliverability and makes the email look like a 1:1 message rather than bulk marketing.
 
-Reply tracking (storing inbound replies in the CRM) is not used. Campaign replies go to `RESEND_REPLY_TO`; they are not logged in the contact timeline.
+Reply tracking (storing inbound replies in the CRM) is not used. Campaign replies go to `POSTMARK_REPLY_TO`; they are not logged in the contact timeline.
 
 ### Template body: paste plain text
 
@@ -135,21 +153,23 @@ In **Email Templates**, the **Body** field accepts **plain text or HTML**. If yo
 
 ## Email deliverability (avoiding Promotions and Spam)
 
-1. **Verify your domain in Resend** — [Resend → Domains](https://resend.com/domains): add `brownstoneltd.com`, add the SPF/DKIM records to your DNS. Until the domain is verified, mail can show “via amazonses.com” and land in Spam.
-2. **Use a real name + your domain for campaigns** — e.g. `Candace from Brownstone <candace@brownstoneltd.com>`. Avoid no-reply or generic addresses for cold email.
-3. **Brochure/transactional** — Reply-To can be `info@brownstoneltd.com`. Encourage “reply to this email” and “add us to your contacts” in the copy.
+1. **Verify your domain in Postmark** — [Postmark → Sender Signatures](https://account.postmarkapp.com/sender_signatures): add `brownstoneltd.com`, add the SPF/DKIM records to your DNS. Until the domain is verified, mail can show “via postmarkapp.com” and land in Spam.
+2. **Use a real name + your domain for campaigns** — set `POSTMARK_FROM_CAMPAIGNS` (e.g. `Candace from Brownstone <candace@brownstoneltd.com>`).
+3. **Brochure/transactional** — Set `POSTMARK_REPLY_TO` (e.g. `info@brownstoneltd.com`). The contact auto-reply and brochure emails already encourage “reply to this email” and “add us to your contacts” in the copy; no extra change needed.
 4. Avoid leading/trailing spaces in from-address env vars (code trims automatically).
 
 ## Env summary
 
 | Variable | Purpose |
 |----------|---------|
-| `RESEND_API_KEY` | Resend API key (required for all emails). |
-| `RESEND_FROM_SUPPORT` | Sender for inquiry emails to your team (e.g. `Brownstone Support <support@brownstoneltd.com>`). Use verified domain. |
-| `RESEND_FROM_NOREPLY` | Sender for automated emails to users (e.g. `Candace from Brownstone <info@brownstoneltd.com>`). Use verified domain. No leading spaces. |
-| `RESEND_FROM_CAMPAIGNS` | Sender for cold emails (Admin → Campaigns). Use a clear name + verified domain (e.g. `Candace from Brownstone <candace@brownstoneltd.com>`). Verify the domain in Resend to avoid “via amazonses.com” and spam. Falls back to `RESEND_FROM_SUPPORT` if unset. |
-| `RESEND_REPLY_TO` | Where replies go (e.g. `ghanaisthefuture@brownstoneltd.com`). Used by campaigns and brochure. |
-| `CONTACT_FROM_EMAIL` | Fallback sender if the above are not set. |
+| `POSTMARK_API_KEY` | Postmark server API token (required for contact, brochure, lakehouse, campaigns). |
+| `POSTMARK_FROM` | Fallback From address if a flow-specific var is not set. |
+| `POSTMARK_FROM_CONTACT` | Sender for contact form (inquiry to team + auto-reply to user). |
+| `POSTMARK_FROM_BROCHURE` | Sender for brochure request (Celestia / Townhouses). |
+| `POSTMARK_FROM_LAKEHOUSE` | Sender for Lakehouse/Jetty lead and exit-intent brochure email. |
+| `POSTMARK_FROM_CAMPAIGNS` | Sender for cold emails (Admin → Campaigns). |
+| `POSTMARK_REPLY_TO` | Reply-To for brochure, lakehouse, campaigns. |
+| **Password reset / invite** | **Supabase Dashboard → Auth → SMTP**: sender name + sender email (separate from Postmark). |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required for leads capture. From Supabase → Settings → API. |
 | `CONTACTFORMMAIL` | Recipient for contact form submissions. |
 | `BROWNSTONE_LOGO_URL` | Optional. Logo URL for contact auto-reply (other emails). |

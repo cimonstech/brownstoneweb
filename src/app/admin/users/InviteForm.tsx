@@ -33,7 +33,7 @@ export function InviteForm({ roleOptions }: Props) {
         setErrorCode(data.code ?? null);
         return;
       }
-      setMessage("Invitation sent. They can sign in with the link in the email.");
+      setMessage("Invitation sent. They’ll get an email link to create their password, then can log in.");
       setEmail("");
       router.refresh();
     } finally {
