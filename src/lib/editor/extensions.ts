@@ -9,6 +9,7 @@ import Link from "@tiptap/extension-link";
 export const editorExtensions = [
   StarterKit.configure({
     heading: { levels: [2, 3, 4] },
+    link: false, // we add Link separately with custom config (target, rel)
   }),
   Image.configure({
     inline: false,

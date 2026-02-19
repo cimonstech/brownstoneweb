@@ -118,9 +118,11 @@ type CurrentUser = {
 export function AdminShell({
   children,
   currentUser,
+  leadCount = 0,
 }: {
   children: React.ReactNode;
   currentUser?: CurrentUser | null;
+  leadCount?: number;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -132,10 +134,15 @@ export function AdminShell({
   }, [isCrmPath]);
 
   async function handleLogout() {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/admin/login");
-    router.refresh();
+    try {
+      const supabase = createClient();
+      if (supabase?.auth) {
+        await supabase.auth.signOut();
+      }
+    } catch {
+      // ignore signOut errors
+    }
+    window.location.href = "/admin/login";
   }
 
   if (hideSidebar) {
@@ -183,18 +190,26 @@ export function AdminShell({
                           .filter((item) => ((item as { href: string }).href === "/admin/roles" ? currentUser?.isAdmin === true : true))
                           .map(({ href, label, icon }) => {
                           const active = pathname === href || pathname?.startsWith(href + "/");
+                          const showLeadCount = href === "/admin/leads" && leadCount > 0;
                           return (
                             <Link
                               key={href}
                               href={href}
-                              className={`flex items-center px-3 py-2.5 rounded-lg transition-all group text-sm ${
+                              className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-all group text-sm w-full ${
                                 active
                                   ? "bg-primary/20 text-[#fff]"
                                   : "text-[#e8e0dc] hover:text-[#fff] hover:bg-white/10"
                               }`}
                             >
-                              <span className={active ? "text-primary mr-2" : "mr-2 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
-                              <span className="font-medium text-inherit">{label}</span>
+                              <span className="flex items-center">
+                                <span className={active ? "text-primary mr-2" : "mr-2 text-[#e8e0dc] group-hover:text-primary"}><NavIcon name={icon} /></span>
+                                <span className="font-medium text-inherit">{label}</span>
+                              </span>
+                              {showLeadCount && (
+                                <span className="bg-primary/90 text-white text-[10px] font-bold min-w-[1.25rem] h-5 px-1.5 rounded-full flex items-center justify-center">
+                                  {leadCount > 99 ? "99+" : leadCount}
+                                </span>
+                              )}
                             </Link>
                           );
                         })}
@@ -248,21 +263,30 @@ export function AdminShell({
       </aside>
       <main className="flex-1 ml-64 flex flex-col min-h-screen">
         <header className="sticky top-0 z-40 flex items-center justify-between px-8 py-4 bg-[#F8F9FA] border-b border-slate-200/80">
-          <div className="relative w-96 max-w-full">
+          <form action="/admin/posts" method="GET" className="relative w-96 max-w-full">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none">
               <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
             </span>
             <input
-              type="text"
-              placeholder="Search posts, media..."
+              type="search"
+              name="search"
+              placeholder="Search posts…"
               className="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm focus:ring-2 focus:ring-primary/20 focus:border-primary/30 text-sm outline-none transition-all"
             />
-          </div>
+          </form>
           <div className="flex items-center gap-6">
-            <button type="button" className="relative p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-white/80" aria-label="Notifications">
+            <Link
+              href="/admin/leads"
+              className="relative p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-white/80"
+              aria-label={leadCount > 0 ? `${leadCount} leads` : "Leads"}
+            >
               <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-primary rounded-full border-2 border-[#F8F9FA]" />
-            </button>
+              {leadCount > 0 && (
+                <span className="absolute top-1 right-1 min-w-[1.25rem] h-5 px-1.5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#F8F9FA]">
+                  {leadCount > 99 ? "99+" : leadCount}
+                </span>
+              )}
+            </Link>
             {currentUser && (
               <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
                 <div className="flex items-center gap-3">

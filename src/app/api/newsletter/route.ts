@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { upsertContactByEmail, addContactActivity } from "@/lib/crm/contacts";
+import { notifyLeadModerator } from "@/lib/emails/lead-notify";
 
 export async function POST(request: Request) {
   if (
@@ -50,6 +51,11 @@ export async function POST(request: Request) {
       consent: true,
     } as never);
     if (leadsErr) console.error("Unified leads insert error (newsletter):", leadsErr);
+    else {
+      notifyLeadModerator({ source: "newsletter", email, name: name || null }).catch((e) =>
+        console.error("Lead notify error (newsletter):", e)
+      );
+    }
 
     return NextResponse.json({ success: true });
   } catch (err: unknown) {

@@ -72,6 +72,8 @@ export function PostForm({
   const [error, setError] = useState("");
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
   const [dirty, setDirty] = useState(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [mediaItems, setMediaItems] = useState<{ key: string; url: string }[]>([]);
   const canPublish = userRoles.includes("admin") || userRoles.includes("moderator");
   const canSetFeatured = userRoles.includes("admin") || userRoles.includes("moderator");
   const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -84,12 +86,17 @@ export function PostForm({
   const save = useCallback(
     async (newStatus: "draft" | "published") => {
       setError("");
+      const cover = coverImage.trim() || null;
+      if (newStatus === "published" && !cover) {
+        setError("Featured image is required to publish. Add an image from Media or upload from your device.");
+        return;
+      }
       const finalSlug = slug.trim() || slugify(title) || "untitled";
       const parsed = postSchema.safeParse({
         title: title.trim(),
         slug: finalSlug,
         excerpt: excerpt.trim() || null,
-        cover_image: coverImage.trim() || null,
+        cover_image: cover,
         status: newStatus,
         read_time_minutes: readTimeMinutes ?? undefined,
         featured,
@@ -144,6 +151,7 @@ export function PostForm({
       }
 
       setDirty(false);
+      setStatus(newStatus);
       setLastSaved(new Date());
       setSaving(false);
       await revalidateBlog(finalSlug);
@@ -177,8 +185,26 @@ export function PostForm({
   }, [dirty]);
 
   const handlePublish = () => {
-    if (canPublish && typeof window !== "undefined" && window.confirm("Publish this post? It will be visible on the blog.")) {
+    if (!canPublish) return;
+    if (!coverImage.trim()) {
+      setError("Featured image is required to publish. Add an image from Media or upload from your device.");
+      return;
+    }
+    if (typeof window !== "undefined" && window.confirm("Publish this post? It will be visible on the blog.")) {
       save("published");
+    }
+  };
+
+  const openMediaPicker = async () => {
+    setShowMediaPicker(true);
+    try {
+      const res = await fetch("/api/admin/media");
+      if (res.ok) {
+        const data = await res.json();
+        setMediaItems(data.items ?? []);
+      }
+    } catch {
+      setMediaItems([]);
     }
   };
 
@@ -233,13 +259,22 @@ export function PostForm({
         />
       </div>
       <div>
-        <label className="block text-sm font-medium text-earthy mb-1">Cover image (optional)</label>
+        <label className="block text-sm font-medium text-earthy mb-1">
+          Featured image (required for publishing)
+        </label>
         {coverImage && (
           <div className="mb-2 rounded-lg overflow-hidden border border-grey/20 max-w-md">
             <img src={coverImage} alt="Cover preview" className="w-full h-40 object-cover" />
           </div>
         )}
         <div className="flex flex-wrap items-center gap-3 mb-2">
+          <button
+            type="button"
+            onClick={openMediaPicker}
+            className="bg-neutral-200 text-earthy font-medium px-4 py-2 rounded-lg hover:bg-neutral-300 text-sm"
+          >
+            Choose from media
+          </button>
           <label className="cursor-pointer bg-neutral-200 text-earthy font-medium px-4 py-2 rounded-lg hover:bg-neutral-300 text-sm">
             Upload from device
             <input
@@ -340,7 +375,14 @@ export function PostForm({
         >
           {saving ? "Saving…" : "Save draft"}
         </button>
-        {canPublish && (
+        {canPublish && (status === "published" ? (
+          <span
+            className="inline-flex items-center font-medium px-4 py-2 rounded-lg bg-green-100 text-green-800 border border-green-200"
+            aria-label="This post is published"
+          >
+            Published
+          </span>
+        ) : (
           <button
             type="button"
             onClick={handlePublish}
@@ -349,12 +391,71 @@ export function PostForm({
           >
             {saving ? "Saving…" : "Publish"}
           </button>
-        )}
+        ))}
         {dirty && <span className="text-sm text-amber-600">Unsaved changes</span>}
         {lastSaved && !dirty && (
           <span className="text-sm text-grey">Saved at {lastSaved.toLocaleTimeString()}</span>
         )}
       </div>
+
+      {showMediaPicker && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+          onClick={() => setShowMediaPicker(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center">
+              <h3 className="font-bold text-slate-800">Choose featured image from media</h3>
+              <button
+                type="button"
+                onClick={() => setShowMediaPicker(false)}
+                className="text-slate-500 hover:text-slate-800"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto flex-1">
+              <div className="grid grid-cols-3 gap-3">
+                {mediaItems.map((item) => {
+                  const isImage = /\.(jpe?g|png|gif|webp|avif)$/i.test(item.key);
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => {
+                        setCoverImage(item.url);
+                        setDirty(true);
+                        setShowMediaPicker(false);
+                      }}
+                      className="aspect-video rounded-lg overflow-hidden border-2 border-transparent hover:border-primary focus:border-primary focus:outline-none"
+                    >
+                      {isImage ? (
+                        <img
+                          src={item.url}
+                          alt=""
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 text-xs">
+                          File
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+              {mediaItems.length === 0 && (
+                <p className="text-sm text-slate-500">
+                  No media yet. Upload from Admin → Media or use &quot;Upload from device&quot; above.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

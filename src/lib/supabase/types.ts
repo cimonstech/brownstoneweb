@@ -285,6 +285,7 @@ export interface Database {
           source: string;
           project: string | null;
           consent: boolean | null;
+          contact_id: string | null;
           created_at: string;
         };
         Insert: {
@@ -297,6 +298,7 @@ export interface Database {
           source: string;
           project?: string | null;
           consent?: boolean | null;
+          contact_id?: string | null;
           created_at?: string;
         };
         Update: {
@@ -309,6 +311,7 @@ export interface Database {
           source?: string;
           project?: string | null;
           consent?: boolean | null;
+          contact_id?: string | null;
           created_at?: string;
         };
       };
@@ -383,6 +386,20 @@ export interface Database {
           metadata?: Json;
           created_at?: string;
           created_by_id?: string | null;
+        };
+      };
+      admin_lead_views: {
+        Row: {
+          user_id: string;
+          last_viewed_at: string;
+        };
+        Insert: {
+          user_id: string;
+          last_viewed_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          last_viewed_at?: string;
         };
       };
       email_templates: {

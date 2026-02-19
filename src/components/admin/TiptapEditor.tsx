@@ -3,9 +3,10 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import { editorExtensions } from "@/lib/editor/extensions";
 import type { JSONContent } from "@tiptap/core";
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useRef, useEffect, useState } from "react";
 
 const UPLOAD_URL = "/api/blog/upload";
+type MediaItem = { key: string; url: string };
 
 export type TiptapContent = JSONContent;
 
@@ -20,6 +21,8 @@ export function TiptapEditor({
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const didSyncInitial = useRef(false);
+  const [showMediaPicker, setShowMediaPicker] = useState(false);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -62,7 +65,8 @@ export function TiptapEditor({
         const data = await res.json();
         const url = data?.file?.url;
         if (url) {
-          editor.chain().focus().setImage({ src: url }).run();
+          const alt = typeof window !== "undefined" ? window.prompt("Alt text for accessibility (optional):") ?? "" : "";
+          editor.chain().focus().setImage({ src: url, alt: alt || undefined }).run();
         }
       } catch {
         // ignore
@@ -70,6 +74,45 @@ export function TiptapEditor({
     },
     [editor]
   );
+
+  const openMediaPicker = useCallback(async () => {
+    setShowMediaPicker(true);
+    try {
+      const res = await fetch("/api/admin/media");
+      if (res.ok) {
+        const data = await res.json();
+        setMediaItems(data.items ?? []);
+      } else {
+        setMediaItems([]);
+      }
+    } catch {
+      setMediaItems([]);
+    }
+  }, []);
+
+  const insertImageFromMedia = useCallback(
+    (url: string) => {
+      if (editor) {
+        const alt = typeof window !== "undefined" ? window.prompt("Alt text for accessibility (optional):") ?? "" : "";
+        editor.chain().focus().setImage({ src: url, alt: alt || undefined }).run();
+      }
+      setShowMediaPicker(false);
+    },
+    [editor]
+  );
+
+  const handleLink = useCallback(() => {
+    if (!editor) return;
+    const previousUrl = editor.getAttributes("link").href;
+    const url = typeof window !== "undefined" ? window.prompt("Link URL:", previousUrl ?? "https://") : "";
+    if (url === null) return; // cancelled
+    if (url === "") {
+      editor.chain().focus().unsetLink().run();
+      return;
+    }
+    const href = url.startsWith("http") ? url : `https://${url}`;
+    editor.chain().focus().setLink({ href }).run();
+  }, [editor]);
 
   return (
     <div className="border border-grey/20 rounded-lg bg-white overflow-hidden">
@@ -162,14 +205,82 @@ export function TiptapEditor({
               type="button"
               onClick={handleImageUpload}
               className="p-2 rounded hover:bg-slate-200"
-              title="Insert image"
+              title="Insert image from device"
             >
               🖼
+            </button>
+            <button
+              type="button"
+              onClick={openMediaPicker}
+              className="p-2 rounded hover:bg-slate-200 text-sm"
+              title="Insert image from media"
+            >
+              Media
+            </button>
+            <span className="w-px h-6 bg-slate-300 mx-1" />
+            <button
+              type="button"
+              onClick={handleLink}
+              className={`p-2 rounded hover:bg-slate-200 ${editor.isActive("link") ? "bg-slate-200" : ""}`}
+              title="Add or edit link"
+            >
+              Link
             </button>
           </>
         )}
       </div>
       <EditorContent editor={editor} />
+
+      {showMediaPicker && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50"
+          onClick={() => setShowMediaPicker(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-4 border-b border-slate-100 flex justify-between items-center">
+              <h3 className="font-bold text-slate-800">Insert image from media</h3>
+              <button
+                type="button"
+                onClick={() => setShowMediaPicker(false)}
+                className="text-slate-500 hover:text-slate-800"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="p-4 overflow-y-auto flex-1">
+              <div className="grid grid-cols-3 gap-3">
+                {mediaItems.map((item) => {
+                  const isImage = /\.(jpe?g|png|gif|webp|avif)$/i.test(item.key);
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      onClick={() => insertImageFromMedia(item.url)}
+                      className="aspect-video rounded-lg overflow-hidden border-2 border-transparent hover:border-primary focus:border-primary focus:outline-none"
+                    >
+                      {isImage ? (
+                        <img src={item.url} alt="" className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full bg-slate-100 flex items-center justify-center text-slate-400 text-xs">
+                          File
+                        </div>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+              {mediaItems.length === 0 && (
+                <p className="text-sm text-slate-500">
+                  No media yet. Upload from Admin → Media or use the image button to upload from device.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

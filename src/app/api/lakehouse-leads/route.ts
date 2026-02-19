@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ServerClient } from "postmark";
 import { getPostmarkFrom } from "@/lib/emails/postmark-from";
+import { notifyLeadModerator } from "@/lib/emails/lead-notify";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCelestiaBrochureHtml, getCelestiaBrochureText } from "@/lib/emails/celestia-brochure";
 
@@ -61,6 +62,11 @@ export async function POST(request: Request) {
         consent,
       } as never);
       if (leadsErr) console.error("Unified leads insert error (lakehouse):", leadsErr);
+      else {
+        notifyLeadModerator({ source, email, project: "lakehouse" }).catch((e) =>
+          console.error("Lead notify error (lakehouse):", e)
+        );
+      }
     } else {
       console.warn(
         "Leads not saved: set SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL in .env.local (and redeploy) to store leads."

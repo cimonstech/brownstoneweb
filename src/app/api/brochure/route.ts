@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ServerClient } from "postmark";
 import { getPostmarkFrom } from "@/lib/emails/postmark-from";
+import { notifyLeadModerator } from "@/lib/emails/lead-notify";
 import {
   getCelestiaBrochureHtml,
   getCelestiaBrochureText,
@@ -60,12 +61,17 @@ export async function POST(request: Request) {
   if (process.env.SUPABASE_SERVICE_ROLE_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
     try {
       const supabase = createAdminClient();
-      await supabase.from("leads").insert({
+      const { error: insertErr } = await supabase.from("leads").insert({
         email,
         source: "brochure",
         project,
         consent: true,
       } as never);
+      if (!insertErr) {
+        notifyLeadModerator({ source: "brochure", email, project }).catch((e) =>
+          console.error("Lead notify error (brochure):", e)
+        );
+      }
     } catch {
       // Ignore
     }

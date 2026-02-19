@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { LeadsTable } from "./LeadsTable";
+import { MarkLeadsViewed } from "./MarkLeadsViewed";
 
 const SOURCES = [
   { value: "", label: "All sources" },
@@ -35,7 +36,7 @@ export default async function AdminLeadsPage({
 
   let query = supabase
     .from("leads")
-    .select("id, email, phone, country_code, name, message, source, project, consent, created_at")
+    .select("id, email, phone, country_code, name, message, source, project, consent, contact_id, created_at")
     .order("created_at", { ascending: false })
     .limit(200);
 
@@ -55,8 +56,24 @@ export default async function AdminLeadsPage({
     console.error("Leads fetch error:", error);
   }
 
+  const leadList = leads ?? [];
+  const emails = [...new Set(leadList.map((l) => l.email?.trim().toLowerCase()).filter(Boolean))];
+  let existingContactIdByEmail: Record<string, string> = {};
+  if (emails.length > 0) {
+    const { data: contacts } = await supabase
+      .from("contacts")
+      .select("id, email")
+      .in("email", emails);
+    if (contacts) {
+      existingContactIdByEmail = Object.fromEntries(
+        contacts.map((c) => [c.email.toLowerCase(), c.id])
+      );
+    }
+  }
+
   return (
     <div>
+      <MarkLeadsViewed />
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-slate-800">Leads</h2>
         <p className="text-slate-500 mt-1">
@@ -65,11 +82,12 @@ export default async function AdminLeadsPage({
       </div>
 
       <LeadsTable
-        leads={leads ?? []}
+        leads={leadList}
         sources={SOURCES}
         currentSource={source}
         currentFrom={from}
         currentTo={to}
+        existingContactIdByEmail={existingContactIdByEmail}
       />
     </div>
   );

@@ -79,6 +79,7 @@ Required env:
 - **`POSTMARK_FROM`** — Fallback From address (e.g. `Candace from Brownstone <candace@brownstoneltd.com>`).
 - **`POSTMARK_FROM_CONTACT`**, **`POSTMARK_FROM_BROCHURE`**, **`POSTMARK_FROM_LAKEHOUSE`**, **`POSTMARK_FROM_CAMPAIGNS`** — Optional; per-flow senders (see table above).
 - **`CONTACTFORMMAIL`** — Where contact form submissions are sent (your team inbox).
+- **`EMAIL_LEAD_NOTIFY`** — Optional. When set (e.g. `candace@brownstoneltd.com`), every new lead (contact, brochure, lakehouse, newsletter) triggers a short notification email to this address so a moderator can follow up.
 
 **No confusion:** `CONTACTFORMMAIL` is the **recipient** — the inbox that receives the inquiry (e.g. `creative@brownstoneltd.com`). `POSTMARK_FROM_CONTACT` is the **sender** — the From name and address shown on the email (e.g. `Brownstone Contact Form <noreply@brownstoneltd.com>`). So the team receives at creative@; the user sees the message as coming from noreply@. Both are independent.
 
@@ -172,6 +173,7 @@ In **Email Templates**, the **Body** field accepts **plain text or HTML**. If yo
 | **Password reset / invite** | **Supabase Dashboard → Auth → SMTP**: sender name + sender email (separate from Postmark). |
 | `SUPABASE_SERVICE_ROLE_KEY` | Required for leads capture. From Supabase → Settings → API. |
 | `CONTACTFORMMAIL` | Recipient for contact form submissions. |
+| `EMAIL_LEAD_NOTIFY` | Optional. Email address to notify when a new lead is created (contact, brochure, lakehouse, newsletter). |
 | `BROWNSTONE_LOGO_URL` | Optional. Logo URL for contact auto-reply (other emails). |
 | `BROCHURE_PDF_URL` | Optional. URL of Celestia brochure PDF. |
 | `BROCHURE_PDF_URL_TOWNHOUSE` | Optional. URL of townhouse brochure PDF. | for the “Download PDF” link in brochure email. |

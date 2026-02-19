@@ -58,11 +58,19 @@ export async function POST(request: Request) {
       created_by_id: user.id,
     });
 
+    const { error: updateLeadError } = await supabase
+      .from("leads")
+      .update({ contact_id: contact.id })
+      .eq("id", lead.id);
+    if (updateLeadError) {
+      console.error("from-lead: failed to set lead.contact_id:", updateLeadError);
+    }
+
     return NextResponse.json({ id: contact.id, email: contact.email, name: contact.name });
   } catch (err) {
     console.error("from-lead contact create error:", err);
     return NextResponse.json(
-      { error: "Failed to add contact" },
+      { error: err instanceof Error ? err.message : "Failed to add contact" },
       { status: 500 }
     );
   }

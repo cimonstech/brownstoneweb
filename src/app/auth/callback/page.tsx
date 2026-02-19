@@ -1,11 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 
 type EmailOtpType = "recovery" | "invite" | "email" | "signup";
+
+function VerifyingFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-white rounded-xl shadow-lg p-8 text-center text-slate-500">
+        Verifying link…
+      </div>
+    </div>
+  );
+}
 
 /**
  * Auth callback for email links (password reset, invite).
@@ -15,7 +25,7 @@ type EmailOtpType = "recovery" | "invite" | "email" | "signup";
  * 2. Hash: type=recovery or type=invite (when Supabase redirects here with fragment).
  *    Session is set by Supabase client; we just redirect to set-password with type in query.
  */
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
@@ -87,4 +97,12 @@ export default function AuthCallbackPage() {
   }
 
   return null;
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense fallback={<VerifyingFallback />}>
+      <AuthCallbackContent />
+    </Suspense>
+  );
 }

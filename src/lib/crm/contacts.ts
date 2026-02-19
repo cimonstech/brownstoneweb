@@ -114,7 +114,7 @@ export async function upsertContactByEmail(
     .from("contacts")
     .select("*")
     .eq("email", email.toLowerCase().trim())
-    .single();
+    .maybeSingle();
 
   const existingContact = existing as Contact | null;
   if (existingContact) {

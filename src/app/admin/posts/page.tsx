@@ -3,12 +3,23 @@ import { createClient } from "@/lib/supabase/server";
 import { EditButton, DeleteButton } from "@/components/admin/ActionIcons";
 import { DeletePostButton } from "./DeletePostButton";
 
-export default async function AdminPostsPage() {
+export default async function AdminPostsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string }>;
+}) {
+  const { search } = await searchParams;
+  const raw = typeof search === "string" ? search.trim() : "";
   const supabase = await createClient();
-  const { data: posts } = await supabase
+  let query = supabase
     .from("posts")
     .select("id, title, slug, status, created_at, author_id")
     .order("created_at", { ascending: false });
+  if (raw) {
+    const esc = raw.replace(/\\/g, "\\\\").replace(/%/g, "\\%").replace(/_/g, "\\_");
+    query = query.or(`title.ilike.%${esc}%,slug.ilike.%${esc}%,excerpt.ilike.%${esc}%`);
+  }
+  const { data: posts } = await query;
 
   const authorIds = [...new Set((posts ?? []).map((p) => p.author_id))];
   const { data: profiles } = await supabase
@@ -25,6 +36,11 @@ export default async function AdminPostsPage() {
       <div className="mb-8">
         <h2 className="text-3xl font-bold text-slate-800">Posts</h2>
         <p className="text-slate-500 mt-1">Create and manage blog articles and insights.</p>
+        {raw ? (
+          <p className="mt-2 text-sm text-slate-600">
+            Search: &quot;{raw}&quot; — <Link href="/admin/posts" className="text-primary hover:underline">Clear search</Link>
+          </p>
+        ) : null}
       </div>
       <div className="flex justify-end mb-4">
         <Link

@@ -10,6 +10,15 @@ type Lead = Database["public"]["Tables"]["leads"]["Row"];
 
 const MESSAGE_PREVIEW_WORDS = 8;
 
+function escapeCsvCell(value: string | null | undefined): string {
+  if (value == null || value === "") return "";
+  const s = String(value);
+  if (s.includes('"') || s.includes(",") || s.includes("\n") || s.includes("\r")) {
+    return `"${s.replace(/"/g, '""')}"`;
+  }
+  return s;
+}
+
 function getSourceLabel(lead: Lead): string {
   if (lead.source === "brochure" && lead.project === "townhouse") {
     return "Celestia Townhouses Brochure";
@@ -30,18 +39,31 @@ function getSourceLabel(lead: Lead): string {
   return labels[lead.source] ?? lead.source;
 }
 
+function getContactIdForLead(
+  lead: Lead,
+  existingContactIdByEmail: Record<string, string>,
+  addedContactId: Record<string, string>
+): string | null {
+  const byEmail = lead.email
+    ? existingContactIdByEmail[lead.email.trim().toLowerCase()] ?? null
+    : null;
+  return lead.contact_id ?? byEmail ?? addedContactId[lead.id] ?? null;
+}
+
 export function LeadsTable({
   leads,
   sources,
   currentSource,
   currentFrom,
   currentTo,
+  existingContactIdByEmail = {},
 }: {
   leads: Lead[];
   sources: readonly { value: string; label: string }[];
   currentSource: string;
   currentFrom: string;
   currentTo: string;
+  existingContactIdByEmail?: Record<string, string>;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -93,7 +115,11 @@ export function LeadsTable({
   }
 
   async function bulkAddToContacts() {
-    const toAdd = leads.filter((l) => selectedIds.has(l.id) && l.email?.trim() && !addedContactId[l.id]);
+    const toAdd = leads.filter((l) => {
+      if (!selectedIds.has(l.id) || !l.email?.trim()) return false;
+      const cid = getContactIdForLead(l, existingContactIdByEmail, addedContactId);
+      return !cid;
+    });
     if (toAdd.length === 0) return;
     setBulkAdding(true);
     let added = 0;
@@ -151,6 +177,35 @@ export function LeadsTable({
       dialog.close();
     }
   }, [messageModal]);
+
+  function exportCsv() {
+    const headers = ["Email", "Phone", "Name", "Source", "Project", "Message", "Date"];
+    const rows = leads.map((lead) => [
+      escapeCsvCell(lead.email),
+      escapeCsvCell(lead.phone ? (lead.country_code ?? "") + lead.phone : null),
+      escapeCsvCell(lead.name),
+      escapeCsvCell(getSourceLabel(lead)),
+      escapeCsvCell(lead.project),
+      escapeCsvCell(lead.message),
+      escapeCsvCell(
+        lead.created_at
+          ? new Date(lead.created_at).toLocaleDateString(undefined, {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+            })
+          : null
+      ),
+    ]);
+    const csv = [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
+    const blob = new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `leads-export-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
 
   function updateFilters(updates: { source?: string; from?: string; to?: string }) {
     const params = new URLSearchParams(searchParams?.toString() ?? "");
@@ -225,6 +280,14 @@ export function LeadsTable({
             Clear filters
           </button>
         )}
+        <button
+          type="button"
+          onClick={exportCsv}
+          disabled={leads.length === 0}
+          className="ml-auto px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          Export CSV
+        </button>
       </form>
 
       {selectedIds.size > 0 && (
@@ -367,16 +430,18 @@ export function LeadsTable({
                       })}
                     </td>
                     <td className="px-6 py-5 text-right align-middle">
-                      {addedContactId[lead.id] ? (
-                        <Link
-                          href={`/admin/crm/contacts/${addedContactId[lead.id]}`}
-                          className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-slate-500 hover:text-primary hover:bg-primary/10 transition-colors"
-                          title="View contact"
-                          aria-label="View contact"
-                        >
-                          <IconPerson />
-                        </Link>
-                      ) : (
+                      {(() => {
+                        const contactId = getContactIdForLead(lead, existingContactIdByEmail, addedContactId);
+                        return contactId ? (
+                          <Link
+                            href={`/admin/crm/contacts/${contactId}`}
+                            className="inline-flex items-center justify-center w-9 h-9 rounded-lg text-primary hover:bg-primary/10 transition-colors"
+                            title="Already added – view contact"
+                            aria-label="Already added – view contact"
+                          >
+                            <IconPerson className="w-5 h-5 shrink-0" />
+                          </Link>
+                        ) : (
                         <button
                           type="button"
                           onClick={() => addLeadToContacts(lead)}
@@ -391,7 +456,8 @@ export function LeadsTable({
                             <IconPersonAdd />
                           )}
                         </button>
-                      )}
+                      );
+                      })()}
                     </td>
                   </tr>
                 ))

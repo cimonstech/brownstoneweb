@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { ServerClient } from "postmark";
 import { getContactReceivedHtml, getContactReceivedText } from "@/lib/emails/contact-received";
 import { getPostmarkFrom } from "@/lib/emails/postmark-from";
+import { notifyLeadModerator } from "@/lib/emails/lead-notify";
 import { createAdminClient } from "@/lib/supabase/admin";
 
 export async function POST(request: Request) {
@@ -55,6 +56,15 @@ export async function POST(request: Request) {
         consent: true,
       } as never);
       if (insertError) console.error("Leads insert error (contact):", insertError);
+      else {
+        notifyLeadModerator({
+          source: "contact",
+          email: emailTrimmed,
+          name: name?.trim() ?? null,
+          message: message?.trim() ?? null,
+          project: projectType?.trim() || null,
+        }).catch((e) => console.error("Lead notify error (contact):", e));
+      }
     } catch (err) {
       console.error("Leads insert failed (contact):", err);
     }

@@ -116,6 +116,9 @@ export async function deleteUser(userId: string) {
   const { error: authError } = await admin.auth.admin.deleteUser(userId);
   if (authError) return { error: authError.message };
 
+  // We do not delete the user's profile or posts: their posts remain and can be deleted separately.
+  // Author attribution may still show if profile row remains; remove profile if you want to anonymize.
+
   revalidatePath("/admin/users");
   return { ok: true };
 }
