@@ -9,12 +9,9 @@ export default async function AdminDashboardPage() {
     roles.includes("author") && !roles.includes("admin") && !roles.includes("moderator");
 
   const supabase = await createClient();
-  const contentPromises: [
-    ReturnType<typeof supabase.from>,
-    ReturnType<typeof supabase.from>,
-    ReturnType<typeof supabase.from>,
-    ReturnType<typeof supabase.from>,
-  ] = [
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase overloaded return types make typed destructure impractical here
+  const contentResults = await Promise.all([
     supabase
       .from("posts")
       .select("id, title, status, created_at, author_id")
@@ -23,37 +20,29 @@ export default async function AdminDashboardPage() {
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "draft"),
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "published"),
     supabase.from("posts").select("id", { count: "exact", head: true }),
-  ];
-  const crmPromises = isAuthorOnly
-    ? []
-    : [
-        supabase.from("contacts").select("id", { count: "exact", head: true }),
-        supabase.from("campaigns").select("id", { count: "exact", head: true }),
-        supabase.from("leads").select("id", { count: "exact", head: true }),
-        supabase.from("profiles").select("id", { count: "exact", head: true }),
-      ];
-
-  const [postsResult, draftResult, publishedResult, totalResult, ...crmResults] = await Promise.all([
-    ...contentPromises,
-    ...crmPromises,
   ]);
-  const { data: posts } = postsResult as {
-    data: Array<{ id: string; title: string; status: string; created_at: string; author_id: string }>;
-  };
-  const draftCount = (draftResult as { count: number | null }).count ?? 0;
-  const publishedCount = (publishedResult as { count: number | null }).count ?? 0;
-  const totalCount = (totalResult as { count: number | null }).count ?? 0;
+
+  const { data: posts } = contentResults[0];
+  const draftCount = contentResults[1].count ?? 0;
+  const publishedCount = contentResults[2].count ?? 0;
+  const totalCount = contentResults[3].count ?? 0;
 
   let contacts = 0;
   let campaigns = 0;
   let leads = 0;
   let users = 0;
 
-  if (!isAuthorOnly && crmResults.length >= 4) {
-    const contactsCount = (crmResults[0] as { count: number | null }).count ?? 0;
-    const campaignsCount = (crmResults[1] as { count: number | null }).count ?? 0;
-    const leadsCount = (crmResults[2] as { count: number | null }).count ?? 0;
-    const totalProfiles = (crmResults[3] as { count: number | null }).count ?? 0;
+  if (!isAuthorOnly) {
+    const crmResults = await Promise.all([
+      supabase.from("contacts").select("id", { count: "exact", head: true }),
+      supabase.from("campaigns").select("id", { count: "exact", head: true }),
+      supabase.from("leads").select("id", { count: "exact", head: true }),
+      supabase.from("profiles").select("id", { count: "exact", head: true }),
+    ]);
+    const contactsCount = crmResults[0].count ?? 0;
+    const campaignsCount = crmResults[1].count ?? 0;
+    const leadsCount = crmResults[2].count ?? 0;
+    const totalProfiles = crmResults[3].count ?? 0;
     const admin = createAdminClient();
     const { data: adminRoleData } = await admin.from("roles").select("id").ilike("name", "admin").maybeSingle();
     const adminRole = adminRoleData as { id: string } | null;

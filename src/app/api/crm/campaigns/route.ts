@@ -3,6 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { getCampaigns, createCampaign, addContactsToCampaign } from "@/lib/crm/campaigns";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:campaigns");
 
 const createCampaignSchema = z.object({
   name: z.string().min(1),
@@ -29,7 +33,7 @@ export async function GET() {
     const campaigns = await getCampaigns(supabase);
     return NextResponse.json(campaigns);
   } catch (err) {
-    console.error("CRM campaigns GET error:", err);
+    log.error("Campaigns fetch failed", err);
     return NextResponse.json(
       { error: "Failed to fetch campaigns" },
       { status: 500 }
@@ -79,9 +83,16 @@ export async function POST(request: Request) {
         parsed.data.contact_ids
       );
     }
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "create",
+      resourceType: "campaign",
+      description: `Created campaign ${parsed.data.name}`,
+    }).catch(() => {});
     return NextResponse.json(campaign);
   } catch (err) {
-    console.error("CRM campaigns POST error:", err);
+    log.error("Campaign creation failed", err);
     return NextResponse.json(
       { error: "Failed to create campaign" },
       { status: 500 }

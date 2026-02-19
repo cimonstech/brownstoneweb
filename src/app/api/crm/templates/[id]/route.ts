@@ -8,6 +8,10 @@ import {
   normalizeTemplateBody,
 } from "@/lib/crm/templates";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:template");
 
 const updateTemplateSchema = z.object({
   name: z.string().min(1).optional(),
@@ -80,9 +84,17 @@ export async function PATCH(
       update.body_html = normalizeTemplateBody(update.body_html);
     }
     const template = await updateTemplate(supabase, id, update);
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "update",
+      resourceType: "template",
+      resourceId: id,
+      description: `Updated template ${id}`,
+    }).catch(() => {});
     return NextResponse.json(template);
   } catch (err) {
-    console.error("CRM template PATCH error:", err);
+    log.error("Template update failed", err);
     return NextResponse.json(
       { error: "Failed to update template" },
       { status: 500 }
@@ -91,7 +103,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient();
@@ -110,9 +122,17 @@ export async function DELETE(
   const { id } = await params;
   try {
     await deleteTemplate(supabase, id);
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "delete",
+      resourceType: "template",
+      resourceId: id,
+      description: `Deleted template ${id}`,
+    }).catch(() => {});
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("CRM template DELETE error:", err);
+    log.error("Template deletion failed", err);
     return NextResponse.json(
       { error: "Failed to delete template" },
       { status: 500 }

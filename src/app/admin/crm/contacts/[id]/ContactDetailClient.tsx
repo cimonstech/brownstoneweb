@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import type { Database } from "@/lib/supabase/types";
 import { EditButton, DeleteButton } from "@/components/admin/ActionIcons";
@@ -8,6 +8,7 @@ import type { ContactStatus } from "@/lib/supabase/types";
 
 type Contact = Database["public"]["Tables"]["contacts"]["Row"];
 type Activity = Database["public"]["Tables"]["contact_activities"]["Row"];
+type Segment = { id: string; name: string; color: string };
 
 const STATUS_OPTIONS: ContactStatus[] = [
   "new_lead",
@@ -36,6 +37,38 @@ export function ContactDetailClient({
   const [savingStatus, setSavingStatus] = useState(false);
   const [savingNote, setSavingNote] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  const [allSegments, setAllSegments] = useState<Segment[]>([]);
+  const [contactSegIds, setContactSegIds] = useState<string[]>([]);
+  const [savingSegs, setSavingSegs] = useState(false);
+
+  const loadSegments = useCallback(async () => {
+    const [segsRes, memberRes] = await Promise.all([
+      fetch("/api/crm/segments"),
+      fetch(`/api/crm/contacts/${contact.id}/segments`),
+    ]);
+    if (segsRes.ok) setAllSegments(await segsRes.json());
+    if (memberRes.ok) setContactSegIds(await memberRes.json());
+  }, [contact.id]);
+
+  useEffect(() => { loadSegments(); }, [loadSegments]);
+
+  async function toggleSegment(segId: string) {
+    const next = contactSegIds.includes(segId)
+      ? contactSegIds.filter((s) => s !== segId)
+      : [...contactSegIds, segId];
+    setSavingSegs(true);
+    try {
+      const res = await fetch(`/api/crm/contacts/${contact.id}/segments`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ segment_ids: next }),
+      });
+      if (res.ok) setContactSegIds(next);
+    } finally {
+      setSavingSegs(false);
+    }
+  }
 
   async function handleDelete() {
     if (!confirm(`Delete ${contact.email}? This will remove their activity and campaign links. This cannot be undone.`)) return;
@@ -316,7 +349,7 @@ export function ContactDetailClient({
       </div>
 
       {/* Sidebar */}
-      <div>
+      <div className="space-y-6">
         <div className="bg-white rounded-2xl shadow-sm border border-slate-100 p-6 sticky top-24">
           <h3 className="text-lg font-bold text-slate-800 mb-4">Quick info</h3>
           <p className="text-sm text-slate-500">
@@ -335,6 +368,40 @@ export function ContactDetailClient({
               year: "numeric",
             })}
           </p>
+
+          {/* Segments */}
+          {allSegments.length > 0 && (
+            <div className="mt-6 pt-6 border-t border-slate-100">
+              <h4 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">
+                Segments
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {allSegments.map((seg) => {
+                  const active = contactSegIds.includes(seg.id);
+                  return (
+                    <button
+                      key={seg.id}
+                      type="button"
+                      onClick={() => toggleSegment(seg.id)}
+                      disabled={savingSegs}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                        active
+                          ? "border-transparent text-white"
+                          : "border-slate-200 text-slate-500 hover:border-slate-300"
+                      }`}
+                      style={active ? { backgroundColor: seg.color } : {}}
+                    >
+                      <span
+                        className="w-2 h-2 rounded-full shrink-0"
+                        style={{ backgroundColor: active ? "#fff" : seg.color }}
+                      />
+                      {seg.name}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

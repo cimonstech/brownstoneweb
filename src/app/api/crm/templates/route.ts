@@ -3,6 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { getTemplates, createTemplate, normalizeTemplateBody } from "@/lib/crm/templates";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:templates");
 
 const createTemplateSchema = z.object({
   name: z.string().min(1),
@@ -29,7 +33,7 @@ export async function GET() {
     const templates = await getTemplates(supabase);
     return NextResponse.json(templates);
   } catch (err) {
-    console.error("CRM templates GET error:", err);
+    log.error("Templates fetch failed", err);
     return NextResponse.json(
       { error: "Failed to fetch templates" },
       { status: 500 }
@@ -73,9 +77,16 @@ export async function POST(request: Request) {
       body_html: normalizeTemplateBody(parsed.data.body_html),
       variables: parsed.data.variables ?? [],
     });
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "create",
+      resourceType: "template",
+      description: `Created template ${parsed.data.name}`,
+    }).catch(() => {});
     return NextResponse.json(template);
   } catch (err) {
-    console.error("CRM templates POST error:", err);
+    log.error("Template creation failed", err);
     return NextResponse.json(
       { error: "Failed to create template" },
       { status: 500 }

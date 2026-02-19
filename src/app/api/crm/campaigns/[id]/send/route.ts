@@ -12,9 +12,10 @@ import {
 import { getTemplateById, interpolateTemplate } from "@/lib/crm/templates";
 import { getContactById, addContactActivity } from "@/lib/crm/contacts";
 import { MAX_EMAILS_PER_HOUR, MAX_EMAILS_PER_DAY } from "@/lib/crm/safety";
+import { logAuditFromRequest } from "@/lib/audit";
 
 export async function POST(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient();
@@ -147,6 +148,17 @@ export async function POST(
         status: completed ? "completed" : "sending",
       })
       .eq("id", id);
+  }
+
+  if (sent > 0) {
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "send",
+      resourceType: "campaign",
+      resourceId: id,
+      description: `Sent campaign ${id}`,
+    }).catch(() => {});
   }
 
   return NextResponse.json({

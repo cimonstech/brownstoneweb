@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
+import { logAuditFromAction } from "@/lib/audit";
 
 /**
  * Delete a post. Allowed if user is the author, or has moderator/admin role.
@@ -38,6 +39,15 @@ export async function deletePost(postId: string) {
 
   const { error: postError } = await supabase.from("posts").delete().eq("id", postId);
   if (postError) return { error: postError.message };
+
+  logAuditFromAction({
+    userId: user.id,
+    userEmail: user.email,
+    action: "delete",
+    resourceType: "post",
+    resourceId: postId,
+    description: `Deleted post ${postId}`,
+  }).catch(() => {});
 
   revalidatePath("/admin/posts");
   revalidatePath("/admin/dashboard");

@@ -8,6 +8,10 @@ import {
   addContactActivity,
 } from "@/lib/crm/contacts";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:contact");
 
 const updateContactSchema = z.object({
   name: z.string().optional(),
@@ -52,7 +56,7 @@ export async function GET(
     const activities = await getContactActivities(supabase, id);
     return NextResponse.json({ contact, activities });
   } catch (err) {
-    console.error("CRM contact GET error:", err);
+    log.error("Contact fetch failed", err);
     return NextResponse.json(
       { error: "Failed to fetch contact" },
       { status: 500 }
@@ -111,9 +115,17 @@ export async function PATCH(
 
   try {
     const contact = await updateContact(supabase, id, update);
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "update",
+      resourceType: "contact",
+      resourceId: id,
+      description: `Updated contact ${id}`,
+    }).catch(() => {});
     return NextResponse.json(contact);
   } catch (err) {
-    console.error("CRM contact PATCH error:", err);
+    log.error("Contact update failed", err);
     return NextResponse.json(
       { error: "Failed to update contact" },
       { status: 500 }
@@ -122,7 +134,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient();
@@ -148,12 +160,20 @@ export async function DELETE(
   await supabase.from("campaign_emails").delete().eq("contact_id", id);
   const { error } = await supabase.from("contacts").delete().eq("id", id);
   if (error) {
-    console.error("Contact delete error:", error);
+    log.error("Contact deletion failed", error);
     return NextResponse.json(
       { error: "Failed to delete contact" },
       { status: 500 }
     );
   }
 
+  logAuditFromRequest(request, {
+    userId: user.id,
+    userEmail: user.email,
+    action: "delete",
+    resourceType: "contact",
+    resourceId: id,
+    description: `Deleted contact ${contact.email}`,
+  }).catch(() => {});
   return NextResponse.json({ success: true });
 }

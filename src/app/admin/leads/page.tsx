@@ -3,6 +3,9 @@ import { redirect } from "next/navigation";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { LeadsTable } from "./LeadsTable";
 import { MarkLeadsViewed } from "./MarkLeadsViewed";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("admin:leads:page");
 
 const SOURCES = [
   { value: "", label: "All sources" },
@@ -53,7 +56,7 @@ export default async function AdminLeadsPage({
   const { data: leads, error } = await query;
 
   if (error) {
-    console.error("Leads fetch error:", error);
+    log.error("Leads fetch failed", error);
   }
 
   const leadList = leads ?? [];

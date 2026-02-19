@@ -30,6 +30,12 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const { getUserRoles } = await import("@/lib/supabase/auth");
+  const roles = await getUserRoles();
+  if (!roles.includes("admin") && !roles.includes("moderator") && !roles.includes("author")) {
+    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  }
+
   const client = getR2Client();
   if (!client || !R2_BUCKET_NAME || !R2_PUBLIC_URL) {
     return NextResponse.json(

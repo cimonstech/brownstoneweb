@@ -9,6 +9,15 @@ type Item = {
   project_link: string | null;
 };
 
+function safeHref(url: string | null): string | null {
+  if (!url) return null;
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol === "https:" || parsed.protocol === "http:") return url;
+  } catch { /* invalid URL */ }
+  return null;
+}
+
 export function NowSellingSidebar({ items }: { items: Item[] }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
@@ -48,10 +57,10 @@ export function NowSellingSidebar({ items }: { items: Item[] }) {
           {duplicated.map((item, idx) => (
             <a
               key={`${item.position}-${idx}`}
-              href={item.project_link || "#"}
-              target={item.project_link ? "_blank" : undefined}
-              rel={item.project_link ? "noopener noreferrer" : undefined}
-              onClick={(e) => !item.project_link && e.preventDefault()}
+              href={safeHref(item.project_link) || "#"}
+              target={safeHref(item.project_link) ? "_blank" : undefined}
+              rel={safeHref(item.project_link) ? "noopener noreferrer" : undefined}
+              onClick={(e) => !safeHref(item.project_link) && e.preventDefault()}
               className="block group"
             >
               <div className="aspect-[2/3] rounded-lg overflow-hidden bg-neutral-100">

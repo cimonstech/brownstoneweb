@@ -39,12 +39,13 @@ const navSections = [
     items: [
       { href: "/admin/users", label: "Users", icon: "people" as const },
       { href: "/admin/roles", label: "Roles", icon: "badge" as const },
+      { href: "/admin/audit-log", label: "Audit Log", icon: "audit" as const, adminOnly: true },
       { href: "/admin/profile", label: "Profile", icon: "person" as const },
     ],
   },
 ] as const;
 
-type NavIconName = "dashboard" | "article" | "folder" | "image" | "home" | "mail" | "people" | "pipeline" | "campaigns" | "templates" | "analytics" | "badge" | "person";
+type NavIconName = "dashboard" | "article" | "folder" | "image" | "home" | "mail" | "people" | "pipeline" | "campaigns" | "templates" | "analytics" | "badge" | "person" | "audit";
 
 function NavIcon({ name }: { name: NavIconName }) {
   const c = "w-5 h-5 shrink-0";
@@ -101,6 +102,10 @@ function NavIcon({ name }: { name: NavIconName }) {
       return (
         <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
       );
+    case "audit":
+      return (
+        <svg className={c} fill="currentColor" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 9h-2V9.5C11 8.67 10.33 8 9.5 8S8 8.67 8 9.5V11H6V9.5C6 7.57 7.57 6 9.5 6S13 7.57 13 9.5V11zm-2 7H8v-2h3v2zm5-4H8v-2h8v2zm-1-9V3.5L18.5 9H13z"/></svg>
+      );
     default:
       return null;
   }
@@ -116,10 +121,12 @@ type CurrentUser = {
   isAuthorOnly?: boolean;
 };
 
+const LEAD_POLL_INTERVAL = 30_000;
+
 export function AdminShell({
   children,
   currentUser,
-  leadCount = 0,
+  leadCount: initialLeadCount = 0,
 }: {
   children: React.ReactNode;
   currentUser?: CurrentUser | null;
@@ -130,10 +137,35 @@ export function AdminShell({
   const hideSidebar = noSidebarPaths.some((p) => pathname?.startsWith(p));
   const isCrmPath = pathname?.startsWith("/admin/leads") || pathname?.startsWith("/admin/crm");
   const [crmOpen, setCrmOpen] = useState(isCrmPath);
+  const [leadCount, setLeadCount] = useState(initialLeadCount);
   const isAuthorOnly = currentUser?.isAuthorOnly === true;
+
+  useEffect(() => {
+    setLeadCount(initialLeadCount);
+  }, [initialLeadCount]);
+
   useEffect(() => {
     if (isCrmPath) setCrmOpen(true);
   }, [isCrmPath]);
+
+  useEffect(() => {
+    if (isAuthorOnly || !currentUser) return;
+    let active = true;
+    const poll = async () => {
+      try {
+        const res = await fetch("/api/admin/lead-count");
+        if (res.ok && active) {
+          const { count } = await res.json();
+          if (typeof count === "number") setLeadCount(count);
+        }
+      } catch {
+        // silently ignore polling failures
+      }
+    };
+    const id = setInterval(poll, LEAD_POLL_INTERVAL);
+    poll();
+    return () => { active = false; clearInterval(id); };
+  }, [isAuthorOnly, currentUser]);
 
   async function handleLogout() {
     try {
@@ -227,6 +259,7 @@ export function AdminShell({
                     {section.items
                       .filter((item) => {
                         const href = (item as { href: string }).href;
+                        if ("adminOnly" in item && item.adminOnly && currentUser?.isAdmin !== true) return false;
                         if (href === "/admin/roles" && currentUser?.isAdmin !== true) return false;
                         if (isAuthorOnly && section.label === "Admin" && href !== "/admin/profile") return false;
                         return true;

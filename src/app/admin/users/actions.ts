@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getUserRoles, isAdmin } from "@/lib/supabase/auth";
+import { logAuditFromAction } from "@/lib/audit";
 
 const MODERATOR_ALLOWED_ROLES = ["moderator", "author"];
 
@@ -42,6 +43,15 @@ export async function assignRole(userId: string, roleName: string) {
     role_name: roleName,
     performed_by_id: performedBy,
   });
+
+  logAuditFromAction({
+    userId: performedBy,
+    userEmail: me?.user?.email,
+    action: "assign_role",
+    resourceType: "user",
+    resourceId: userId,
+    description: `Assigned role ${roleName} to user ${userId}`,
+  }).catch(() => {});
 
   revalidatePath("/admin/users");
   return { ok: true };
@@ -82,6 +92,15 @@ export async function removeRole(userId: string, roleName: string) {
     performed_by_id: performedBy,
   });
 
+  logAuditFromAction({
+    userId: performedBy,
+    userEmail: me?.user?.email,
+    action: "remove_role",
+    resourceType: "user",
+    resourceId: userId,
+    description: `Removed role ${roleName} from user ${userId}`,
+  }).catch(() => {});
+
   revalidatePath("/admin/users");
   return { ok: true };
 }
@@ -115,6 +134,15 @@ export async function deleteUser(userId: string) {
   const admin = createAdminClient();
   const { error: authError } = await admin.auth.admin.deleteUser(userId);
   if (authError) return { error: authError.message };
+
+  logAuditFromAction({
+    userId: me.user.id,
+    userEmail: me.user.email,
+    action: "delete",
+    resourceType: "user",
+    resourceId: userId,
+    description: `Deleted user ${userId}`,
+  }).catch(() => {});
 
   // We do not delete the user's profile or posts: their posts remain and can be deleted separately.
   // Author attribution may still show if profile row remains; remove profile if you want to anonymize.

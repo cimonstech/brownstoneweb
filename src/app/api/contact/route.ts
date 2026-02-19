@@ -4,6 +4,9 @@ import { getContactReceivedHtml, getContactReceivedText } from "@/lib/emails/con
 import { getPostmarkFrom } from "@/lib/emails/postmark-from";
 import { notifyLeadModerator } from "@/lib/emails/lead-notify";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("api:contact");
 
 export async function POST(request: Request) {
   const to = process.env.CONTACTFORMMAIL;
@@ -55,7 +58,7 @@ export async function POST(request: Request) {
         project: projectType?.trim() || null,
         consent: true,
       } as never);
-      if (insertError) console.error("Leads insert error (contact):", insertError);
+      if (insertError) log.error("Lead insert failed", insertError);
       else {
         notifyLeadModerator({
           source: "contact",
@@ -63,10 +66,10 @@ export async function POST(request: Request) {
           name: name?.trim() ?? null,
           message: message?.trim() ?? null,
           project: projectType?.trim() || null,
-        }).catch((e) => console.error("Lead notify error (contact):", e));
+        }).catch((e) => log.error("Lead notification failed", e));
       }
     } catch (err) {
-      console.error("Leads insert failed (contact):", err);
+      log.error("Lead storage failed", err);
     }
   }
 
@@ -105,13 +108,12 @@ export async function POST(request: Request) {
         TextBody: getContactReceivedText(baseUrl),
       });
     } catch (autoReplyErr) {
-      console.error("Postmark auto-reply error:", autoReplyErr);
-      // Inquiry was sent; don't fail the request, just log
+      log.error("Auto-reply email failed", autoReplyErr);
     }
 
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Contact API error:", err);
+    log.error("Email send failed", err);
     return NextResponse.json(
       { error: "Failed to send message. Please try again." },
       { status: 500 }

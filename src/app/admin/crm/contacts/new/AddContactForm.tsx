@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+type Segment = { id: string; name: string; color: string };
 
 export function AddContactForm() {
   const router = useRouter();
@@ -13,6 +15,17 @@ export function AddContactForm() {
   const [phone, setPhone] = useState("");
   const [company, setCompany] = useState("");
   const [source, setSource] = useState("");
+  const [allSegments, setAllSegments] = useState<Segment[]>([]);
+  const [selectedSegIds, setSelectedSegIds] = useState<string[]>([]);
+
+  const loadSegments = useCallback(async () => {
+    try {
+      const res = await fetch("/api/crm/segments");
+      if (res.ok) setAllSegments(await res.json());
+    } catch { /* ignore */ }
+  }, []);
+
+  useEffect(() => { loadSegments(); }, [loadSegments]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,6 +47,13 @@ export function AddContactForm() {
       if (!res.ok) {
         setError(data.error ?? "Failed to create contact");
         return;
+      }
+      if (selectedSegIds.length > 0 && data.id) {
+        await fetch(`/api/crm/contacts/${data.id}/segments`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ segment_ids: selectedSegIds }),
+        });
       }
       router.push(`/admin/crm/contacts/${data.id}`);
       router.refresh();
@@ -136,6 +156,39 @@ export function AddContactForm() {
             placeholder="website_form, cold_outreach, referral..."
           />
         </div>
+        {allSegments.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Segments</label>
+            <div className="flex flex-wrap gap-2">
+              {allSegments.map((seg) => {
+                const active = selectedSegIds.includes(seg.id);
+                return (
+                  <button
+                    key={seg.id}
+                    type="button"
+                    onClick={() =>
+                      setSelectedSegIds((prev) =>
+                        active ? prev.filter((s) => s !== seg.id) : [...prev, seg.id]
+                      )
+                    }
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                      active
+                        ? "border-transparent text-white"
+                        : "border-slate-200 text-slate-600 hover:border-slate-300"
+                    }`}
+                    style={active ? { backgroundColor: seg.color } : {}}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: active ? "#fff" : seg.color }}
+                    />
+                    {seg.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
       <div className="mt-8 flex gap-4">
         <button

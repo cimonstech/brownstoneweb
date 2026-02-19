@@ -3,6 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { getContactById, addContactActivity } from "@/lib/crm/contacts";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:contact:notes");
 
 const addNoteSchema = z.object({
   note: z.string().min(1).max(10000),
@@ -54,9 +58,17 @@ export async function POST(
       metadata: { content: parsed.data.note },
       created_by_id: user.id,
     });
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "create",
+      resourceType: "note",
+      resourceId: id,
+      description: `Added note to contact ${id}`,
+    }).catch(() => {});
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("CRM contact note POST error:", err);
+    log.error("Note creation failed", err);
     return NextResponse.json(
       { error: "Failed to add note" },
       { status: 500 }

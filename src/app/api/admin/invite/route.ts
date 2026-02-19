@@ -2,6 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getUserRoles, isAdmin } from "@/lib/supabase/auth";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:admin:invite");
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -39,20 +43,22 @@ export async function POST(request: NextRequest) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for invites insert
   const { error: insertError } = await admin.from("invites").insert({ email, role_id: role.id, invited_by_id: me.id } as any);
   if (insertError) {
-    return NextResponse.json({ error: insertError.message }, { status: 500 });
+    log.error("Invite record insert failed", insertError);
+    return NextResponse.json({ error: "Failed to create invitation" }, { status: 500 });
   }
 
   const { error: inviteError } = await admin.auth.admin.inviteUserByEmail(email, {
     redirectTo: `${request.nextUrl.origin}/auth/callback?redirect_to=/admin/update-password`,
   });
   if (inviteError) {
+    log.error("Invite email send failed", inviteError);
     if (inviteError.message?.includes("already been invited") || inviteError.message?.includes("already registered")) {
       return NextResponse.json({
         error: "This email already has an account. If they need to set or reset their password, ask them to use **Reset password** on the login page.",
         code: "already_exists",
       }, { status: 409 });
     }
-    return NextResponse.json({ error: inviteError.message ?? "Invite failed" }, { status: 400 });
+    return NextResponse.json({ error: "Failed to send invitation" }, { status: 400 });
   }
 
   return NextResponse.json({ ok: true, message: "Invitation sent" });

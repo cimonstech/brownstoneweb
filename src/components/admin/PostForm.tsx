@@ -154,6 +154,21 @@ export function PostForm({
       setStatus(newStatus);
       setLastSaved(new Date());
       setSaving(false);
+
+      fetch("/api/admin/audit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: postId ? "update" : "create",
+          resource_type: "post",
+          resource_id: resolvedPostId,
+          description: postId
+            ? `Updated post "${parsed.data.title}"`
+            : `Created post "${parsed.data.title}"`,
+          metadata: { status: newStatus, slug: finalSlug },
+        }),
+      }).catch(() => {});
+
       await revalidateBlog(finalSlug);
       if (!postId) router.push("/admin/posts");
       else router.refresh();

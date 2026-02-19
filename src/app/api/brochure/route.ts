@@ -8,6 +8,9 @@ import {
   type BrochureProject,
 } from "@/lib/emails/celestia-brochure";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("api:brochure");
 
 
 export async function POST(request: Request) {
@@ -69,7 +72,7 @@ export async function POST(request: Request) {
       } as never);
       if (!insertErr) {
         notifyLeadModerator({ source: "brochure", email, project }).catch((e) =>
-          console.error("Lead notify error (brochure):", e)
+          log.error("Lead notification failed", e)
         );
       }
     } catch {
@@ -96,7 +99,7 @@ export async function POST(request: Request) {
       TextBody: text,
     });
   } catch (err) {
-    console.error("Postmark error (brochure):", err);
+    log.error("Brochure email send failed", err);
     return NextResponse.json(
       {
         error:

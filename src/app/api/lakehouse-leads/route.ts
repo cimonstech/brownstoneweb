@@ -4,6 +4,9 @@ import { getPostmarkFrom } from "@/lib/emails/postmark-from";
 import { notifyLeadModerator } from "@/lib/emails/lead-notify";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getCelestiaBrochureHtml, getCelestiaBrochureText } from "@/lib/emails/celestia-brochure";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("api:lakehouse-leads");
 
 
 export async function POST(request: Request) {
@@ -54,26 +57,24 @@ export async function POST(request: Request) {
       const supabase = createAdminClient();
       // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Supabase client infers 'never' for lakehouse_leads insert
       const { error: lakehouseErr } = await supabase.from("lakehouse_leads").insert({ email, consent } as any);
-      if (lakehouseErr) console.error("Lakehouse leads insert error:", lakehouseErr);
+      if (lakehouseErr) log.error("Lakehouse leads insert failed", lakehouseErr);
       const { error: leadsErr } = await supabase.from("leads").insert({
         email,
         source,
         project: "lakehouse",
         consent,
       } as never);
-      if (leadsErr) console.error("Unified leads insert error (lakehouse):", leadsErr);
+      if (leadsErr) log.error("Unified leads insert failed", leadsErr);
       else {
         notifyLeadModerator({ source, email, project: "lakehouse" }).catch((e) =>
-          console.error("Lead notify error (lakehouse):", e)
+          log.error("Lead notification failed", e)
         );
       }
     } else {
-      console.warn(
-        "Leads not saved: set SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL in .env.local (and redeploy) to store leads."
-      );
+      log.warn("Leads not saved: SUPABASE_SERVICE_ROLE_KEY and NEXT_PUBLIC_SUPABASE_URL not configured");
     }
   } catch (dbErr) {
-    console.error("Lakehouse lead DB error:", dbErr);
+    log.error("Database write failed", dbErr);
   }
 
   const brochurePdfUrl =
@@ -96,7 +97,7 @@ export async function POST(request: Request) {
       TextBody: text,
     });
   } catch (err) {
-    console.error("Postmark error:", err);
+    log.error("Email send failed", err);
     return NextResponse.json(
       { error: "We could not send the email. Please try again." },
       { status: 502 }

@@ -34,7 +34,11 @@ function AuthCallbackContent() {
   useEffect(() => {
     const tokenHash = searchParams.get("token_hash");
     const typeParam = searchParams.get("type") as EmailOtpType | null;
-    const redirectTo = searchParams.get("redirect_to") ?? "/admin/update-password";
+    const rawRedirectTo = searchParams.get("redirect_to") ?? "/admin/update-password";
+    const redirectTo =
+      rawRedirectTo.startsWith("/admin/") && !rawRedirectTo.startsWith("//")
+        ? rawRedirectTo
+        : "/admin/update-password";
 
     const validTypes: EmailOtpType[] = ["recovery", "invite"];
     const type = validTypes.includes(typeParam as EmailOtpType) ? typeParam : null;
@@ -50,8 +54,7 @@ function AuthCallbackContent() {
             setErrorMessage(error.message);
             return;
           }
-          const dest = redirectTo.startsWith("/") ? redirectTo : `/admin/update-password`;
-          const url = dest.includes("?") ? `${dest}&type=${type}` : `${dest}?type=${type}`;
+          const url = redirectTo.includes("?") ? `${redirectTo}&type=${type}` : `${redirectTo}?type=${type}`;
           router.replace(url);
         });
       return;
@@ -62,8 +65,7 @@ function AuthCallbackContent() {
       const hash = window.location.hash;
       if (hash.includes("type=invite") || hash.includes("type=recovery")) {
         const hashType = hash.includes("type=invite") ? "invite" : "recovery";
-        const dest = redirectTo.startsWith("/") ? redirectTo : "/admin/update-password";
-        const url = dest.includes("?") ? `${dest}&type=${hashType}` : `${dest}?type=${hashType}`;
+        const url = redirectTo.includes("?") ? `${redirectTo}&type=${hashType}` : `${redirectTo}?type=${hashType}`;
         router.replace(url);
         return;
       }

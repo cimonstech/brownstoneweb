@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles, isAdmin } from "@/lib/supabase/auth";
+import { logAuditFromAction } from "@/lib/audit";
 
 export async function createRole(formData: FormData) {
   const supabase = await createClient();
@@ -18,6 +19,18 @@ export async function createRole(formData: FormData) {
     if (error.code === "23505") return { error: "Role name already exists" };
     return { error: error.message };
   }
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    logAuditFromAction({
+      userId: user.id,
+      userEmail: user.email,
+      action: "create",
+      resourceType: "role",
+      description: `Created role ${name}`,
+    }).catch(() => {});
+  }
+
   revalidatePath("/admin/roles");
   revalidatePath("/admin/users");
   return { ok: true };
@@ -52,6 +65,19 @@ export async function deleteRole(id: string) {
 
   const { error } = await supabase.from("roles").delete().eq("id", id);
   if (error) return { error: error.message };
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    logAuditFromAction({
+      userId: user.id,
+      userEmail: user.email,
+      action: "delete",
+      resourceType: "role",
+      resourceId: id,
+      description: `Deleted role ${role?.name || id}`,
+    }).catch(() => {});
+  }
+
   revalidatePath("/admin/roles");
   revalidatePath("/admin/users");
   return { ok: true };

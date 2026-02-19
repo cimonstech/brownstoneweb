@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { upsertContactByEmail, addContactActivity } from "@/lib/crm/contacts";
 import { notifyLeadModerator } from "@/lib/emails/lead-notify";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("api:newsletter");
 
 export async function POST(request: Request) {
   if (
@@ -50,16 +53,16 @@ export async function POST(request: Request) {
       source: "newsletter",
       consent: true,
     } as never);
-    if (leadsErr) console.error("Unified leads insert error (newsletter):", leadsErr);
+    if (leadsErr) log.error("Lead insert failed", leadsErr);
     else {
       notifyLeadModerator({ source: "newsletter", email, name: name || null }).catch((e) =>
-        console.error("Lead notify error (newsletter):", e)
+        log.error("Lead notification failed", e)
       );
     }
 
     return NextResponse.json({ success: true });
   } catch (err: unknown) {
-    console.error("Newsletter API error:", err);
+    log.error("Newsletter subscribe failed", err);
     return NextResponse.json(
       { error: "Failed to subscribe. Please try again." },
       { status: 500 }

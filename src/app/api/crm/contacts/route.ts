@@ -3,6 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { getContacts, createContact } from "@/lib/crm/contacts";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:contacts");
 
 const createContactSchema = z.object({
   email: z.string().email(),
@@ -45,7 +49,7 @@ export async function GET(request: Request) {
     });
     return NextResponse.json(contacts);
   } catch (err) {
-    console.error("CRM contacts GET error:", err);
+    log.error("Contacts fetch failed", err);
     return NextResponse.json(
       { error: "Failed to fetch contacts" },
       { status: 500 }
@@ -96,9 +100,17 @@ export async function POST(request: Request) {
       status: status ?? "new_lead",
       tags: tags ?? [],
     });
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "create",
+      resourceType: "contact",
+      resourceId: contact.id,
+      description: `Created contact ${email.toLowerCase().trim()}`,
+    }).catch(() => {});
     return NextResponse.json(contact);
   } catch (err) {
-    console.error("CRM contacts POST error:", err);
+    log.error("Contact creation failed", err);
     const message = err && typeof err === "object" && "code" in err
       ? (err as { code?: string }).code === "23505"
         ? "A contact with this email already exists"

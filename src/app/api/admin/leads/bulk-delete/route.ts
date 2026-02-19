@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("api:admin:leads:bulk-delete");
 
 const bodySchema = z.object({
   lead_ids: z.array(z.string().uuid()).min(1).max(200),
@@ -42,7 +45,7 @@ export async function POST(request: Request) {
     .in("id", parsed.data.lead_ids);
 
   if (error) {
-    console.error("Leads bulk delete error:", error);
+    log.error("Bulk delete failed", error);
     return NextResponse.json(
       { error: "Failed to delete leads" },
       { status: 500 }

@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { upsertContactByEmail, addContactActivity } from "@/lib/crm/contacts";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:from-lead");
 
 export async function POST(request: Request) {
   const supabase = await createClient();
@@ -63,12 +67,19 @@ export async function POST(request: Request) {
       .update({ contact_id: contact.id })
       .eq("id", lead.id);
     if (updateLeadError) {
-      console.error("from-lead: failed to set lead.contact_id:", updateLeadError);
+      log.error("Failed to set lead.contact_id", updateLeadError);
     }
 
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "create",
+      resourceType: "contact",
+      description: `Converted lead to contact ${email}`,
+    }).catch(() => {});
     return NextResponse.json({ id: contact.id, email: contact.email, name: contact.name });
   } catch (err) {
-    console.error("from-lead contact create error:", err);
+    log.error("Contact creation from lead failed", err);
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Failed to add contact" },
       { status: 500 }

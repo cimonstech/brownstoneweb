@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { Database } from "@/lib/supabase/types";
 import { CONTACT_STATUSES, CONTACT_STATUS_LABELS } from "@/lib/crm/types";
 
 type Contact = Database["public"]["Tables"]["contacts"]["Row"];
+type Segment = { id: string; name: string; color: string };
 
 export function EditContactForm({ contact }: { contact: Contact }) {
   const router = useRouter();
@@ -21,6 +22,20 @@ export function EditContactForm({ contact }: { contact: Contact }) {
   const [doNotContact, setDoNotContact] = useState(contact.do_not_contact);
   const [unsubscribed, setUnsubscribed] = useState(contact.unsubscribed);
   const [tagsStr, setTagsStr] = useState((contact.tags ?? []).join(", "));
+
+  const [allSegments, setAllSegments] = useState<Segment[]>([]);
+  const [contactSegIds, setContactSegIds] = useState<string[]>([]);
+
+  const loadSegments = useCallback(async () => {
+    const [segsRes, memberRes] = await Promise.all([
+      fetch("/api/crm/segments"),
+      fetch(`/api/crm/contacts/${contact.id}/segments`),
+    ]);
+    if (segsRes.ok) setAllSegments(await segsRes.json());
+    if (memberRes.ok) setContactSegIds(await memberRes.json());
+  }, [contact.id]);
+
+  useEffect(() => { loadSegments(); }, [loadSegments]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -51,6 +66,11 @@ export function EditContactForm({ contact }: { contact: Contact }) {
         setError(data.error ?? "Failed to update contact");
         return;
       }
+      await fetch(`/api/crm/contacts/${contact.id}/segments`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ segment_ids: contactSegIds }),
+      });
       router.push(`/admin/crm/contacts/${contact.id}`);
       router.refresh();
     } catch {
@@ -173,6 +193,39 @@ export function EditContactForm({ contact }: { contact: Contact }) {
             placeholder="investor, warm, residential"
           />
         </div>
+        {allSegments.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-2">Segments</label>
+            <div className="flex flex-wrap gap-2">
+              {allSegments.map((seg) => {
+                const active = contactSegIds.includes(seg.id);
+                return (
+                  <button
+                    key={seg.id}
+                    type="button"
+                    onClick={() =>
+                      setContactSegIds((prev) =>
+                        active ? prev.filter((s) => s !== seg.id) : [...prev, seg.id]
+                      )
+                    }
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                      active
+                        ? "border-transparent text-white"
+                        : "border-slate-200 text-slate-600 hover:border-slate-300"
+                    }`}
+                    style={active ? { backgroundColor: seg.color } : {}}
+                  >
+                    <span
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: active ? "#fff" : seg.color }}
+                    />
+                    {seg.name}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
         <div className="flex flex-wrap gap-6">
           <label className="flex items-center gap-2 cursor-pointer">
             <input

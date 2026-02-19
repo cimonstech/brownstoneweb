@@ -3,6 +3,10 @@ import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
 import { getCampaignById, addContactsToCampaign } from "@/lib/crm/campaigns";
 import { z } from "zod";
+import { logger } from "@/lib/logger";
+import { logAuditFromRequest } from "@/lib/audit";
+
+const log = logger.create("api:crm:campaign");
 
 const addContactsSchema = z.object({
   contact_ids: z.array(z.string().uuid()).min(1),
@@ -82,9 +86,17 @@ export async function PATCH(
 
   try {
     await addContactsToCampaign(supabase, id, parsed.data.contact_ids);
+    logAuditFromRequest(request, {
+      userId: user.id,
+      userEmail: user.email,
+      action: "update",
+      resourceType: "campaign",
+      resourceId: id,
+      description: `Updated campaign ${id}`,
+    }).catch(() => {});
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("CRM campaign PATCH error:", err);
+    log.error("Campaign contacts update failed", err);
     return NextResponse.json(
       { error: "Failed to add contacts" },
       { status: 500 }
@@ -93,7 +105,7 @@ export async function PATCH(
 }
 
 export async function DELETE(
-  _request: Request,
+  request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const supabase = await createClient();
@@ -120,7 +132,7 @@ export async function DELETE(
     .delete()
     .eq("campaign_id", id);
   if (emailsError) {
-    console.error("Campaign emails delete error:", emailsError);
+    log.error("Campaign emails deletion failed", emailsError);
     return NextResponse.json(
       { error: "Failed to delete campaign" },
       { status: 500 }
@@ -129,12 +141,20 @@ export async function DELETE(
 
   const { error: campaignError } = await supabase.from("campaigns").delete().eq("id", id);
   if (campaignError) {
-    console.error("Campaign delete error:", campaignError);
+    log.error("Campaign deletion failed", campaignError);
     return NextResponse.json(
       { error: "Failed to delete campaign" },
       { status: 500 }
     );
   }
 
+  logAuditFromRequest(request, {
+    userId: user.id,
+    userEmail: user.email,
+    action: "delete",
+    resourceType: "campaign",
+    resourceId: id,
+    description: `Deleted campaign ${id}`,
+  }).catch(() => {});
   return NextResponse.json({ success: true });
 }

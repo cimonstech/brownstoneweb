@@ -3,6 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getUserRoles } from "@/lib/supabase/auth";
+import { logger } from "@/lib/logger";
+
+const log = logger.create("admin:leads:actions");
 
 /**
  * Call when the user opens the Leads page. Updates last_viewed_at so the badge shows only new leads (created after this).
@@ -22,7 +25,7 @@ export async function markLeadsViewed() {
     { onConflict: "user_id" }
   );
   if (error) {
-    console.error("markLeadsViewed: upsert failed", error);
+    log.error("Mark leads viewed upsert failed", error);
   }
   revalidatePath("/admin", "layout");
   revalidatePath("/admin/leads");

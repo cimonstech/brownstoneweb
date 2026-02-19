@@ -100,10 +100,21 @@ export function normalizeTemplateBody(body: string): string {
   return looksLikePlainText(body) ? plainTextToHtml(body) : body.trim();
 }
 
-/** Replace {{variable}} placeholders in template with contact data */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
+/** Replace {{variable}} placeholders in template with contact data (HTML-escaped) */
 export function interpolateTemplate(
   template: string,
   vars: Record<string, string>
 ): string {
-  return template.replace(/\{\{(\w+)\}\}/g, (_, key) => vars[key] ?? "");
+  return template.replace(/\{\{(\w+)\}\}/g, (_, key) =>
+    vars[key] != null ? escapeHtml(vars[key]) : ""
+  );
 }

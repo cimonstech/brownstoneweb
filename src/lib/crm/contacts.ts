@@ -32,10 +32,12 @@ export async function getContacts(
     query = query.eq("source", filters.source);
   }
   if (filters.search?.trim()) {
-    const term = filters.search.trim();
-    query = query.or(
-      `email.ilike.%${term}%,name.ilike.%${term}%,company.ilike.%${term}%`
-    );
+    const term = filters.search.trim().replace(/[,.()"\\]/g, "");
+    if (term) {
+      query = query.or(
+        `email.ilike.%${term}%,name.ilike.%${term}%,company.ilike.%${term}%`
+      );
+    }
   }
   if (filters.tags && filters.tags.length > 0) {
     query = query.contains("tags", filters.tags);

@@ -12,7 +12,8 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/admin/dashboard";
+  const rawNext = searchParams.get("next") ?? "/admin/dashboard";
+  const next = rawNext.startsWith("/admin") && !rawNext.startsWith("//") ? rawNext : "/admin/dashboard";
 
   useEffect(() => {
     const err = searchParams.get("error");

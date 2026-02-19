@@ -9,6 +9,10 @@ const R2_SECRET_ACCESS_KEY = process.env.R2_SECRET_ACCESS_KEY;
 const R2_BUCKET_NAME = process.env.R2_BUCKET_NAME;
 const R2_PUBLIC_URL = process.env.R2_PUBLIC_URL?.replace(/\/$/, "");
 
+const MAX_FILE_SIZE = 6 * 1024 * 1024; // 6 MB
+const ALLOWED_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+const ALLOWED_EXTS = new Set(["jpg", "jpeg", "png", "webp", "gif"]);
+
 function getR2Client() {
   if (!R2_ACCOUNT_ID || !R2_ACCESS_KEY_ID || !R2_SECRET_ACCESS_KEY) return null;
   return new S3Client({
@@ -62,11 +66,32 @@ export async function POST(request: NextRequest) {
       const data = Buffer.from(base64, "base64");
       file = { data, type, name };
     }
-  } catch (e) {
+  } catch {
     return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
   }
 
-  const ext = file.name.includes(".") ? file.name.split(".").pop()! : "png";
+  if (file.data.length > MAX_FILE_SIZE) {
+    return NextResponse.json(
+      { error: `File too large. Maximum size is ${MAX_FILE_SIZE / 1024 / 1024}MB.` },
+      { status: 400 }
+    );
+  }
+
+  if (!ALLOWED_TYPES.has(file.type.toLowerCase())) {
+    return NextResponse.json(
+      { error: "File type not allowed. Accepted: JPEG, PNG, WebP, GIF." },
+      { status: 400 }
+    );
+  }
+
+  const ext = file.name.includes(".") ? file.name.split(".").pop()!.toLowerCase() : "png";
+  if (!ALLOWED_EXTS.has(ext)) {
+    return NextResponse.json(
+      { error: "File extension not allowed. Accepted: jpg, jpeg, png, webp, gif." },
+      { status: 400 }
+    );
+  }
+
   const key = `media/${new Date().getFullYear()}/${randomUUID()}.${ext}`;
 
   await client.send(
