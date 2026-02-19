@@ -11,7 +11,7 @@ export default async function AdminLayout({
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  let currentUser: { id: string; email?: string; fullName: string; avatarUrl?: string; roleLabel: string; isAdmin: boolean } | null = null;
+  let currentUser: { id: string; email?: string; fullName: string; avatarUrl?: string; roleLabel: string; isAdmin: boolean; isAuthorOnly?: boolean } | null = null;
   let leadCount = 0;
   if (user) {
     const rolesResult = await getUserRoles();
@@ -39,6 +39,8 @@ export default async function AdminLayout({
     const { data: profile } = await supabase.from("profiles").select("full_name, avatar_url").eq("id", user.id).single();
     const name = (profile?.full_name as string | null) || user.email?.split("@")[0] || "User";
     const roleLabel = roles.includes("admin") ? "Admin" : roles.includes("moderator") ? "Moderator" : roles.includes("author") ? "Author" : "User";
+    const isAuthorOnly =
+      roles.includes("author") && !roles.includes("admin") && !roles.includes("moderator");
     currentUser = {
       id: user.id,
       email: user.email ?? undefined,
@@ -46,6 +48,7 @@ export default async function AdminLayout({
       avatarUrl: (profile?.avatar_url as string | null) ?? undefined,
       roleLabel,
       isAdmin: roles.includes("admin"),
+      isAuthorOnly,
     };
   }
   return (

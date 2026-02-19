@@ -26,7 +26,7 @@ export default async function AdminLeadsPage({
 
   const roles = await getUserRoles();
   if (!roles.includes("admin") && !roles.includes("moderator")) {
-    redirect("/admin/dashboard");
+    redirect("/admin/posts");
   }
 
   const params = await searchParams;

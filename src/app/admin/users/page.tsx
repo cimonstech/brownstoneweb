@@ -14,6 +14,9 @@ export default async function AdminUsersPage() {
   if (!me) redirect("/admin/login");
 
   const roles = await getUserRoles();
+  const isAuthorOnly =
+    roles.includes("author") && !roles.includes("admin") && !roles.includes("moderator");
+  if (isAuthorOnly) redirect("/admin/posts");
   if (!roles.includes("admin") && !roles.includes("moderator") && !roles.includes("author")) redirect("/admin/dashboard");
 
   const isAdminViewer = roles.includes("admin");

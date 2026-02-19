@@ -6,7 +6,7 @@ import { RolesManager } from "./RolesManager";
 export default async function AdminRolesPage() {
   const supabase = await createClient();
   const roles = await getUserRoles();
-  if (!isAdmin(roles)) redirect("/admin/dashboard");
+  if (!isAdmin(roles)) redirect("/admin/posts");
 
   const { data: roleList } = await supabase
     .from("roles")

@@ -113,6 +113,7 @@ type CurrentUser = {
   avatarUrl?: string;
   roleLabel: string;
   isAdmin?: boolean;
+  isAuthorOnly?: boolean;
 };
 
 export function AdminShell({
@@ -129,6 +130,7 @@ export function AdminShell({
   const hideSidebar = noSidebarPaths.some((p) => pathname?.startsWith(p));
   const isCrmPath = pathname?.startsWith("/admin/leads") || pathname?.startsWith("/admin/crm");
   const [crmOpen, setCrmOpen] = useState(isCrmPath);
+  const isAuthorOnly = currentUser?.isAuthorOnly === true;
   useEffect(() => {
     if (isCrmPath) setCrmOpen(true);
   }, [isCrmPath]);
@@ -159,6 +161,7 @@ export function AdminShell({
         </div>
         <nav className="flex-1 px-4 overflow-y-auto">
           {navSections.map((section) => {
+            if (isAuthorOnly && section.label === "Leads & CRM") return null;
             const isCrmSection = section.label === "Leads & CRM";
             return (
               <div key={section.label} className="mb-6">
@@ -187,7 +190,10 @@ export function AdminShell({
                     {crmOpen && (
                       <div className="mt-1 ml-4 space-y-1 border-l border-white/10 pl-2">
                         {section.items
-                          .filter((item) => ((item as { href: string }).href === "/admin/roles" ? currentUser?.isAdmin === true : true))
+                          .filter((item) => {
+                            const href = (item as { href: string }).href;
+                            return href === "/admin/roles" ? currentUser?.isAdmin === true : true;
+                          })
                           .map(({ href, label, icon }) => {
                           const active = pathname === href || pathname?.startsWith(href + "/");
                           const showLeadCount = href === "/admin/leads" && leadCount > 0;
@@ -219,7 +225,12 @@ export function AdminShell({
                 ) : (
                   <div className="space-y-1">
                     {section.items
-                      .filter((item) => ((item as { href: string }).href === "/admin/roles" ? currentUser?.isAdmin === true : true))
+                      .filter((item) => {
+                        const href = (item as { href: string }).href;
+                        if (href === "/admin/roles" && currentUser?.isAdmin !== true) return false;
+                        if (isAuthorOnly && section.label === "Admin" && href !== "/admin/profile") return false;
+                        return true;
+                      })
                       .map(({ href, label, icon }) => {
                         const active = pathname === href || pathname?.startsWith(href + "/");
                         return (
@@ -275,18 +286,20 @@ export function AdminShell({
             />
           </form>
           <div className="flex items-center gap-6">
-            <Link
-              href="/admin/leads"
-              className="relative p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-white/80"
-              aria-label={leadCount > 0 ? `${leadCount} leads` : "Leads"}
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
-              {leadCount > 0 && (
-                <span className="absolute top-1 right-1 min-w-[1.25rem] h-5 px-1.5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#F8F9FA]">
-                  {leadCount > 99 ? "99+" : leadCount}
-                </span>
-              )}
-            </Link>
+            {!isAuthorOnly && (
+              <Link
+                href="/admin/leads"
+                className="relative p-2 text-slate-400 hover:text-primary transition-colors rounded-lg hover:bg-white/80"
+                aria-label={leadCount > 0 ? `${leadCount} leads` : "Leads"}
+              >
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+                {leadCount > 0 && (
+                  <span className="absolute top-1 right-1 min-w-[1.25rem] h-5 px-1.5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-[#F8F9FA]">
+                    {leadCount > 99 ? "99+" : leadCount}
+                  </span>
+                )}
+              </Link>
+            )}
             {currentUser && (
               <div className="flex items-center gap-4 border-l border-slate-200 pl-6">
                 <div className="flex items-center gap-3">

@@ -1,19 +1,20 @@
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { getUserRoles } from "@/lib/supabase/auth";
 import Link from "next/link";
 
 export default async function AdminDashboardPage() {
+  const roles = await getUserRoles();
+  const isAuthorOnly =
+    roles.includes("author") && !roles.includes("admin") && !roles.includes("moderator");
+
   const supabase = await createClient();
-  const [
-    { data: posts },
-    { count: draftCount },
-    { count: publishedCount },
-    { count: totalCount },
-    { count: contactsCount },
-    { count: campaignsCount },
-    { count: leadsCount },
-    { count: usersCount },
-  ] = await Promise.all([
+  const contentPromises: [
+    ReturnType<typeof supabase.from>,
+    ReturnType<typeof supabase.from>,
+    ReturnType<typeof supabase.from>,
+    ReturnType<typeof supabase.from>,
+  ] = [
     supabase
       .from("posts")
       .select("id, title, status, created_at, author_id")
@@ -22,18 +23,48 @@ export default async function AdminDashboardPage() {
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "draft"),
     supabase.from("posts").select("id", { count: "exact", head: true }).eq("status", "published"),
     supabase.from("posts").select("id", { count: "exact", head: true }),
-    supabase.from("contacts").select("id", { count: "exact", head: true }),
-    supabase.from("campaigns").select("id", { count: "exact", head: true }),
-    supabase.from("leads").select("id", { count: "exact", head: true }),
-    supabase.from("profiles").select("id", { count: "exact", head: true }),
-  ]);
+  ];
+  const crmPromises = isAuthorOnly
+    ? []
+    : [
+        supabase.from("contacts").select("id", { count: "exact", head: true }),
+        supabase.from("campaigns").select("id", { count: "exact", head: true }),
+        supabase.from("leads").select("id", { count: "exact", head: true }),
+        supabase.from("profiles").select("id", { count: "exact", head: true }),
+      ];
 
-  const admin = createAdminClient();
-  const { data: adminRoleData } = await admin.from("roles").select("id").ilike("name", "admin").maybeSingle();
-  const adminRole = adminRoleData as { id: string } | null;
-  const { count: adminUserCount } = adminRole
-    ? await admin.from("user_roles").select("user_id", { count: "exact", head: true }).eq("role_id", adminRole.id)
-    : { count: 0 };
+  const [postsResult, draftResult, publishedResult, totalResult, ...crmResults] = await Promise.all([
+    ...contentPromises,
+    ...crmPromises,
+  ]);
+  const { data: posts } = postsResult as {
+    data: Array<{ id: string; title: string; status: string; created_at: string; author_id: string }>;
+  };
+  const draftCount = (draftResult as { count: number | null }).count ?? 0;
+  const publishedCount = (publishedResult as { count: number | null }).count ?? 0;
+  const totalCount = (totalResult as { count: number | null }).count ?? 0;
+
+  let contacts = 0;
+  let campaigns = 0;
+  let leads = 0;
+  let users = 0;
+
+  if (!isAuthorOnly && crmResults.length >= 4) {
+    const contactsCount = (crmResults[0] as { count: number | null }).count ?? 0;
+    const campaignsCount = (crmResults[1] as { count: number | null }).count ?? 0;
+    const leadsCount = (crmResults[2] as { count: number | null }).count ?? 0;
+    const totalProfiles = (crmResults[3] as { count: number | null }).count ?? 0;
+    const admin = createAdminClient();
+    const { data: adminRoleData } = await admin.from("roles").select("id").ilike("name", "admin").maybeSingle();
+    const adminRole = adminRoleData as { id: string } | null;
+    const adminUserCount = adminRole
+      ? (await admin.from("user_roles").select("user_id", { count: "exact", head: true }).eq("role_id", adminRole.id)).count ?? 0
+      : 0;
+    contacts = contactsCount;
+    campaigns = campaignsCount;
+    leads = leadsCount;
+    users = Math.max(0, totalProfiles - adminUserCount);
+  }
 
   const authorIds = [...new Set((posts ?? []).map((p) => p.author_id))];
   const { data: profiles } = await supabase
@@ -45,14 +76,9 @@ export default async function AdminDashboardPage() {
     authorNames[p.id] = (p.full_name as string) || "—";
   });
 
-  const total = totalCount ?? 0;
-  const drafts = draftCount ?? 0;
-  const published = publishedCount ?? 0;
-  const contacts = contactsCount ?? 0;
-  const campaigns = campaignsCount ?? 0;
-  const leads = leadsCount ?? 0;
-  const totalProfiles = usersCount ?? 0;
-  const users = Math.max(0, totalProfiles - (adminUserCount ?? 0));
+  const total = totalCount;
+  const drafts = draftCount;
+  const published = publishedCount;
 
   return (
     <div>
@@ -95,6 +121,8 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
+      {!isAuthorOnly && (
+        <>
       <h3 className="text-lg font-bold text-slate-800 mb-3">CRM & Team</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <Link
@@ -150,6 +178,8 @@ export default async function AdminDashboardPage() {
           <p className="text-xs text-slate-400 mt-2">Team & roles</p>
         </Link>
       </div>
+        </>
+      )}
 
       <div className="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
         <div className="p-6 border-b border-slate-100 flex items-center justify-between">
